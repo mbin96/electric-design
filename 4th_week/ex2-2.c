@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//구조체를 정의함과 동시에 별칭을 짓는다.
 typedef 
 struct student{
     char grade;
@@ -11,7 +12,7 @@ struct student{
 
 
 int main(){
-
+    //2-1과 동일하게 STD로 자료형을 선언할수있다.
     STD std1;
 
     std1.grade = 'a';
