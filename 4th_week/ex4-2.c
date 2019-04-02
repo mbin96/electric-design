@@ -23,7 +23,8 @@ int main(){
 
     fputs(str, fp);
     fclose(fp);
-
+    
+    //write 로 열면 파일 내의 내용이 다 지워진다.
     fp = fopen("test.txt","wt");
 
     
