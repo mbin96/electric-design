@@ -39,17 +39,17 @@ int main()
 
 void egdt(void)
 {
-	// 탐지용 행렬
-	int kernalX[3][3] = { {1, 0, -1},
-							{2, 0, -2},
-							{1, 0, -1}
+	// edge탐지용 행렬
+	int kernalX[3][3] = { 	{1,	 0, -1},
+							{2,	 0, -2},
+							{1,	 0, -1}
 	},
-		kernalY[3][3] = { {1, 2, 1},
+		kernalY[3][3] = { 	{1, 2, 1},
 							{0, 0, 0},
 							{-1, -2, -1}
 	};
 
-	BYTE R, G, B, GRAY;
+	
 
 	BITMAPFILEHEADER ohf; // 출력 파일을 위한 비트맵 파일 헤더
 	BITMAPINFOHEADER ohinfo; // 출력 파일을 위한 비트맵 파일 정보 헤더
@@ -57,25 +57,21 @@ void egdt(void)
 
 	file = fopen("ori.bmp", "rb");// 파일을 읽기 모드로 엶
 
-	if (file == NULL)// 파일 열기에 실패하면
+	if (file == NULL)// 파일 열기에 실패하면 에러메세지
 	{
 		printf("Error At File open!!!\n");
 		exit(1);
 	}
+
 	fread(&hf, sizeof(BITMAPFILEHEADER), 1, file); // 파일을 열어 파일의 BITMAPFILEHEADER만큼을 hf에 저장
 
-	if (hf.bfType != 0x4D42) // 0X4D42 == BM(아스키 코드), 비트맵파일은 맨 처음 시작이 BM이다. 따라서 첫 부분을 읽고, 그 부분을 분석해서 비트맵이 아니면...
+	if (hf.bfType != 0x4D42) // 0X4D42 == BM(아스키 코드), 비트맵파일인지확인
 	{
 		printf("File is NOT BMP\n");
 		exit(1);
 	}
 
 	fread(&hinfo, sizeof(BITMAPINFOHEADER), 1, file); // 파일을 열어 파일의 BITMAPINFOHEADER만큼을 hinfo에 저장
-
-	printf("File size : %d\n", hf.bfSize); // 입력받은 비트맵 파일의 크기를 화면에 출력함
-	printf("offset : %d\n", hf.bfOffBits); // 입력받은 비트맵 파일에서 실제 데이터가 시작하는 오프셋
-	printf("Image Size : (%dX%d)\n", hinfo.biWidth, hinfo.biHeight); // 입력받은 비트맵 파일의 픽셀 개수를 화면에 출력함
-	printf("%d BPP \n", hinfo.biBitCount); // 입력받은 비트맵 파일의 픽셀당 비트수를 출력
 
 	ohf = hf;
 	ohinfo = hinfo;
@@ -99,44 +95,63 @@ void egdt(void)
 	//세로픽셀값만큼 lpImg 공간 할당
 	//가로픽셀값만큼 lpImg 공감 할당
 
-
 	fread(lpImg, sizeof(char), rwsize * hinfo.biHeight, file);//가로픽셀값
 
 
 	fclose(file);
 	///////////////////////////////
 
-	//엣지 디텍트값
-	BYTE * EDimg;
-	EDimg = (BYTE*)calloc(rwsize2*ohinfo.biHeight,1);
 	lpOutImg = (BYTE*)malloc(rwsize2*ohinfo.biHeight);
+	//출력한 파일을 위한 메모리를 할당한다
+	if(hinfo.biBitCount > 8){
+		BYTE R, G, B, GRAY;
+		for (int i = 0; i < hinfo.biHeight; i++)
+		{
+			for (int j = 0; j < hinfo.biWidth; j++)
+			{
+				B = lpImg[i*rwsize + 3 * j + 0];
+				G = lpImg[i*rwsize + 3 * j + 1];
+				R = lpImg[i*rwsize + 3 * j + 2];
+				//앞서 언급했듯 rwsize는 가로 한줄의 데이터 크기다. 따라서 여기에 i를 곱한다는것은 i+1번째 줄의 데이터를
+				//사용함을 의미한다. 한편 컬러에서 한 픽셀당 데이터는 3바이트가 필요하므로 3*j를 해서 j+1번째 픽셀로 이동한다.
+				//즉 앞의 과정을 통해  i+1번째 줄의 j+1번째칸의 픽셀의 데이터를 저장한 배열의 값을 확인하게 된다.
+				//이때 배열의 위치를 +0,+1,+2를 해서 데이터의 B G R값을 각각 저장한다.
 
-
-
+				GRAY = (BYTE)(0.299*R + 0.587*G + 0.114*B);//사람눈의 민감도.
+				//각각 저장한 R,G,B값에 적당한 값을 곱하고 더해서 밝기값을 만든다
+				//이 값들은 어떻게 정해진것인가? -> 찾아서 레포트 첨부
+				lpOutImg[i*rwsize2 + j] = GRAY;
+				//만든 밝기값을 lpOutImg의 i+1번째 줄의 j+1번째칸의 픽셀의 데이터를 저장한 배열에 저장한다.
+			}
+		}
+		ohf.bfOffBits += 1024;
+	}else{
+		lpOutImg=lpImg;
+	}
 
 	//포인터는 현재 실제 데이터 값이 저장된 곳의 맨 처음으로 이동한 상황이다. 이때 이미지의 세로폭과(=가로폭에 있는 총 픽셀 갯수)
 	//한 줄당 비트수를 곱하면, 전체 데이터의 크기가 나온다. fread함수를 이용해 이미지의 데이터를 char변수의 크기만큼
 	//나눠서 저장한다.
 
-	//int count = 0;
-
-	for (int i = 0; i < hinfo.biHeight; i++) { 
+	//엣지 디텍트값 구하기
+	BYTE * EDimg;
+	EDimg = (BYTE*)calloc(rwsize2*ohinfo.biHeight, 1);
+	double temp;
+	for (int i = 0; i < hinfo.biHeight; i++) {
 		int k = 0;
 		for (int j = 0; j < hinfo.biWidth; j++) {
-			lpOutImg[i*hinfo.biHeight + j] = sqrt(pow(calKernal(j, i, kernalY, rwsize, hinfo.biHeight), 2) + pow(calKernal(j, i, kernalX, rwsize, hinfo.biHeight), 2));
-			if (lpOutImg[i*hinfo.biHeight + j] > 255) {
-				lpOutImg[i*hinfo.biHeight + j] == 255;
+			temp = pow(calKernal(j, i, lpOutImg, kernalY, rwsize, hinfo.biHeight), 2);
+			temp += pow(calKernal(j, i, lpOutImg, kernalX, rwsize, hinfo.biHeight), 2);
+			EDimg[i*rwsize2 + j] = (int)sqrt(temp);
+			if (EDimg[i*rwsize2 + j] > 255) {
+				EDimg[i*rwsize2 + j] == 255;
 			}
 			k++;
 		}
-		//printf("%d", k);
-		//count++;
 	}
-	//count++;
+
 	
-	//if (hinfo.biBitCount > 8) {
-	//	ohf.bfOffBits += 1024;
-	//}
+
 	//bfOffBits는 실제 파일의 화면 데이터가 시작되는 곳의 위치이다.
 	//비트맵파일에서 비트수가 낮으면(1 ~ 8BPP)
 	//비트수가 높을 때와(8BPP 초과) 달리 ColorTable이 파일의 화면 데이터앞에 있다.
@@ -171,23 +186,24 @@ void egdt(void)
 	fwrite(pRGB, sizeof(RGBQUAD), 256, file);
 	//비트맵 파일을 구성하는 BITMAPFILEHEADER, BITMAPINFOHEADER,RGBQUAD를 기록한다.
 
-	fwrite(lpOutImg, sizeof(char), rwsize2*hinfo.biHeight, file);
+	fwrite(EDimg, sizeof(char), rwsize2*hinfo.biHeight, file);
 
 	//앞서 우리가 만든 출력 데이터를 기록한다.
 	fclose(file);
 	//파일을 닫는다.
 
 	free(lpImg);
+	free(EDimg);
 	free(lpOutImg);
 	free(pRGB);
 }
 
-double calKernal(int x, int y, int kernal[3][3], int rwsize, int rhsize) {
+double calKernal(int x, int y,BYTE * lpOutImg, int kernal[3][3], int rwsize, int rhsize) {
 	double cal = 0;
 	for (int i = y - 1; i < y + 2; i++) {
 		for (int j = x - 1; j < x + 2; j++) {
 			if (j >= 0 && i >= 0 && j < rwsize && i < rhsize) {
-				cal += lpImg[i*rwsize + j] * kernal[i - (y - 1)][j - (x - 1)];//정상인경우
+				cal += lpOutImg[i*rwsize2 + j] * kernal[i - (y - 1)][j - (x - 1)];//정상인경우
 			}
 			else {
 				cal += 0;//좌표가 밖으로 나간경우

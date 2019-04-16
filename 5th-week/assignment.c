@@ -63,7 +63,9 @@ int main()
 	dcbSerialParams.BaudRate = CBR_57600;
 	//sizeof(byte)==8설정
 	dcbSerialParams.ByteSize = 8;
+	//페어티 체크(오류감출) 기능 설정 안함
 	dcbSerialParams.Parity = NOPARITY;
+	//stopbit을 몇으로 할까 -> 1비트
 	dcbSerialParams.StopBits = ONESTOPBIT;
 	
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setcommstate 참고
@@ -148,7 +150,7 @@ int main()
 				}
             }
 
-			//윈도우 커서값을 a포인터에 가져온다.
+			//윈도우 커서값을 a에 가져온다.
             GetCursorPos(&a);
             
 			//받아온 커서값을 시리얼로 출력한다.
