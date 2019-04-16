@@ -39,18 +39,6 @@ int main()
 
 void egdt(void)
 {
-	// edge탐지용 행렬
-	int kernalX[3][3] = { 	{1,	 0, -1},
-							{2,	 0, -2},
-							{1,	 0, -1}
-	},
-		kernalY[3][3] = { 	{1, 2, 1},
-							{0, 0, 0},
-							{-1, -2, -1}
-	};
-
-	
-
 	BITMAPFILEHEADER ohf; // 출력 파일을 위한 비트맵 파일 헤더
 	BITMAPINFOHEADER ohinfo; // 출력 파일을 위한 비트맵 파일 정보 헤더
 
@@ -99,10 +87,12 @@ void egdt(void)
 
 
 	fclose(file);
-	///////////////////////////////
+	////////////////////////////////////////과제 시작//////////////
 
 	lpOutImg = (BYTE*)malloc(rwsize2*ohinfo.biHeight);
-	//출력한 파일을 위한 메모리를 할당한다
+	//8비트 변환을 위한메모리를 할당한다
+	
+	//24비트 이미지가 들어온경우
 	if(hinfo.biBitCount > 8){
 		BYTE R, G, B, GRAY;
 		for (int i = 0; i < hinfo.biHeight; i++)
@@ -118,49 +108,48 @@ void egdt(void)
 				//이때 배열의 위치를 +0,+1,+2를 해서 데이터의 B G R값을 각각 저장한다.
 
 				GRAY = (BYTE)(0.299*R + 0.587*G + 0.114*B);//사람눈의 민감도.
-				//각각 저장한 R,G,B값에 적당한 값을 곱하고 더해서 밝기값을 만든다
-				//이 값들은 어떻게 정해진것인가? -> 찾아서 레포트 첨부
 				lpOutImg[i*rwsize2 + j] = GRAY;
 				//만든 밝기값을 lpOutImg의 i+1번째 줄의 j+1번째칸의 픽셀의 데이터를 저장한 배열에 저장한다.
 			}
 		}
-		ohf.bfOffBits += 1024;
+		ohf.bfOffBits += 1024;//24비트는 색상 데이블이 없으므로 8비트로 변환할경우 색상테이블을 만들어줘야함.
 	}else{
-		lpOutImg=lpImg;
+		lpOutImg=lpImg;	//8비트 그레이 이미지를 입력받은경우엔 변환없이.
 	}
 
-	//포인터는 현재 실제 데이터 값이 저장된 곳의 맨 처음으로 이동한 상황이다. 이때 이미지의 세로폭과(=가로폭에 있는 총 픽셀 갯수)
-	//한 줄당 비트수를 곱하면, 전체 데이터의 크기가 나온다. fread함수를 이용해 이미지의 데이터를 char변수의 크기만큼
-	//나눠서 저장한다.
-
-	//엣지 디텍트값 구하기
+	// edge탐지용 행렬
+	int kernalX[3][3] = { 	{1,	 0, -1},
+							{2,	 0, -2},
+							{1,	 0, -1}
+	},
+		kernalY[3][3] = { 	{1, 2, 1},
+							{0, 0, 0},
+							{-1, -2, -1}
+	};
+	
 	BYTE * EDimg;
 	EDimg = (BYTE*)calloc(rwsize2*ohinfo.biHeight, 1);
+	//엣지 디텍트값 구하기
 	double temp;
 	for (int i = 0; i < hinfo.biHeight; i++) {
-		int k = 0;
 		for (int j = 0; j < hinfo.biWidth; j++) {
+			//y커널값 제곱값 계산
 			temp = pow(calKernal(j, i, lpOutImg, kernalY, rwsize, hinfo.biHeight), 2);
+			//x커널값 제곱 계산
 			temp += pow(calKernal(j, i, lpOutImg, kernalX, rwsize, hinfo.biHeight), 2);
-			EDimg[i*rwsize2 + j] = (int)sqrt(temp);
+			//루트취하기(세로 엣지, 가로 엣지 구한값의 상관도구하기)
+			EDimg[i*rwsize2 + j] = sqrt(temp);
+			//상관도 값이 255이상인 경우 8비트를 넘으니까 clipping해주기
 			if (EDimg[i*rwsize2 + j] > 255) {
 				EDimg[i*rwsize2 + j] == 255;
 			}
-			k++;
 		}
 	}
 
-	
-
-	//bfOffBits는 실제 파일의 화면 데이터가 시작되는 곳의 위치이다.
-	//비트맵파일에서 비트수가 낮으면(1 ~ 8BPP)
-	//비트수가 높을 때와(8BPP 초과) 달리 ColorTable이 파일의 화면 데이터앞에 있다.
-	//따라서 bfOffBits를 1024만큼 뒤로 밀어야 한다.
-	//1024는 RGBQUAD의 크기(4바이트) * 256개 팔레트 = 1024다.
-
 	ohinfo.biBitCount = 8;
 	//8BPP이니까 8이다.
-
+	
+	//컬러테이블 설정
 	pRGB = (RGBQUAD*)malloc(sizeof(RGBQUAD) * 256);
 	//앞서 말한 ColorTable을 위한 메모리를 설정한다.
 
@@ -176,10 +165,6 @@ void egdt(void)
 	file = fopen("edgeDetected.bmp", "wb");
 
 	//이제 출력할 파일을 쓰기모드로 연다.
-
-	//fwrite(&ohf, sizeof(char), sizeof(BITMAPFILEHEADER), file);
-	//fwrite(&ohinfo, sizeof(char), sizeof(BITMAPINFOHEADER), file);
-	//fwrite(pRGB, sizeof(RGBQUAD), 256, file);
 
 	fwrite(&ohf, sizeof(char), sizeof(BITMAPFILEHEADER), file);
 	fwrite(&ohinfo, sizeof(char), sizeof(BITMAPINFOHEADER), file);
@@ -212,7 +197,7 @@ double calKernal(int x, int y,BYTE * lpOutImg, int kernal[3][3], int rwsize, int
 	}
 	return cal;
 }
-
+////////////////////////////////////////과제끝/////////////////////////////////////////
 void bitof24_to_8bit_gray(void)
 {
 	int i, j;
