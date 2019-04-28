@@ -1,0 +1,4 @@
+grade is B
+midterm is 56
+finalterm is 72
+attendance is 10
