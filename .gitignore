@@ -1,12 +1,2 @@
-.vscode/tasks.json
-.vscode/launch.json
-.vscode/ipch/4f9a7fa67b45e1f6/mmap_address.bin
-.vscode/ipch/1026a5345b5d0340/mmap_address.bin
-.vscode/ipch/21a0cbef3ef56800/mmap_address.bin
-.vscode/ipch/2bd90b788ab46135/mmap_address.bin
-.vscode/ipch/3e040da6713cf820/mmap_address.bin
-.vscode/ipch/7c6182f165aed122/mmap_address.bin
-.vscode/ipch/d005944d58dc490b/EX4.ipch
-.vscode/ipch/d005944d58dc490b/mmap_address.bin
-.vscode/ipch/fa71c756be5bb785/ASSIGNMENT.ipch
-.vscode/ipch/fa71c756be5bb785/mmap_address.bin
+.vscode/
+
