@@ -76,7 +76,7 @@ int main(void)
     EIMSK |= 1<<INT4;    //External Interrupt Request 0 Enable
                         //PD0에 스위치 연결, 풀업 저항을 추가한 회로여야 한다.
     
-    sei();      //Grobal Interrupt Enable
+    sei();      //Global Interrupt Enable
     
     while(1)
     {
