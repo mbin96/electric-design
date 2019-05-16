@@ -1,4 +1,10 @@
 /*
+ * CFile1.c
+ *
+ * Created: 2019-05-16 오후 3:36:44
+ *  Author: mbin9
+ */ 
+/*
  * 11th-week-timeclock.c
  *
  * Created: 2019-05-15 오전 10:05:34
@@ -41,13 +47,7 @@ void initPort(){
 }
 
 void initInterrupt(){
-	//timer interrupt 
-	//normal mode(0), no prescaling
-	//when timer being overflow, interrupt exc
-	TCCR0 = 0x01;//nomal
-	TCNT0 = 0x00;
-	TIMSK = 0x01;//overflow 활성화
-	TIFR = 0xff;//초기화 임의 값을 넣으면 하드웨어적으로 초기화
+	
 	//external interrupt
 	
 	//int4 버튼 falling edge활성화
@@ -65,11 +65,10 @@ void initInterrupt(){
 }
 ISR(INT4_vect)
 {
-	
-	if(state == STATE_INIT || state == STATE_TIMER_PAUSE){
-		state = STATE_TIMER_RUNNING;
-	}else if(state == STATE_TIMER_RUNNING){
-		state = STATE_TIMER_PAUSE;
+	if(timeNum == 9999){
+		timeNum = 0;
+	}else{
+		timeNum++; 
 	}
 	
 	
@@ -77,23 +76,14 @@ ISR(INT4_vect)
 }
 ISR(INT5_vect)
 {
-	if(state == STATE_TIMER_PAUSE){
-		timeNum = 0;
-		state = STATE_INIT;
-	}else if(state == STATE_TIMER_RUNNING){
-		timeNum = 0;
+	if(timeNum == 0){
+		timeNum = 9999;
+		}else{
+		timeNum--;
 	}
 	
 }
 
-ISR(TIMER0_OVF_vect)
-{
-	timeIterruptSet++;
-	if(timeIterruptSet > 625 && state == STATE_TIMER_RUNNING){
-		timeNum++;
-		timeIterruptSet = 0;
-	}
-}
 
 
 int main(void)
@@ -111,7 +101,7 @@ int main(void)
 			printSeg((timeNum/exp10[i])%10,3-i);
 		}
 		//초기화
-		if(timeNum == 10000) timeNum = 0;
+		
 		
 	}
 	
