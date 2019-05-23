@@ -5,9 +5,9 @@
 #define __AVR_ATmega128__        //we're using atmega128A
 
 //define STATE number
-#define STATE_INIT 0
-#define STATE_RUNNING 1
-#define STATE_PAUSE 2
+#define STATE_INIT       0    
+#define STATE_RUNNING    1
+#define STATE_PAUSE      2
 
 //include
 #include <avr/io.h>
@@ -22,7 +22,7 @@ unsigned char FND_SEGPOS[4] = {0x01, 0x02, 0x04, 0x08};                         
 unsigned int exp10[4] = {1, 10, 100, 1000};                                                 //print 10^x (for divide timeNum variable)
 ///////////////////////////////////////////////////////////
 
-
+///////////////////////////////segment print/////////////////////////////
 void printSeg(int num, int segDigit){
     //by schematic, PORTE must being clear before set segment's digit and led.
     //because circuit use same port(A) to set segment's digit and led by latch.
@@ -33,63 +33,63 @@ void printSeg(int num, int segDigit){
     PORTE = 0x00; //clear port E
 
     //print num at segment
-    if(segDigit == 1) PORTA = FND_SEGWP[num];	//print with decimal point
-    else PORTA = FND_SEGNP[num];				//print with out decimal point
+    if(segDigit == 1) PORTA = FND_SEGWP[num];   //print with decimal point
+    else PORTA = FND_SEGNP[num];                //print with out decimal point
     PORTE = 0x08; //set 1 segment led latch
     PORTE = 0x00; //clear port E
 }
 
 void initPort(){
     //initialize port A and E
-    DDRA = 0xFF; //set portA(7:0) to output
-    DDRE = 0x0C; //set portE(3:2) to output
-    PORTE = 0x04;//init port E
-    PORTA = 0x0F;//init port A
+    DDRA = 0xFF;    //set portA(7:0) to output
+    DDRE = 0x0C;    //set portE(3:2) to output
+    PORTE = 0x04;   //init port E
+    PORTA = 0x0F;   //init port A
 }
 
-void initInterrupt(){
-    //timer interrupt
-    //normal mode(0), no prescaling
-    //when timer being overflow, interrupt exec
-    TCCR0 = 0x01; //normal mode and no prescaling
-    TCNT0 = 0x00; //초기 count 값을 0으로 주어줌
-    TIMSK = 0x01; //overflow 활성화
-    TIFR = 0xff;  //초기화 - 임의 값을 넣으면 하드웨어적으로 초기화
 
+
+void initInterrupt(){
+    //timer interrupt 
+    //normal mode(0), no prescaling
+    //when timer being overflow, interrupt exc
+    TCCR0 = 0x01;   //normal mode and no prescaling
+    TCNT0 = 0x00;   //clear count value register
+    TIMSK = 0x01;   //enable Timer/Counter0 overflow interrupt, disable compare match interrupt
+    TIFR = 0xff;    //write logic 1 on flag for clear register
     //external interrupt
+
     //external interrupt int4 enable
     //active int4 when falling edge
-    EICRB &= ~(1 << ISC40);
-    EICRB |= 1 << ISC41; //same to EICRB = 0dxxxxxx10
-    //int4 입력 활성화
-    EIMSK |= 1 << INT4;
+    EICRB  &= ~(1<<ISC40);
+    EICRB  |= 1<<ISC41;     //same to EICRB = 0d00000010
+    //enable external interrupt 4
+    EIMSK |= 1<<INT4;
 
     //external interrupt int5 enable
     //active int5 when falling edge
-    //same to EICRB = 0dxxxx10xx
-    EICRB &= ~(1 << ISC50); //0으로 설정
-    EICRB |= 1 << ISC51;    //1로 설정
-    //int5 입력 활성화
-    EIMSK |= 1 << INT5;
+    EICRB  &= ~(1<<ISC50);  //clear
+    EICRB  |= 1<<ISC51;     //set
+    //enable external interrupt 5
+    EIMSK |= 1<<INT5;
 }
 
-////////////////////////interrupt service routine///////////////////
+////////////////////////interrupt///////////////////
 ISR(INT4_vect){
     //external interrupt execution when press int4 BT(falling edge)
-    //when state is init or pause, change state to running
-    //when state is runnung, change state to pause(keep timeNum)
+    //when state is init or pause,  change state to running
+    //when state is runnung,  change state to pause(keep timeNum)
     if(state == STATE_RUNNING){
         state = STATE_PAUSE;    //pause stopwatch. keep print timeNum.
     }else{
         state = STATE_RUNNING;  //start(or resume) stopwatch
     }
-    
 }
 
 ISR(INT5_vect){
-    //external interrupt execution when press int5 BT(falling edge)
-    //when state is pause, reset timeNum(print 0000) and change state to init
-    //when state is running, reset timeNum(print 0000) and keep running
+    //external interrupt launch when press int4 BT(falling edge)
+    //when state is pause, then reset timeNum(print 0000) and change state to init
+    //when state is running, then reset timeNum(print 0000) and keep running
     if(state == STATE_RUNNING){
         timeNum = 0;            //clear timeNum and print "0000" but keep running stop watch
     }else{
@@ -99,25 +99,28 @@ ISR(INT5_vect){
 }
 
 ISR(TIMER0_OVF_vect){
-    //with out prescaling, time interrupt execution 62500 times / sec (16 MHz / 256 = 62500)
-    //so, we can count 10ms by count 625times interrupt execution 
+    //with out prescaling, time interrupt execution (16 MHz / 256 = 62500) / sec
+    //so, 10ms counted when interrupt's 625th execution
     //count interrupt execution in timeInterruptExec and increase timeNum when timeInterruptExec became 625
     timeInterruptExec++;
-    if((timeInterruptExec > 625) && (state == STATE_RUNNING)){
-        timeNum++;              //count 10ms
-        timeInterruptExec = 0;  //clear execution count
+    if((timeInterruptExec > 624) && (state == STATE_RUNNING)){
+        timeNum++;
+        timeInterruptExec = 0;
     }
 }
+
 ///////////////////interrupt service routine end////////////////////////
 
 int main(void){
     //initialize port and interrupt
     initPort();
     initInterrupt();
+    //initTimerInterrupt();
 
     //Global Interrupt Enable
-    sei();      
-    
+    sei();
+
+    //main function
     //print 7segment by global variable timeNum
     //timeNum variable is increase by time interrupt
     while (1){
@@ -129,3 +132,26 @@ int main(void){
         if(timeNum == 10000) timeNum = 0;
     }
 }
+
+////////////코드 최적화//////////////////////
+/*
+//CTC모드를 사용하고 256프리 스케일링 모드를 사용하여 5번의 인터럽트 실행으로 10ms를 측정하도록 코딩 하였다.
+void initTimerInterrupt()
+{
+    TCCR0 = 0x0e; //0d00001110//CTC mode and 256 prescaling
+    TCNT0 = 0x00; //clear count value register. TCNT0 increase count from 0, clear on 124
+    TIMSK = 0x02; //enable Timer/Counter0 compare match interrupt, disable overflow interrupt
+    TIFR = 0xff;  //write logic 1 on flag for clear register
+    OCR0 = 0x7c;  //compare 124
+}
+ISR(TIMER0_COMP_vect)
+{
+    timeInterruptExec++;
+    if ((timeInterruptExec > 4) && (state == STATE_RUNNING))
+    {
+        timeNum++;
+        timeInterruptExec = 0;
+    }
+}
+*/
+////////////////////////////////////////////////

@@ -3,31 +3,31 @@
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000016  00800100  000002ee  00000382  2**0
+  0 .data         00000020  00800100  000002f0  00000384  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000002ee  00000000  00000000  00000094  2**1
+  1 .text         000002f0  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000006  00800116  00800116  00000398  2**0
+  2 .bss          00000006  00800120  00800120  000003a4  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000398  2**0
+  3 .comment      00000030  00000000  00000000  000003a4  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003c8  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003d4  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000050  00000000  00000000  00000408  2**0
+  5 .debug_aranges 00000058  00000000  00000000  00000414  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000009ac  00000000  00000000  00000458  2**0
+  6 .debug_info   000009ca  00000000  00000000  0000046c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000835  00000000  00000000  00000e04  2**0
+  7 .debug_abbrev 00000835  00000000  00000000  00000e36  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000038b  00000000  00000000  00001639  2**0
+  8 .debug_line   000003ba  00000000  00000000  0000166b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000d4  00000000  00000000  000019c4  2**2
+  9 .debug_frame  000000d0  00000000  00000000  00001a28  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000470  00000000  00000000  00001a98  2**0
+ 10 .debug_str    00000482  00000000  00000000  00001af8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000181  00000000  00000000  00001f08  2**0
+ 11 .debug_loc    00000178  00000000  00000000  00001f7a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000040  00000000  00000000  00002089  2**0
+ 12 .debug_ranges 00000048  00000000  00000000  000020f2  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -43,9 +43,9 @@ Disassembly of section .text:
    e:	00 00       	nop
   10:	5a c0       	rjmp	.+180    	; 0xc6 <__bad_interrupt>
   12:	00 00       	nop
-  14:	91 c0       	rjmp	.+290    	; 0x138 <__vector_5>
+  14:	95 c0       	rjmp	.+298    	; 0x140 <__vector_5>
   16:	00 00       	nop
-  18:	b8 c0       	rjmp	.+368    	; 0x18a <__vector_6>
+  18:	b4 c0       	rjmp	.+360    	; 0x182 <__vector_6>
   1a:	00 00       	nop
   1c:	54 c0       	rjmp	.+168    	; 0xc6 <__bad_interrupt>
   1e:	00 00       	nop
@@ -63,9 +63,9 @@ Disassembly of section .text:
   36:	00 00       	nop
   38:	46 c0       	rjmp	.+140    	; 0xc6 <__bad_interrupt>
   3a:	00 00       	nop
-  3c:	44 c0       	rjmp	.+136    	; 0xc6 <__bad_interrupt>
+  3c:	cd c0       	rjmp	.+410    	; 0x1d8 <__vector_15>
   3e:	00 00       	nop
-  40:	c8 c0       	rjmp	.+400    	; 0x1d2 <__vector_16>
+  40:	42 c0       	rjmp	.+132    	; 0xc6 <__bad_interrupt>
   42:	00 00       	nop
   44:	40 c0       	rjmp	.+128    	; 0xc6 <__bad_interrupt>
   46:	00 00       	nop
@@ -116,20 +116,20 @@ Disassembly of section .text:
   98:	11 e0       	ldi	r17, 0x01	; 1
   9a:	a0 e0       	ldi	r26, 0x00	; 0
   9c:	b1 e0       	ldi	r27, 0x01	; 1
-  9e:	ee ee       	ldi	r30, 0xEE	; 238
+  9e:	e0 ef       	ldi	r30, 0xF0	; 240
   a0:	f2 e0       	ldi	r31, 0x02	; 2
   a2:	00 e0       	ldi	r16, 0x00	; 0
   a4:	0b bf       	out	0x3b, r16	; 59
   a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
   a8:	07 90       	elpm	r0, Z+
   aa:	0d 92       	st	X+, r0
-  ac:	a6 31       	cpi	r26, 0x16	; 22
+  ac:	a0 32       	cpi	r26, 0x20	; 32
   ae:	b1 07       	cpc	r27, r17
   b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
 
 000000b2 <__do_clear_bss>:
   b2:	21 e0       	ldi	r18, 0x01	; 1
-  b4:	a6 e1       	ldi	r26, 0x16	; 22
+  b4:	a0 e2       	ldi	r26, 0x20	; 32
   b6:	b1 e0       	ldi	r27, 0x01	; 1
   b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
 
@@ -137,250 +137,266 @@ Disassembly of section .text:
   ba:	1d 92       	st	X+, r1
 
 000000bc <.do_clear_bss_start>:
-  bc:	ac 31       	cpi	r26, 0x1C	; 28
+  bc:	a6 32       	cpi	r26, 0x26	; 38
   be:	b2 07       	cpc	r27, r18
   c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
   c2:	b6 d0       	rcall	.+364    	; 0x230 <main>
-  c4:	12 c1       	rjmp	.+548    	; 0x2ea <_exit>
+  c4:	13 c1       	rjmp	.+550    	; 0x2ec <_exit>
 
 000000c6 <__bad_interrupt>:
   c6:	9c cf       	rjmp	.-200    	; 0x0 <__vectors>
 
 000000c8 <printSeg>:
-unsigned int state = STATE_INIT;
-//////////////////////
+void printSeg(int num, int segDigit){
+    //by schematic, PORTE must being clear before set segment's digit and led.
+    //because circuit use same port(A) to set segment's digit and led by latch.
 
-void printSeg(int num, int whatSegment){
-	//자리수 지정
-	PORTA = FND_SEGPOS[whatSegment];
+    //set segment digit to print
+    PORTA = FND_SEGPOS[segDigit];
   c8:	fb 01       	movw	r30, r22
   ca:	e8 5f       	subi	r30, 0xF8	; 248
   cc:	fe 4f       	sbci	r31, 0xFE	; 254
   ce:	20 81       	ld	r18, Z
   d0:	2b bb       	out	0x1b, r18	; 27
-	PORTE = 0x04;
+    PORTE = 0x04; //set 1 segment digit latch
   d2:	24 e0       	ldi	r18, 0x04	; 4
   d4:	23 b9       	out	0x03, r18	; 3
-	PORTE = 0x00;
+    PORTE = 0x00; //clear port E
   d6:	13 b8       	out	0x03, r1	; 3
-	//세그먼트 숫자출력
-	PORTA = FND_SEGNP[num];
-  d8:	84 5f       	subi	r24, 0xF4	; 244
-  da:	9e 4f       	sbci	r25, 0xFE	; 254
-  dc:	fc 01       	movw	r30, r24
-  de:	80 81       	ld	r24, Z
-  e0:	8b bb       	out	0x1b, r24	; 27
-	PORTE = 0x08;
-  e2:	88 e0       	ldi	r24, 0x08	; 8
-  e4:	83 b9       	out	0x03, r24	; 3
-	PORTE = 0x00;
-  e6:	13 b8       	out	0x03, r1	; 3
-  e8:	08 95       	ret
 
-000000ea <initPort>:
-	
+    //print num at segment
+    if(segDigit == 1) PORTA = FND_SEGWP[num];   //print with decimal point
+  d8:	61 30       	cpi	r22, 0x01	; 1
+  da:	71 05       	cpc	r23, r1
+  dc:	31 f4       	brne	.+12     	; 0xea <printSeg+0x22>
+  de:	fc 01       	movw	r30, r24
+  e0:	e4 5f       	subi	r30, 0xF4	; 244
+  e2:	fe 4f       	sbci	r31, 0xFE	; 254
+  e4:	80 81       	ld	r24, Z
+  e6:	8b bb       	out	0x1b, r24	; 27
+  e8:	05 c0       	rjmp	.+10     	; 0xf4 <printSeg+0x2c>
+    else PORTA = FND_SEGNP[num];                //print with out decimal point
+  ea:	fc 01       	movw	r30, r24
+  ec:	ea 5e       	subi	r30, 0xEA	; 234
+  ee:	fe 4f       	sbci	r31, 0xFE	; 254
+  f0:	80 81       	ld	r24, Z
+  f2:	8b bb       	out	0x1b, r24	; 27
+    PORTE = 0x08; //set 1 segment led latch
+  f4:	88 e0       	ldi	r24, 0x08	; 8
+  f6:	83 b9       	out	0x03, r24	; 3
+    PORTE = 0x00; //clear port E
+  f8:	13 b8       	out	0x03, r1	; 3
+  fa:	08 95       	ret
+
+000000fc <initPort>:
 }
 
 void initPort(){
-	DDRA = 0xFF;
-  ea:	8f ef       	ldi	r24, 0xFF	; 255
-  ec:	8a bb       	out	0x1a, r24	; 26
-	DDRF = 0xF0;
-  ee:	80 ef       	ldi	r24, 0xF0	; 240
-  f0:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <__TEXT_REGION_LENGTH__+0x7e0061>
-	DDRG = 0x00;
-  f4:	10 92 64 00 	sts	0x0064, r1	; 0x800064 <__TEXT_REGION_LENGTH__+0x7e0064>
-	DDRE = 0x0C;
-  f8:	8c e0       	ldi	r24, 0x0C	; 12
-  fa:	82 b9       	out	0x02, r24	; 2
-	PORTE = 0x04;
-  fc:	84 e0       	ldi	r24, 0x04	; 4
-  fe:	83 b9       	out	0x03, r24	; 3
-	PORTA = 0x0F;
- 100:	8f e0       	ldi	r24, 0x0F	; 15
- 102:	8b bb       	out	0x1b, r24	; 27
- 104:	08 95       	ret
+    //initialize port A and E
+    DDRA = 0xFF;    //set portA(7:0) to output
+  fc:	8f ef       	ldi	r24, 0xFF	; 255
+  fe:	8a bb       	out	0x1a, r24	; 26
+    DDRE = 0x0C;    //set portE(3:2) to output
+ 100:	8c e0       	ldi	r24, 0x0C	; 12
+ 102:	82 b9       	out	0x02, r24	; 2
+    PORTE = 0x04;   //init port E
+ 104:	84 e0       	ldi	r24, 0x04	; 4
+ 106:	83 b9       	out	0x03, r24	; 3
+    PORTA = 0x0F;   //init port A
+ 108:	8f e0       	ldi	r24, 0x0F	; 15
+ 10a:	8b bb       	out	0x1b, r24	; 27
+ 10c:	08 95       	ret
 
-00000106 <initInterrupt>:
+0000010e <initInterrupt>:
 
 void initInterrupt(){
-	//timer interrupt 
-	//normal mode(0), no prescaling
-	//when timer being overflow, interrupt exc
-	TCCR0 = 0x01;//nomal
- 106:	81 e0       	ldi	r24, 0x01	; 1
- 108:	83 bf       	out	0x33, r24	; 51
-	TCNT0 = 0x00;
- 10a:	12 be       	out	0x32, r1	; 50
-	TIMSK = 0x01;//overflow 활성화
- 10c:	87 bf       	out	0x37, r24	; 55
-	TIFR = 0xff;//초기화 임의 값을 넣으면 하드웨어적으로 초기화
- 10e:	8f ef       	ldi	r24, 0xFF	; 255
- 110:	86 bf       	out	0x36, r24	; 54
-	//external interrupt
-	
-	//int4 버튼 falling edge활성화
-	EICRB  &= ~(1<<ISC40);
- 112:	8a b7       	in	r24, 0x3a	; 58
- 114:	8e 7f       	andi	r24, 0xFE	; 254
- 116:	8a bf       	out	0x3a, r24	; 58
-	EICRB  |= 1<<ISC41;
- 118:	8a b7       	in	r24, 0x3a	; 58
- 11a:	82 60       	ori	r24, 0x02	; 2
- 11c:	8a bf       	out	0x3a, r24	; 58
-	//int4 입력 활성화
-	EIMSK |= 1<<INT4;    
- 11e:	89 b7       	in	r24, 0x39	; 57
- 120:	80 61       	ori	r24, 0x10	; 16
- 122:	89 bf       	out	0x39, r24	; 57
-	
-	//int5 버튼 falling edge활성화
-	EICRB  &= ~(1<<ISC50);	//0으로 설정
- 124:	8a b7       	in	r24, 0x3a	; 58
- 126:	8b 7f       	andi	r24, 0xFB	; 251
- 128:	8a bf       	out	0x3a, r24	; 58
-	EICRB  |= 1<<ISC51;		//1로 설정
- 12a:	8a b7       	in	r24, 0x3a	; 58
- 12c:	88 60       	ori	r24, 0x08	; 8
- 12e:	8a bf       	out	0x3a, r24	; 58
-	//int5 입력 활성화
-	EIMSK |= 1<<INT5;
- 130:	89 b7       	in	r24, 0x39	; 57
- 132:	80 62       	ori	r24, 0x20	; 32
- 134:	89 bf       	out	0x39, r24	; 57
- 136:	08 95       	ret
+    //timer interrupt 
+    //normal mode(0), no prescaling
+    //when timer being overflow, interrupt exc
+    TCCR0 = 0x01;   //normal mode and no prescaling
+ 10e:	81 e0       	ldi	r24, 0x01	; 1
+ 110:	83 bf       	out	0x33, r24	; 51
+    TCNT0 = 0x00;   //clear count value register
+ 112:	12 be       	out	0x32, r1	; 50
+    TIMSK = 0x01;   //enable Timer/Counter0 overflow interrupt, disable compare match interrupt
+ 114:	87 bf       	out	0x37, r24	; 55
+    TIFR = 0xff;    //write logic 1 on flag for clear register
+ 116:	8f ef       	ldi	r24, 0xFF	; 255
+ 118:	86 bf       	out	0x36, r24	; 54
+    //external interrupt
 
-00000138 <__vector_5>:
-	
+    //external interrupt int4 enable
+    //active int4 when falling edge
+    EICRB  &= ~(1<<ISC40);
+ 11a:	8a b7       	in	r24, 0x3a	; 58
+ 11c:	8e 7f       	andi	r24, 0xFE	; 254
+ 11e:	8a bf       	out	0x3a, r24	; 58
+    EICRB  |= 1<<ISC41;     //same to EICRB = 0d00000010
+ 120:	8a b7       	in	r24, 0x3a	; 58
+ 122:	82 60       	ori	r24, 0x02	; 2
+ 124:	8a bf       	out	0x3a, r24	; 58
+    //enable external interrupt 4
+    EIMSK |= 1<<INT4;
+ 126:	89 b7       	in	r24, 0x39	; 57
+ 128:	80 61       	ori	r24, 0x10	; 16
+ 12a:	89 bf       	out	0x39, r24	; 57
+
+    //external interrupt int5 enable
+    //active int5 when falling edge
+    EICRB  &= ~(1<<ISC50);  //clear
+ 12c:	8a b7       	in	r24, 0x3a	; 58
+ 12e:	8b 7f       	andi	r24, 0xFB	; 251
+ 130:	8a bf       	out	0x3a, r24	; 58
+    EICRB  |= 1<<ISC51;     //set
+ 132:	8a b7       	in	r24, 0x3a	; 58
+ 134:	88 60       	ori	r24, 0x08	; 8
+ 136:	8a bf       	out	0x3a, r24	; 58
+    //enable external interrupt 5
+    EIMSK |= 1<<INT5;
+ 138:	89 b7       	in	r24, 0x39	; 57
+ 13a:	80 62       	ori	r24, 0x20	; 32
+ 13c:	89 bf       	out	0x39, r24	; 57
+ 13e:	08 95       	ret
+
+00000140 <__vector_5>:
 }
-ISR(INT4_vect)
-{
- 138:	1f 92       	push	r1
- 13a:	0f 92       	push	r0
- 13c:	0f b6       	in	r0, 0x3f	; 63
- 13e:	0f 92       	push	r0
- 140:	11 24       	eor	r1, r1
- 142:	2f 93       	push	r18
- 144:	3f 93       	push	r19
- 146:	8f 93       	push	r24
- 148:	9f 93       	push	r25
-	
-	if(state == STATE_INIT || state == STATE_TIMER_PAUSE){
- 14a:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
- 14e:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <__data_end+0x1>
- 152:	9c 01       	movw	r18, r24
- 154:	2d 7f       	andi	r18, 0xFD	; 253
- 156:	23 2b       	or	r18, r19
- 158:	39 f4       	brne	.+14     	; 0x168 <__vector_5+0x30>
-		state = STATE_TIMER_RUNNING;
- 15a:	81 e0       	ldi	r24, 0x01	; 1
+
+////////////////////////interrupt///////////////////
+ISR(INT4_vect){
+ 140:	1f 92       	push	r1
+ 142:	0f 92       	push	r0
+ 144:	0f b6       	in	r0, 0x3f	; 63
+ 146:	0f 92       	push	r0
+ 148:	11 24       	eor	r1, r1
+ 14a:	8f 93       	push	r24
+ 14c:	9f 93       	push	r25
+    //external interrupt execution when press int4 BT(falling edge)
+    //when state is init or pause,  change state to running
+    //when state is runnung,  change state to pause(keep timeNum)
+    if(state == STATE_RUNNING){
+ 14e:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <state>
+ 152:	90 91 25 01 	lds	r25, 0x0125	; 0x800125 <state+0x1>
+ 156:	01 97       	sbiw	r24, 0x01	; 1
+ 158:	39 f4       	brne	.+14     	; 0x168 <__vector_5+0x28>
+        state = STATE_PAUSE;    //pause stopwatch. keep print timeNum.
+ 15a:	82 e0       	ldi	r24, 0x02	; 2
  15c:	90 e0       	ldi	r25, 0x00	; 0
- 15e:	90 93 17 01 	sts	0x0117, r25	; 0x800117 <__data_end+0x1>
- 162:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <__data_end>
- 166:	08 c0       	rjmp	.+16     	; 0x178 <__vector_5+0x40>
-	}else if(state == STATE_TIMER_RUNNING){
- 168:	01 97       	sbiw	r24, 0x01	; 1
- 16a:	31 f4       	brne	.+12     	; 0x178 <__vector_5+0x40>
-		state = STATE_TIMER_PAUSE;
- 16c:	82 e0       	ldi	r24, 0x02	; 2
- 16e:	90 e0       	ldi	r25, 0x00	; 0
- 170:	90 93 17 01 	sts	0x0117, r25	; 0x800117 <__data_end+0x1>
- 174:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <__data_end>
-	}
-	
-	
-	
+ 15e:	90 93 25 01 	sts	0x0125, r25	; 0x800125 <state+0x1>
+ 162:	80 93 24 01 	sts	0x0124, r24	; 0x800124 <state>
+ 166:	06 c0       	rjmp	.+12     	; 0x174 <__vector_5+0x34>
+    }else{
+        state = STATE_RUNNING;  //start(or resume) stopwatch
+ 168:	81 e0       	ldi	r24, 0x01	; 1
+ 16a:	90 e0       	ldi	r25, 0x00	; 0
+ 16c:	90 93 25 01 	sts	0x0125, r25	; 0x800125 <state+0x1>
+ 170:	80 93 24 01 	sts	0x0124, r24	; 0x800124 <state>
+    }
 }
- 178:	9f 91       	pop	r25
- 17a:	8f 91       	pop	r24
- 17c:	3f 91       	pop	r19
- 17e:	2f 91       	pop	r18
- 180:	0f 90       	pop	r0
- 182:	0f be       	out	0x3f, r0	; 63
- 184:	0f 90       	pop	r0
- 186:	1f 90       	pop	r1
- 188:	18 95       	reti
+ 174:	9f 91       	pop	r25
+ 176:	8f 91       	pop	r24
+ 178:	0f 90       	pop	r0
+ 17a:	0f be       	out	0x3f, r0	; 63
+ 17c:	0f 90       	pop	r0
+ 17e:	1f 90       	pop	r1
+ 180:	18 95       	reti
 
-0000018a <__vector_6>:
-ISR(INT5_vect)
-{
- 18a:	1f 92       	push	r1
- 18c:	0f 92       	push	r0
- 18e:	0f b6       	in	r0, 0x3f	; 63
- 190:	0f 92       	push	r0
- 192:	11 24       	eor	r1, r1
- 194:	8f 93       	push	r24
- 196:	9f 93       	push	r25
-	if(state == STATE_TIMER_PAUSE){
- 198:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
- 19c:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <__data_end+0x1>
- 1a0:	82 30       	cpi	r24, 0x02	; 2
- 1a2:	91 05       	cpc	r25, r1
- 1a4:	49 f4       	brne	.+18     	; 0x1b8 <__vector_6+0x2e>
-		timeNum = 0;
- 1a6:	10 92 1b 01 	sts	0x011B, r1	; 0x80011b <timeNum+0x1>
- 1aa:	10 92 1a 01 	sts	0x011A, r1	; 0x80011a <timeNum>
-		state = STATE_INIT;
- 1ae:	10 92 17 01 	sts	0x0117, r1	; 0x800117 <__data_end+0x1>
- 1b2:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <__data_end>
- 1b6:	06 c0       	rjmp	.+12     	; 0x1c4 <__vector_6+0x3a>
-	}else if(state == STATE_TIMER_RUNNING){
- 1b8:	01 97       	sbiw	r24, 0x01	; 1
- 1ba:	21 f4       	brne	.+8      	; 0x1c4 <__vector_6+0x3a>
-		timeNum = 0;
- 1bc:	10 92 1b 01 	sts	0x011B, r1	; 0x80011b <timeNum+0x1>
- 1c0:	10 92 1a 01 	sts	0x011A, r1	; 0x80011a <timeNum>
-	}
-	
+00000182 <__vector_6>:
+
+ISR(INT5_vect){
+ 182:	1f 92       	push	r1
+ 184:	0f 92       	push	r0
+ 186:	0f b6       	in	r0, 0x3f	; 63
+ 188:	0f 92       	push	r0
+ 18a:	11 24       	eor	r1, r1
+ 18c:	8f 93       	push	r24
+ 18e:	9f 93       	push	r25
+    //external interrupt launch when press int4 BT(falling edge)
+    //when state is pause, then reset timeNum(print 0000) and change state to init
+    //when state is running, then reset timeNum(print 0000) and keep running
+    if(state == STATE_RUNNING){
+ 190:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <state>
+ 194:	90 91 25 01 	lds	r25, 0x0125	; 0x800125 <state+0x1>
+ 198:	01 97       	sbiw	r24, 0x01	; 1
+ 19a:	29 f4       	brne	.+10     	; 0x1a6 <__vector_6+0x24>
+        timeNum = 0;            //clear timeNum and print "0000" but keep running stop watch
+ 19c:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <timeNum+0x1>
+ 1a0:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <timeNum>
+ 1a4:	08 c0       	rjmp	.+16     	; 0x1b6 <__vector_6+0x34>
+    }else{
+        timeNum = 0;            //clear timeNum and print "0000"
+ 1a6:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <timeNum+0x1>
+ 1aa:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <timeNum>
+        state = STATE_INIT;     //initialize stopwatch
+ 1ae:	10 92 25 01 	sts	0x0125, r1	; 0x800125 <state+0x1>
+ 1b2:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <state>
+    }
 }
- 1c4:	9f 91       	pop	r25
- 1c6:	8f 91       	pop	r24
- 1c8:	0f 90       	pop	r0
- 1ca:	0f be       	out	0x3f, r0	; 63
- 1cc:	0f 90       	pop	r0
- 1ce:	1f 90       	pop	r1
- 1d0:	18 95       	reti
+ 1b6:	9f 91       	pop	r25
+ 1b8:	8f 91       	pop	r24
+ 1ba:	0f 90       	pop	r0
+ 1bc:	0f be       	out	0x3f, r0	; 63
+ 1be:	0f 90       	pop	r0
+ 1c0:	1f 90       	pop	r1
+ 1c2:	18 95       	reti
 
-000001d2 <__vector_16>:
+000001c4 <initTimerInterrupt>:
 
-ISR(TIMER0_OVF_vect)
+void initTimerInterrupt()
 {
- 1d2:	1f 92       	push	r1
- 1d4:	0f 92       	push	r0
- 1d6:	0f b6       	in	r0, 0x3f	; 63
- 1d8:	0f 92       	push	r0
- 1da:	11 24       	eor	r1, r1
- 1dc:	2f 93       	push	r18
- 1de:	8f 93       	push	r24
- 1e0:	9f 93       	push	r25
-	timeIterruptSet++;
- 1e2:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <timeIterruptSet>
- 1e6:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <timeIterruptSet+0x1>
- 1ea:	01 96       	adiw	r24, 0x01	; 1
- 1ec:	90 93 19 01 	sts	0x0119, r25	; 0x800119 <timeIterruptSet+0x1>
- 1f0:	80 93 18 01 	sts	0x0118, r24	; 0x800118 <timeIterruptSet>
-	if(timeIterruptSet > 625 && state == STATE_TIMER_RUNNING){
- 1f4:	82 37       	cpi	r24, 0x72	; 114
- 1f6:	92 40       	sbci	r25, 0x02	; 2
- 1f8:	98 f0       	brcs	.+38     	; 0x220 <__vector_16+0x4e>
- 1fa:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
- 1fe:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <__data_end+0x1>
- 202:	01 97       	sbiw	r24, 0x01	; 1
- 204:	69 f4       	brne	.+26     	; 0x220 <__vector_16+0x4e>
+	TCCR0 = 0x0e; //0d00001110//CTC mode and 256 prescaling
+ 1c4:	8e e0       	ldi	r24, 0x0E	; 14
+ 1c6:	83 bf       	out	0x33, r24	; 51
+	TCNT0 = 0x00; //clear count value register. TCNT0 increase count from 0, clear on 124
+ 1c8:	12 be       	out	0x32, r1	; 50
+	TIMSK = 0x02; //enable Timer/Counter0 compare match interrupt, disable overflow interrupt
+ 1ca:	82 e0       	ldi	r24, 0x02	; 2
+ 1cc:	87 bf       	out	0x37, r24	; 55
+	TIFR = 0xff;  //write logic 1 on flag for clear register
+ 1ce:	8f ef       	ldi	r24, 0xFF	; 255
+ 1d0:	86 bf       	out	0x36, r24	; 54
+	OCR0 = 0x7c;  //compare 124
+ 1d2:	8c e7       	ldi	r24, 0x7C	; 124
+ 1d4:	81 bf       	out	0x31, r24	; 49
+ 1d6:	08 95       	ret
+
+000001d8 <__vector_15>:
+}
+ISR(TIMER0_COMP_vect)
+{
+ 1d8:	1f 92       	push	r1
+ 1da:	0f 92       	push	r0
+ 1dc:	0f b6       	in	r0, 0x3f	; 63
+ 1de:	0f 92       	push	r0
+ 1e0:	11 24       	eor	r1, r1
+ 1e2:	8f 93       	push	r24
+ 1e4:	9f 93       	push	r25
+	timeInterruptExec++;
+ 1e6:	80 91 20 01 	lds	r24, 0x0120	; 0x800120 <__data_end>
+ 1ea:	90 91 21 01 	lds	r25, 0x0121	; 0x800121 <__data_end+0x1>
+ 1ee:	01 96       	adiw	r24, 0x01	; 1
+ 1f0:	90 93 21 01 	sts	0x0121, r25	; 0x800121 <__data_end+0x1>
+ 1f4:	80 93 20 01 	sts	0x0120, r24	; 0x800120 <__data_end>
+	if ((timeInterruptExec > 4) && (state == STATE_RUNNING))
+ 1f8:	05 97       	sbiw	r24, 0x05	; 5
+ 1fa:	98 f0       	brcs	.+38     	; 0x222 <__vector_15+0x4a>
+ 1fc:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <state>
+ 200:	90 91 25 01 	lds	r25, 0x0125	; 0x800125 <state+0x1>
+ 204:	01 97       	sbiw	r24, 0x01	; 1
+ 206:	69 f4       	brne	.+26     	; 0x222 <__vector_15+0x4a>
+	{
 		timeNum++;
- 206:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
- 20a:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
- 20e:	01 96       	adiw	r24, 0x01	; 1
- 210:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <timeNum+0x1>
- 214:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <timeNum>
-		timeIterruptSet = 0;
- 218:	10 92 19 01 	sts	0x0119, r1	; 0x800119 <timeIterruptSet+0x1>
- 21c:	10 92 18 01 	sts	0x0118, r1	; 0x800118 <timeIterruptSet>
+ 208:	80 91 22 01 	lds	r24, 0x0122	; 0x800122 <timeNum>
+ 20c:	90 91 23 01 	lds	r25, 0x0123	; 0x800123 <timeNum+0x1>
+ 210:	01 96       	adiw	r24, 0x01	; 1
+ 212:	90 93 23 01 	sts	0x0123, r25	; 0x800123 <timeNum+0x1>
+ 216:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <timeNum>
+		timeInterruptExec = 0;
+ 21a:	10 92 21 01 	sts	0x0121, r1	; 0x800121 <__data_end+0x1>
+ 21e:	10 92 20 01 	sts	0x0120, r1	; 0x800120 <__data_end>
 	}
 }
- 220:	9f 91       	pop	r25
- 222:	8f 91       	pop	r24
- 224:	2f 91       	pop	r18
+ 222:	9f 91       	pop	r25
+ 224:	8f 91       	pop	r24
  226:	0f 90       	pop	r0
  228:	0f be       	out	0x3f, r0	; 63
  22a:	0f 90       	pop	r0
@@ -388,128 +404,131 @@ ISR(TIMER0_OVF_vect)
  22e:	18 95       	reti
 
 00000230 <main>:
+*/
+///////////////////interrupt service routine end////////////////////////
 
+int main(void){
+    //initialize port and interrupt
+    initPort();
+ 230:	65 df       	rcall	.-310    	; 0xfc <initPort>
+    initInterrupt();
+ 232:	6d df       	rcall	.-294    	; 0x10e <initInterrupt>
+    initTimerInterrupt();
+ 234:	c7 df       	rcall	.-114    	; 0x1c4 <initTimerInterrupt>
+ 236:	78 94       	sei
 
-int main(void)
-{
-	
-	initPort();
- 230:	5c df       	rcall	.-328    	; 0xea <initPort>
-	initInterrupt();
- 232:	69 df       	rcall	.-302    	; 0x106 <initInterrupt>
- 234:	78 94       	sei
-
-	sei();      //Global Interrupt Enable
- 236:	00 e0       	ldi	r16, 0x00	; 0
- 238:	11 e0       	ldi	r17, 0x01	; 1
- 23a:	c3 e0       	ldi	r28, 0x03	; 3
-	}
+    //Global Interrupt Enable
+    sei();
+ 238:	00 e0       	ldi	r16, 0x00	; 0
+ 23a:	11 e0       	ldi	r17, 0x01	; 1
+ 23c:	c3 e0       	ldi	r28, 0x03	; 3
+    }
 }
+*/
+///////////////////interrupt service routine end////////////////////////
 
+int main(void){
+ 23e:	d0 e0       	ldi	r29, 0x00	; 0
+ 240:	f8 01       	movw	r30, r16
+    //print 7segment by global variable timeNum
+    //timeNum variable is increase by time interrupt
+    while (1){
+        //segment print
+        for(int i = 0; i < 4; i++){
+            printSeg((timeNum/exp10[i])%10,3-i);
+ 242:	61 91       	ld	r22, Z+
+ 244:	71 91       	ld	r23, Z+
+ 246:	8f 01       	movw	r16, r30
+ 248:	80 91 22 01 	lds	r24, 0x0122	; 0x800122 <timeNum>
+ 24c:	90 91 23 01 	lds	r25, 0x0123	; 0x800123 <timeNum+0x1>
+ 250:	2a d0       	rcall	.+84     	; 0x2a6 <__udivmodhi4>
+ 252:	ab 01       	movw	r20, r22
+ 254:	9b 01       	movw	r18, r22
+ 256:	ad ec       	ldi	r26, 0xCD	; 205
+ 258:	bc ec       	ldi	r27, 0xCC	; 204
+ 25a:	39 d0       	rcall	.+114    	; 0x2ce <__umulhisi3>
+ 25c:	96 95       	lsr	r25
+ 25e:	87 95       	ror	r24
+ 260:	96 95       	lsr	r25
+ 262:	87 95       	ror	r24
+ 264:	96 95       	lsr	r25
+ 266:	87 95       	ror	r24
+ 268:	9c 01       	movw	r18, r24
+ 26a:	22 0f       	add	r18, r18
+ 26c:	33 1f       	adc	r19, r19
+ 26e:	88 0f       	add	r24, r24
+ 270:	99 1f       	adc	r25, r25
+ 272:	88 0f       	add	r24, r24
+ 274:	99 1f       	adc	r25, r25
+ 276:	88 0f       	add	r24, r24
+ 278:	99 1f       	adc	r25, r25
+ 27a:	82 0f       	add	r24, r18
+ 27c:	93 1f       	adc	r25, r19
+ 27e:	be 01       	movw	r22, r28
+ 280:	9a 01       	movw	r18, r20
+ 282:	28 1b       	sub	r18, r24
+ 284:	39 0b       	sbc	r19, r25
+ 286:	c9 01       	movw	r24, r18
+ 288:	1f df       	rcall	.-450    	; 0xc8 <printSeg>
+ 28a:	21 97       	sbiw	r28, 0x01	; 1
+ 28c:	c8 f6       	brcc	.-78     	; 0x240 <main+0x10>
+ 28e:	80 91 22 01 	lds	r24, 0x0122	; 0x800122 <timeNum>
+        }
+        //출력할 수가 9999를 넘으면 초기화
+        if(timeNum == 10000) timeNum = 0;
+ 292:	90 91 23 01 	lds	r25, 0x0123	; 0x800123 <timeNum+0x1>
+ 296:	80 31       	cpi	r24, 0x10	; 16
+ 298:	97 42       	sbci	r25, 0x27	; 39
+ 29a:	71 f6       	brne	.-100    	; 0x238 <main+0x8>
+ 29c:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <timeNum+0x1>
+ 2a0:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <timeNum>
+ 2a4:	c9 cf       	rjmp	.-110    	; 0x238 <main+0x8>
 
-int main(void)
-{
- 23c:	d0 e0       	ldi	r29, 0x00	; 0
- 23e:	f8 01       	movw	r30, r16
-	
-	while (1){
-		
-		//segment print
-		for(int i = 0; i < 4; i++){
-			printSeg((timeNum/exp10[i])%10,3-i);
- 240:	61 91       	ld	r22, Z+
- 242:	71 91       	ld	r23, Z+
- 244:	8f 01       	movw	r16, r30
- 246:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
- 24a:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
- 24e:	2a d0       	rcall	.+84     	; 0x2a4 <__udivmodhi4>
- 250:	ab 01       	movw	r20, r22
- 252:	9b 01       	movw	r18, r22
- 254:	ad ec       	ldi	r26, 0xCD	; 205
- 256:	bc ec       	ldi	r27, 0xCC	; 204
- 258:	39 d0       	rcall	.+114    	; 0x2cc <__umulhisi3>
- 25a:	96 95       	lsr	r25
- 25c:	87 95       	ror	r24
- 25e:	96 95       	lsr	r25
- 260:	87 95       	ror	r24
- 262:	96 95       	lsr	r25
- 264:	87 95       	ror	r24
- 266:	9c 01       	movw	r18, r24
- 268:	22 0f       	add	r18, r18
- 26a:	33 1f       	adc	r19, r19
- 26c:	88 0f       	add	r24, r24
- 26e:	99 1f       	adc	r25, r25
- 270:	88 0f       	add	r24, r24
- 272:	99 1f       	adc	r25, r25
- 274:	88 0f       	add	r24, r24
- 276:	99 1f       	adc	r25, r25
- 278:	82 0f       	add	r24, r18
- 27a:	93 1f       	adc	r25, r19
- 27c:	be 01       	movw	r22, r28
- 27e:	9a 01       	movw	r18, r20
- 280:	28 1b       	sub	r18, r24
- 282:	39 0b       	sbc	r19, r25
- 284:	c9 01       	movw	r24, r18
- 286:	20 df       	rcall	.-448    	; 0xc8 <printSeg>
- 288:	21 97       	sbiw	r28, 0x01	; 1
- 28a:	c8 f6       	brcc	.-78     	; 0x23e <main+0xe>
- 28c:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
-		}
-		//초기화
-		if(timeNum == 10000) timeNum = 0;
- 290:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
- 294:	80 31       	cpi	r24, 0x10	; 16
- 296:	97 42       	sbci	r25, 0x27	; 39
- 298:	71 f6       	brne	.-100    	; 0x236 <main+0x6>
- 29a:	10 92 1b 01 	sts	0x011B, r1	; 0x80011b <timeNum+0x1>
- 29e:	10 92 1a 01 	sts	0x011A, r1	; 0x80011a <timeNum>
- 2a2:	c9 cf       	rjmp	.-110    	; 0x236 <main+0x6>
+000002a6 <__udivmodhi4>:
+ 2a6:	aa 1b       	sub	r26, r26
+ 2a8:	bb 1b       	sub	r27, r27
+ 2aa:	51 e1       	ldi	r21, 0x11	; 17
+ 2ac:	07 c0       	rjmp	.+14     	; 0x2bc <__udivmodhi4_ep>
 
-000002a4 <__udivmodhi4>:
- 2a4:	aa 1b       	sub	r26, r26
- 2a6:	bb 1b       	sub	r27, r27
- 2a8:	51 e1       	ldi	r21, 0x11	; 17
- 2aa:	07 c0       	rjmp	.+14     	; 0x2ba <__udivmodhi4_ep>
+000002ae <__udivmodhi4_loop>:
+ 2ae:	aa 1f       	adc	r26, r26
+ 2b0:	bb 1f       	adc	r27, r27
+ 2b2:	a6 17       	cp	r26, r22
+ 2b4:	b7 07       	cpc	r27, r23
+ 2b6:	10 f0       	brcs	.+4      	; 0x2bc <__udivmodhi4_ep>
+ 2b8:	a6 1b       	sub	r26, r22
+ 2ba:	b7 0b       	sbc	r27, r23
 
-000002ac <__udivmodhi4_loop>:
- 2ac:	aa 1f       	adc	r26, r26
- 2ae:	bb 1f       	adc	r27, r27
- 2b0:	a6 17       	cp	r26, r22
- 2b2:	b7 07       	cpc	r27, r23
- 2b4:	10 f0       	brcs	.+4      	; 0x2ba <__udivmodhi4_ep>
- 2b6:	a6 1b       	sub	r26, r22
- 2b8:	b7 0b       	sbc	r27, r23
+000002bc <__udivmodhi4_ep>:
+ 2bc:	88 1f       	adc	r24, r24
+ 2be:	99 1f       	adc	r25, r25
+ 2c0:	5a 95       	dec	r21
+ 2c2:	a9 f7       	brne	.-22     	; 0x2ae <__udivmodhi4_loop>
+ 2c4:	80 95       	com	r24
+ 2c6:	90 95       	com	r25
+ 2c8:	bc 01       	movw	r22, r24
+ 2ca:	cd 01       	movw	r24, r26
+ 2cc:	08 95       	ret
 
-000002ba <__udivmodhi4_ep>:
- 2ba:	88 1f       	adc	r24, r24
- 2bc:	99 1f       	adc	r25, r25
- 2be:	5a 95       	dec	r21
- 2c0:	a9 f7       	brne	.-22     	; 0x2ac <__udivmodhi4_loop>
- 2c2:	80 95       	com	r24
- 2c4:	90 95       	com	r25
- 2c6:	bc 01       	movw	r22, r24
- 2c8:	cd 01       	movw	r24, r26
- 2ca:	08 95       	ret
+000002ce <__umulhisi3>:
+ 2ce:	a2 9f       	mul	r26, r18
+ 2d0:	b0 01       	movw	r22, r0
+ 2d2:	b3 9f       	mul	r27, r19
+ 2d4:	c0 01       	movw	r24, r0
+ 2d6:	a3 9f       	mul	r26, r19
+ 2d8:	70 0d       	add	r23, r0
+ 2da:	81 1d       	adc	r24, r1
+ 2dc:	11 24       	eor	r1, r1
+ 2de:	91 1d       	adc	r25, r1
+ 2e0:	b2 9f       	mul	r27, r18
+ 2e2:	70 0d       	add	r23, r0
+ 2e4:	81 1d       	adc	r24, r1
+ 2e6:	11 24       	eor	r1, r1
+ 2e8:	91 1d       	adc	r25, r1
+ 2ea:	08 95       	ret
 
-000002cc <__umulhisi3>:
- 2cc:	a2 9f       	mul	r26, r18
- 2ce:	b0 01       	movw	r22, r0
- 2d0:	b3 9f       	mul	r27, r19
- 2d2:	c0 01       	movw	r24, r0
- 2d4:	a3 9f       	mul	r26, r19
- 2d6:	70 0d       	add	r23, r0
- 2d8:	81 1d       	adc	r24, r1
- 2da:	11 24       	eor	r1, r1
- 2dc:	91 1d       	adc	r25, r1
- 2de:	b2 9f       	mul	r27, r18
- 2e0:	70 0d       	add	r23, r0
- 2e2:	81 1d       	adc	r24, r1
- 2e4:	11 24       	eor	r1, r1
- 2e6:	91 1d       	adc	r25, r1
- 2e8:	08 95       	ret
+000002ec <_exit>:
+ 2ec:	f8 94       	cli
 
-000002ea <_exit>:
- 2ea:	f8 94       	cli
-
-000002ec <__stop_program>:
- 2ec:	ff cf       	rjmp	.-2      	; 0x2ec <__stop_program>
+000002ee <__stop_program>:
+ 2ee:	ff cf       	rjmp	.-2      	; 0x2ee <__stop_program>
