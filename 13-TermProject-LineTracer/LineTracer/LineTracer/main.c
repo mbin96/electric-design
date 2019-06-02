@@ -7,6 +7,8 @@
 //define STATE number
 #define STATE_INIT       0    
 #define STATE_RUNNING    1
+#define STATE_FORCE_RIGHT 2
+#define STATE_FORCE_LEFT 3
 
 //include
 #include <avr/io.h>
@@ -14,19 +16,29 @@
 
 //global variable declaration
 unsigned int state = STATE_INIT;                                                            //initialize state
-unsigned int timeNum = 0, timeInterruptExec = 0;                                            //variable for time interrupt
+unsigned int timeNum = 0;                                      //variable for time interrupt
 unsigned char FND_SEGNP[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x27, 0x7F, 0x6F}; //7segment decimal LED print with out point
 unsigned char FND_SEGWP[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0xA7, 0xFF, 0xEF}; //7segment decimal LED print with point
 unsigned char FND_SEGPOS[4] = {0x01, 0x02, 0x04, 0x08};                                     //7segment's location
 unsigned int exp10[4] = {1, 10, 100, 1000}; 
-unsigned short stepRight = 0;
-unsigned short stepLeft = 0;
+volatile unsigned char stepLeft=0x0c, stepRight=0x0c;
 ///////////////////////////////////////////////////////////
 
 #define MOTOR_PORT		PORTD
 #define MOTOR_PORT_DDR	DDRD
 #define SENSOR_PORT		PINC
 
+short motorForceLeftFlag = 0;
+short motorForceRightFlag = 0;
+unsigned char preSensor = 0;
+unsigned char countStopSign = 0;
+unsigned char stopSign = 0;
+
+#define STRAIGHT 0
+#define RIGHT 1
+#define LEFT 2
+
+short forceExcuNum=0;
 
 void initPort(void)
 {
@@ -64,7 +76,7 @@ void initDevices(void)
 	//all peripherals are now initialized
 }
 
-/* Stepping Motor derive---------------------------*/
+// Stepping Motor derive---------------------------
 unsigned char  LEFTmotorOneClock(unsigned char step, char dir)
 {	
 	step = step & 0x0f;
@@ -128,26 +140,6 @@ unsigned char  RIGHTmotorOneClock(unsigned char step, char dir)
 	return step;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///////////////////////////////segment print/////////////////////////////
 void printSeg(int segNum, int segDigit){
     //by schematic, PORTE must being clear before set segment's digit and led.
@@ -190,25 +182,20 @@ void initInterrupt(){
 }
 
 ISR(INT5_vect){
+	
     state = STATE_RUNNING;
+	
 }
 ISR(INT4_vect){
 	//when interrupt 4 excu, increase num
 	timeNum = OCR0;
 	timeNum--;
-	if (timeNum<10){
-		timeNum = 128;
+	if (timeNum<50){
+		timeNum = 100;
 	}
 	OCR0 = timeNum;
 }
-void delay(int n)
-{
-	volatile int i,j;
-	for(i=1;i<n;i++)
-	{
-    	for(j=1;j<400;j++);
-	}
-}
+
 
 
 void initTimerInterrupt()
@@ -217,92 +204,109 @@ void initTimerInterrupt()
     TCNT0 = 0x00; //clear count value register. TCNT0 increase count from 0, clear on 63
     TIMSK = 0x02; //enable Timer/Counter0 compare match interrupt, disable overflow interrupt
     TIFR = 0xff;  //write logic 1 on flag for clear register
-    OCR0 = 0x3F;  //compare 63
+    OCR0 = 0x64;  //compare 63
 }
 
-unsigned short motorCountForRight = 0;
-unsigned short motorCountForLeft = 0;
-unsigned short motorRightClockCompare = 7;
-unsigned short motorLeftClockCompare = 7;
-unsigned short motorForceLeft = 0;
-unsigned short motorForceRight = 0;
-unsigned short preSensor = 0;
-unsigned short countStopSign = 0;
 
-ISR(TIMER0_COMP_vect)   //5ms마다 실행됨
-{
-    if(state){
-        int sensor = SENSOR_PORT & 0x0F;
-        motorCountForRight++;
-        motorCountForLeft++;
-        
-        switch(sensor){
-            case 0x0f:  //1111 - 걸리는거없음
-                
-                break;
-            case 0x0b:  //1011 --하나걸림 좌회전
-                motorRightClockCompare++;//right 모터 느리게
-                if(motorRightClockCompare > 14) motorRightClockCompare = 14;
-                motorLeftClockCompare--;//left모터 빠르게
-                break;
-            case 0x0d:  //1101 --하나걸림 - 오른쪽 턴
-                motorRightClockCompare--;//right 모터 빠르게
-                motorLeftClockCompare++;//left모터 느리게
-                if(motorLeftClockCompare > 14) motorLeftClockCompare = 14;
-                break;	
-            case 0x07:  //0111
-                motorForceLeft=1;
-                break;
-            case 0x0e:  //1110
-                motorForceRight=1;
-                break;
-            case 0x00:  //0000 -- 네개 다 찍힘
-                if(motorForceRight){
-                    motorForceRight=0;
-                    stepRight = RIGHTmotorOneClock(stepRight, 1);
-                    delay(5);
-                    stepRight = RIGHTmotorOneClock(stepRight, 1);
-                    delay(5);
-                    stepRight = RIGHTmotorOneClock(stepRight, 1);
-                    delay(5);
-                    stepRight = RIGHTmotorOneClock(stepRight, 1);
-                    delay(5);
-                }else if(motorForceLeft){
-                    motorForceLeft=0;
-                    stepLeft = RIGHTmotorOneClock(stepLeft, 1);
-                    delay(5);
-                    stepLeft = RIGHTmotorOneClock(stepLeft, 1);
-                    delay(5);
-                    stepLeft = RIGHTmotorOneClock(stepLeft, 1);
-                    delay(5);
-                    stepLeft = RIGHTmotorOneClock(stepLeft, 1);
-                    delay(5);
-                }else if(countStopSign==3){
+void motor(char direction){
+
+	switch(direction){
+		case STRAIGHT :stepRight = RIGHTmotorOneClock(stepRight, 1);
+		case RIGHT : stepLeft = LEFTmotorOneClock(stepLeft, 0);
+			break;
+		case LEFT  : stepRight = RIGHTmotorOneClock(stepRight, 1);
+			break;
+	}
+	MOTOR_PORT = stepLeft|stepRight;
+}
+
+void sensorScan(int sensor){
+    switch(sensor){
+        case 0x0f:{  //1111 - 걸리는거없음 직진
+			if(stopSign==1){
+                stopSign=0;
+                countStopSign++;
+
+                if(countStopSign >2){//stopsign 3번 나오면 종료
                     state = STATE_INIT;
-                }else{
-                    if(sensor != preSensor)
-                        countStopSign++;
+                    return;
                 }
-                break;
-
-            default:    
-                
-                break;
-        }
-
-        //모터 클럭 실행하기
-        if ((motorCountForRight > motorRightClockCompare)){
-            stepRight = RIGHTmotorOneClock(stepRight, 1);
-            motorCountForRight = 0;
-        }
-        if ((motorCountForLeft > motorLeftClockCompare)){
-            stepLeft = LEFTmotorOneClock(stepLeft, 0);
-            motorCountForLeft = 0;
-        }
-        MOTOR_PORT = stepLeft|stepRight;
-        preSensor = sensor;
+            }
+            motor(STRAIGHT);
+			break;
+		}
+        case 0x0b:{  //1011 --하나걸림 좌회전
+            motor(LEFT);
+			break;
+		}
+        case 0x0d:{  //1101 --하나걸림 -우회전
+            motor(RIGHT);
+            break;
+		}
+        case 0x07:{  //0111--좌회전 신호
+            state=STATE_FORCE_LEFT;
+			
+			//motor(STRAIGHT);
+            break;
+		}
+        case 0x0e:{  //1110--우회전 신호
+            state=STATE_FORCE_RIGHT;
+			
+			//motor(STRAIGHT);
+            break;
+		}
+		case 0x06:{  //0110--정지 신호
+            stopSign=1;
+			motor(STRAIGHT);
+            break;
+		}
+		case 0x01:
+		case 0x08:
+		case 0x00:{  //0000 -- 네개 다 찍힘
+            
+            motor(STRAIGHT);
+            break;
+		}
+        default: {   
+            motor(STRAIGHT);
+            break;
+		}
     }
-    
+}
+
+ISR(TIMER0_COMP_vect)  
+{
+    if(state == STATE_FORCE_RIGHT){
+		if(forceExcuNum<360){
+			motor(STRAIGHT);
+			forceExcuNum++;
+		}else if(forceExcuNum < 630){
+			motor(RIGHT);
+			forceExcuNum++;
+			
+		}else{
+			forceExcuNum=0;
+			state = STATE_RUNNING;
+		}
+		
+		
+	}else if(state == STATE_FORCE_LEFT){
+		if(forceExcuNum<360){
+			motor(STRAIGHT);
+			forceExcuNum++;
+			}else if(forceExcuNum < 630){
+			motor(LEFT);
+			forceExcuNum++;
+			
+			}else{
+			forceExcuNum=0;
+			state = STATE_RUNNING;
+		}
+		
+	}else if(state==STATE_RUNNING){
+		int sensor = SENSOR_PORT & 0x0F;
+		sensorScan(sensor);
+	}
 }
 
 
@@ -314,26 +318,15 @@ ISR(TIMER0_COMP_vect)   //5ms마다 실행됨
 
 int main(void){
 
-    
-
-
-
-
-
-
-
-
-
-
     //initialize port and interrupt
     initDevices();
 	initSegment();
     initInterrupt();
     initTimerInterrupt();
 	
+	MOTOR_PORT_DDR = 0xff;
     //Global Interrupt Enable
     sei();
-
     //main function
     //print 7segment by global variable timeNum
     //timeNum variable is increase by time interrupt
