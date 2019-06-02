@@ -9,6 +9,16 @@
 #define STATE_RUNNING    1
 #define STATE_FORCE_RIGHT 2
 #define STATE_FORCE_LEFT 3
+#define STATE_CALIB_RIGHT 4
+#define STATE_CALIB_LEFT 5
+
+#define MOTOR_PORT        PORTD
+#define MOTOR_PORT_DDR    DDRD
+#define SENSOR_PORT        PINC
+
+#define STRAIGHT 0
+#define RIGHT 1
+#define LEFT 2
 
 //include
 #include <avr/io.h>
@@ -24,120 +34,113 @@ unsigned int exp10[4] = {1, 10, 100, 1000};
 volatile unsigned char stepLeft=0x0c, stepRight=0x0c;
 ///////////////////////////////////////////////////////////
 
-#define MOTOR_PORT		PORTD
-#define MOTOR_PORT_DDR	DDRD
-#define SENSOR_PORT		PINC
-
 short motorForceLeftFlag = 0;
 short motorForceRightFlag = 0;
 unsigned char preSensor = 0;
 unsigned char countStopSign = 0;
 unsigned char stopSign = 0;
 
-#define STRAIGHT 0
-#define RIGHT 1
-#define LEFT 2
-
 short forceExcuNum=0;
 
 void initPort(void)
 {
-	PORTA = 0x00;
-	DDRA  = 0x00;
-	PORTB = 0x00;
-	DDRB  = 0x00;
-	PORTC = 0x00;
-	DDRC  = 0x00;
-	PORTD = 0x00;
-	DDRD  = 0xFF;
-	PORTE = 0x00;
-	DDRE  = 0x00;
-	PORTF = 0x00;
-	DDRF  = 0x00;
-	PORTG = 0x00;
-	DDRG  = 0x03;
+    PORTA = 0x00;
+    DDRA  = 0x00;
+    PORTB = 0x00;
+    DDRB  = 0x00;
+    PORTC = 0x00;
+    DDRC  = 0x00;
+    PORTD = 0x00;
+    DDRD  = 0xFF;
+    PORTE = 0x00;
+    DDRE  = 0x00;
+    PORTF = 0x00;
+    DDRF  = 0x00;
+    PORTG = 0x00;
+    DDRG  = 0x03;
 }
 
 void initDevices(void)
 {
-	cli(); //disable all interrupts
-	XDIV  = 0x00; //xtal divider
-	XMCRA = 0x00; //external memory
-	initPort();
+    cli(); //disable all interrupts
+    XDIV  = 0x00; //xtal divider
+    XMCRA = 0x00; //external memory
+    initPort();
     
 
-	MCUCR = 0x00;
-	EICRA = 0x00; //extended ext ints
-	EICRB = 0x00; //extended ext ints
-	EIMSK = 0x00;
-	TIMSK = 0x00; //timer interrupt sources
-	ETIMSK = 0x00; //extended timer interrupt sources
-	sei(); //re-enable interrupts
-	//all peripherals are now initialized
+    MCUCR = 0x00;
+    EICRA = 0x00; //extended ext ints
+    EICRB = 0x00; //extended ext ints
+    EIMSK = 0x00;
+    TIMSK = 0x00; //timer interrupt sources
+    ETIMSK = 0x00; //extended timer interrupt sources
+    sei(); //re-enable interrupts
+    //all peripherals are now initialized
 }
 
-// Stepping Motor derive---------------------------
+// Stepping Motor drive---------------------------
+//1-2상 구동
 unsigned char  LEFTmotorOneClock(unsigned char step, char dir)
-{	
-	step = step & 0x0f;
-	if(dir){
-		switch(step){
-			case 0x09: step=0x01; break;
-			case 0x01: step=0x03; break;
-			case 0x03: step=0x02; break;
-			case 0x02: step=0x06; break;
-			case 0x06: step=0x04; break;
-			case 0x04: step=0x0c; break;
-			case 0x0c: step=0x08; break;
-			case 0x08: step=0x09; break;
-			default: step=0x0c; break;
-		}
-	}else{
-		switch(step){
-			case 0x09: step=0x08; break;
-			case 0x01: step=0x09; break;
-			case 0x03: step=0x01; break;
-			case 0x02: step=0x03; break;
-			case 0x06: step=0x02; break;
-			case 0x04: step=0x06; break;
-			case 0x0c: step=0x04; break;
-			case 0x08: step=0x0c; break;
-			default: step=0x0c; break;
-		}
-	}
-	return step;
+{    
+    step = step & 0x0f;
+    if(dir){
+        switch(step){
+            case 0x09: step=0x01; break;
+            case 0x01: step=0x03; break;
+            case 0x03: step=0x02; break;
+            case 0x02: step=0x06; break;
+            case 0x06: step=0x04; break;
+            case 0x04: step=0x0c; break;
+            case 0x0c: step=0x08; break;
+            case 0x08: step=0x09; break;
+            default: step=0x0c; break;
+        }
+    }else{
+        switch(step){
+            case 0x09: step=0x08; break;
+            case 0x01: step=0x09; break;
+            case 0x03: step=0x01; break;
+            case 0x02: step=0x03; break;
+            case 0x06: step=0x02; break;
+            case 0x04: step=0x06; break;
+            case 0x0c: step=0x04; break;
+            case 0x08: step=0x0c; break;
+            default: step=0x0c; break;
+        }
+    }
+    return step;
 
 }
 
 unsigned char  RIGHTmotorOneClock(unsigned char step, char dir)
-{	
-	step = step & 0xf0;
-	if(dir){
-		switch(step){//후진
-			case 0x90: step=0x10; break;
-			case 0x10: step=0x30; break;
-			case 0x30: step=0x20; break;
-			case 0x20: step=0x60; break;
-			case 0x60: step=0x40; break;
-			case 0x40: step=0xc0; break;
-			case 0xc0: step=0x80; break;
-			case 0x80: step=0x90; break;
-			default: step=0xc0; break;
-		}
-	}else{
-		switch(step){//전진
-			case 0x90: step=0x80; break;//1001
-			case 0x10: step=0x90; break;//0001
-			case 0x30: step=0x10; break;//0011
-			case 0x20: step=0x30; break;//0010
-			case 0x60: step=0x20; break;//0110
-			case 0x40: step=0x60; break;//0100
-			case 0xc0: step=0x40; break;//1100
-			case 0x80: step=0xc0; break;//1000
-			default: step=0xc0; break;
-		}
-	}
-	return step;
+{    
+    step = step & 0xf0;
+    if(dir){
+        switch(step){//후진
+            case 0x90: step=0x10; break;
+            case 0x10: step=0x30; break;
+            case 0x30: step=0x20; break;
+            case 0x20: step=0x60; break;
+            case 0x60: step=0x40; break;
+            case 0x40: step=0xc0; break;
+            case 0xc0: step=0x80; break;
+            case 0x80: step=0x90; break;
+            default: step=0xc0; break;
+        }
+    }else{
+        switch(step){//전진
+            case 0x90: step=0x80; break;//1001
+            case 0x10: step=0x90; break;//0001
+            case 0x30: step=0x10; break;//0011
+            case 0x20: step=0x30; break;//0010
+            case 0x60: step=0x20; break;//0110
+            case 0x40: step=0x60; break;//0100
+            case 0xc0: step=0x40; break;//1100
+            case 0x80: step=0xc0; break;//1000
+            default: step=0xc0; break;
+        }
+    }
+    return step;
 }
 
 ///////////////////////////////segment print/////////////////////////////
@@ -157,14 +160,13 @@ void printSeg(int segNum, int segDigit){
 }
 
 void initSegment(){
-	//initialize port A and E
-	DDRA = 0xFF;    //set portA(7:0) to output
-	DDRE |= 0x0C;   //set portE(3:2) to output
-	PORTE |= 0x04;  //init portE(3)
-	PORTA = 0x0F;   //init portA(3:0)
+    //initialize port A and E
+    DDRA = 0xFF;    //set portA(7:0) to output
+    DDRE |= 0x0C;   //set portE(3:2) to output
+    PORTE |= 0x04;  //init portE(3)
+    PORTA = 0x0F;   //init portA(3:0)
 }
 
-////////////////////////interrupt///////////////////
 void initInterrupt(){
         //external interrupt int4 enable
         //int4 pin falling edge활성화
@@ -181,150 +183,192 @@ void initInterrupt(){
         EIMSK |= 1 << INT5;
 }
 
-ISR(INT5_vect){
-	
-    state = STATE_RUNNING;
-	
-}
-ISR(INT4_vect){
-	//when interrupt 4 excu, increase num
-	timeNum = OCR0;
-	timeNum--;
-	if (timeNum<50){
-		timeNum = 100;
-	}
-	OCR0 = timeNum;
-}
-
-
-
 void initTimerInterrupt()
 {
     TCCR0 = 0x0e; //0d00001110//CTC mode and 256 prescaling
     TCNT0 = 0x00; //clear count value register. TCNT0 increase count from 0, clear on 63
     TIMSK = 0x02; //enable Timer/Counter0 compare match interrupt, disable overflow interrupt
     TIFR = 0xff;  //write logic 1 on flag for clear register
-    OCR0 = 0x64;  //compare 63
+    OCR0 = 0x64;  //compare 100
 }
 
-
+//모터 구동
 void motor(char direction){
 
-	switch(direction){
-		case STRAIGHT :stepRight = RIGHTmotorOneClock(stepRight, 1);
-		case RIGHT : stepLeft = LEFTmotorOneClock(stepLeft, 0);
-			break;
-		case LEFT  : stepRight = RIGHTmotorOneClock(stepRight, 1);
-			break;
-	}
-	MOTOR_PORT = stepLeft|stepRight;
+    switch(direction){
+        case STRAIGHT : 
+            stepRight = RIGHTmotorOneClock(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
+        case RIGHT : 
+            stepLeft = LEFTmotorOneClock(stepLeft, 0);
+            break;
+        case LEFT  : 
+            stepRight = RIGHTmotorOneClock(stepRight, 1);
+            break;
+    }
+    MOTOR_PORT = stepLeft|stepRight;
 }
+
+//출발
+ISR(INT5_vect){
+    state = STATE_RUNNING;
+}
+
+//속도조절
+ISR(INT4_vect){
+    //when interrupt 4 excu, increase num
+    timeNum = OCR0;
+    timeNum -= 5;
+    if (timeNum<30){
+        timeNum = 100;
+    }
+    OCR0 = timeNum;
+}
+
+unsigned char forceRightSign = 0 ;
+unsigned char forceLeftSign = 0 ;
+unsigned char calibLeft = 0;
+unsigned char calibRight = 0;
 
 void sensorScan(int sensor){
     switch(sensor){
-        case 0x0f:{  //1111 - 걸리는거없음 직진
-			if(stopSign==1){
+        case 0x0f:{                      //1111 - 걸리는거없음 직진
+            //정지신호 있을때
+            if(stopSign==1){            // stop sign(0110)이 있은뒤 사라지면 카운트
+                forceRightSign = forceLeftSign = 0; //정지신호가 양쪽 조금씩 다르게 들어간경우 예외처리
                 stopSign=0;
                 countStopSign++;
 
-                if(countStopSign >2){//stopsign 3번 나오면 종료
+                if(countStopSign >2){    //stopsign 3번 나오면 종료
                     state = STATE_INIT;
                     return;
                 }
+            }else if(forceRightSign){
+                state=STATE_FORCE_RIGHT;
+            }else if(forceLeftSign){
+                state=STATE_FORCE_LEFT;
             }
-            motor(STRAIGHT);
-			break;
-		}
-        case 0x0b:{  //1011 --하나걸림 좌회전
+            motor(STRAIGHT);   //직진!
+            break;
+        }
+        case 0x0b:{                      //1011 -- 하나걸림 좌회전
             motor(LEFT);
-			break;
-		}
-        case 0x0d:{  //1101 --하나걸림 -우회전
+            break;
+        }
+        case 0x0d:{                      //1101 -- 하나걸림 -우회전
             motor(RIGHT);
             break;
-		}
-        case 0x07:{  //0111--좌회전 신호
-            state=STATE_FORCE_LEFT;
-			
-			//motor(STRAIGHT);
-            break;
-		}
-        case 0x0e:{  //1110--우회전 신호
-            state=STATE_FORCE_RIGHT;
-			
-			//motor(STRAIGHT);
-            break;
-		}
-		case 0x06:{  //0110--정지 신호
-            stopSign=1;
-			motor(STRAIGHT);
-            break;
-		}
-		case 0x01:
-		case 0x08:
-		case 0x00:{  //0000 -- 네개 다 찍힘
-            
+        }
+        case 0x07:{                      //0111 -- 교차로 좌회전 신호
+            forceLeftSign = 1;
             motor(STRAIGHT);
             break;
-		}
+        }
+        case 0x0e:{                      //1110 -- 교차로 우회전 신호
+            
+            forceRightSign = 1;
+            motor(STRAIGHT);
+            break;
+        }
+        case 0x06:{                      //0110 -- 정지 신호
+            
+            stopSign=1;                    //flag 설정
+            motor(STRAIGHT);
+            break;
+        }
+        case 0x01:{                        //0001 - 교차로로 치우쳐 들어감
+            if(calibRight == 1){                //교차로 1000으로 들어와서 0001로 나온경우엔 오른쪽으로칼리브레이션을 해줘야 합니다.
+                state = STATE_CALIB_RIGHT;
+                calibRight = 0;//스테이트 바꿨으면 초기화하기
+                return;
+            }else{
+                calibLeft = 1;
+            }
+            motor(STRAIGHT);
+            break;
+        }
+        case 0x08:{                        //1000    - 교차로로 치우쳐 들어감
+            if(calibLeft == 1){                //교차로 0001으로 들어와서 1000로 나온경우 왼쪽으로칼리브레이션을 해줘야 합니다.
+                state = STATE_CALIB_LEFT;
+                calibLeft = 0;//스테이트 바꿨으면 초기화하기
+                return;
+            }else{
+                calibRight = 1;
+            }
+            motor(STRAIGHT);
+            break;
+        }
+        case 0x00:{                      //0000 - 교차로
+            forceLeftSign = forceRightSign = stopSign = 0;                //교차로에 많이 치우쳐 들어온경우(0111이 인식된뒤 들어온)교차로 를 나간뒤 STATE_FORCE로 들어가지 않게 초기화 해줘야 합니다.
+            motor(STRAIGHT);
+            break;
+        }
         default: {   
             motor(STRAIGHT);
             break;
-		}
+        }
     }
 }
 
-ISR(TIMER0_COMP_vect)  
+ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의 펄스 간격(속도)가 ocr0에 따라 가변
 {
-    if(state == STATE_FORCE_RIGHT){
-		if(forceExcuNum<360){
-			motor(STRAIGHT);
-			forceExcuNum++;
-		}else if(forceExcuNum < 630){
-			motor(RIGHT);
-			forceExcuNum++;
-			
-		}else{
-			forceExcuNum=0;
-			state = STATE_RUNNING;
-		}
-		
-		
-	}else if(state == STATE_FORCE_LEFT){
-		if(forceExcuNum<360){
-			motor(STRAIGHT);
-			forceExcuNum++;
-			}else if(forceExcuNum < 630){
-			motor(LEFT);
-			forceExcuNum++;
-			
-			}else{
-			forceExcuNum=0;
-			state = STATE_RUNNING;
-		}
-		
-	}else if(state==STATE_RUNNING){
-		int sensor = SENSOR_PORT & 0x0F;
-		sensorScan(sensor);
-	}
+    int sensor = SENSOR_PORT & 0x0F; //센서값 읽기
+
+    if(state == STATE_FORCE_RIGHT){                                 //-강제회전
+        if(!forceRightSign){
+            motor(RIGHT);                                           //교차로에 들어간 뒤엔 회전만 합니다
+            if(sensor == 0x0d){
+                state = STATE_RUNNING;                              //강제 회전하다 라인이 잡히면 트랙 타기
+            }
+        }else{
+            if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){    
+                forceRightSign = 0;                                 //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+            }
+            motor(STRAIGHT);                                        //교차로 들어가기 전까지는 무조껀 직진
+        }
+    }else if(state == STATE_FORCE_LEFT){                            //-강제회전
+        if(!forceLeftSign){
+            motor(LEFT);                                            //교차로에 들어간 뒤엔 회전만 합니다
+            if(sensor == 0x0b){                                        //강제 회전하다 라인 잡히면 트랙 타기
+                state = STATE_RUNNING;
+            }
+        }else{                                                        
+            if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
+                forceLeftSign = 0;                                  //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+            }
+            motor(STRAIGHT);                                        //교차로 들어가기 전까지는 무조껀 직진
+            
+        }
+    }else if(state == STATE_CALIB_RIGHT){                           //-교차로를 틀어져서 왼쪽으로 들어갈때 칼리브레이션
+        if(sensor == 0x0b||sensor == 0x0d){                         //레일 위로 돌아가면 종료
+            state = STATE_RUNNING;
+        }else if(sensor == 0x0f){                                   //하나도 안걸릴때 일딴 오른쪽으로 돌림
+            motor(RIGHT);
+        }else{                                                      //교차로를 나오기 전까지는 무조껀 직진
+            motor(STRAIGHT);
+        }
+    }else if(state == STATE_CALIB_LEFT){                            //-교차로를 틀어져서 오른쪽으로 들어갈때 칼리브레이션
+        if(sensor == 0x0b||sensor == 0x0d){                         //레일 위로 돌아가면 종료
+            state = STATE_RUNNING;
+        }else if(sensor == 0x0f){                                   //하나도 안걸릴때 일딴 오른쪽으로 돌림
+            motor(LEFT);
+        }else{                                                      //교차로를 나오기 전까지는 무조껀 직진
+            motor(STRAIGHT);
+        }
+    }else if(state == STATE_RUNNING){
+        sensorScan(sensor);                    //일반적인 라인 팔로잉 상태
+    }
 }
-
-
-
-
-
-
 ///////////////////interrupt service routine end////////////////////////
 
 int main(void){
 
     //initialize port and interrupt
     initDevices();
-	initSegment();
+    initSegment();
     initInterrupt();
     initTimerInterrupt();
-	
-	MOTOR_PORT_DDR = 0xff;
+    
+    MOTOR_PORT_DDR = 0xff;
     //Global Interrupt Enable
     sei();
     //main function
@@ -334,33 +378,10 @@ int main(void){
         timeNum = (int)OCR0;
         //segment print
         for(int i = 0; i < 4; i++){
-            printSeg((timeNum/exp10[i])%10,3-i);
+            printSeg((timeNum/exp10[i])%10,3-i); //OCR0를 세그먼트에 출력합니다.
         }
-		
+        
         //출력할 수가 9999를 넘으면 초기화
         
     }
 }
-
-////////////코드 최적화//////////////////////
-/*
-//CTC모드를 사용하고 256프리 스케일링 모드를 사용하여 5번의 인터럽트 실행으로 10ms를 측정하도록 코딩 하였다.
-void initTimerInterrupt()
-{
-    TCCR0 = 0x0e; //0d00001110//CTC mode and 256 prescaling
-    TCNT0 = 0x00; //clear count value register. TCNT0 increase count from 0, clear on 124
-    TIMSK = 0x02; //enable Timer/Counter0 compare match interrupt, disable overflow interrupt
-    TIFR = 0xff;  //write logic 1 on flag for clear register
-    OCR0 = 0x7c;  //compare 124
-}
-ISR(TIMER0_COMP_vect)
-{
-    timeInterruptExec++;
-    if ((timeInterruptExec > 4) && (state == STATE_RUNNING))
-    {
-        timeNum++;
-        timeInterruptExec = 0;
-    }
-}
-*/
-////////////////////////////////////////////////
