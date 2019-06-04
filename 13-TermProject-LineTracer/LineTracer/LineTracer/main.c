@@ -34,13 +34,26 @@ unsigned int exp10[4] = {1, 10, 100, 1000};
 volatile unsigned char stepLeft=0x0c, stepRight=0x0c;
 ///////////////////////////////////////////////////////////
 
-short motorForceLeftFlag = 0;
-short motorForceRightFlag = 0;
-unsigned char preSensor = 0;
+//flag
+unsigned char motorForceLeftFlag = 0;
+unsigned char motorForceRightFlag = 0;
 unsigned char countStopSign = 0;
 unsigned char stopSign = 0;
+unsigned char forceRightSign = 0 ;
+unsigned char forceLeftSign = 0 ;
+unsigned char calibLeft = 0;
+unsigned char calibRight = 0;
 
-short forceExcuNum=0;
+void initFlag(){
+    motorForceLeftFlag = 0;
+    motorForceRightFlag = 0; 
+    countStopSign = 0;
+    stopSign = 0;
+    forceRightSign = 0;
+    forceLeftSign = 0;
+    calibLeft = 0;
+    calibRight = 0;
+}
 
 void initPort(void)
 {
@@ -224,10 +237,7 @@ ISR(INT4_vect){
     OCR0 = timeNum;
 }
 
-unsigned char forceRightSign = 0 ;
-unsigned char forceLeftSign = 0 ;
-unsigned char calibLeft = 0;
-unsigned char calibRight = 0;
+
 
 void sensorScan(int sensor){
     switch(sensor){
@@ -240,6 +250,7 @@ void sensorScan(int sensor){
 
                 if(countStopSign >2){    //stopsign 3번 나오면 종료
                     state = STATE_INIT;
+                    initFlag();
                     return;
                 }
             }else if(forceRightSign){
@@ -367,21 +378,21 @@ int main(void){
     initSegment();
     initInterrupt();
     initTimerInterrupt();
+    initFlag();
     
     MOTOR_PORT_DDR = 0xff;
     //Global Interrupt Enable
     sei();
+
     //main function
     //print 7segment by global variable timeNum
-    //timeNum variable is increase by time interrupt
+    //timeNum variable is state and OCR0
     while (1){
-        timeNum = (int)OCR0;
+        timeNum = state*1000 + (int)OCR0;
         //segment print
         for(int i = 0; i < 4; i++){
             printSeg((timeNum/exp10[i])%10,3-i); //OCR0를 세그먼트에 출력합니다.
         }
-        
         //출력할 수가 9999를 넘으면 초기화
-        
     }
 }
