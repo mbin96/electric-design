@@ -26,7 +26,7 @@
 
 //global variable declaration
 unsigned int state = STATE_INIT;                                                            //initialize state
-unsigned int timeNum = 0;                                      //variable for time interrupt
+unsigned int timeNum = 100;                                      //variable for time interrupt
 unsigned char FND_SEGNP[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x27, 0x7F, 0x6F}; //7segment decimal LED print with out point
 unsigned char FND_SEGWP[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0xA7, 0xFF, 0xEF}; //7segment decimal LED print with point
 unsigned char FND_SEGPOS[4] = {0x01, 0x02, 0x04, 0x08};                                     //7segment's location
@@ -53,6 +53,7 @@ void initFlag(){
     forceLeftSign = 0;
     calibLeft = 0;
     calibRight = 0;
+	OCR0 = 100;
 }
 
 void initPort(void)
@@ -125,6 +126,35 @@ unsigned char  LEFTmotorOneClock(unsigned char step, char dir)
 
 }
 
+unsigned char LEFTmotorOneClock1Sang(unsigned char step, char dir){
+	step = step & 0x0f;
+	if(dir==0){
+		switch(step){
+			case 0x01: step=0x08; break;
+			case 0x02: step=0x01; break;
+			case 0x04: step=0x02; break;
+			case 0x08: step=0x04; break;
+			default: step=0x08; break;
+		}
+	}
+	return step;
+}
+
+unsigned char RIGHTmotorOneClock1Sang(unsigned char step, char dir){
+	step = step & 0xf0;
+	if(dir){
+		switch(step){
+			case 0x10: step=0x20; break;
+			case 0x20: step=0x40; break;
+			case 0x40: step=0x80; break;
+			case 0x80: step=0x10; break;
+			default: step=0x80; break;
+		}
+	}
+	return step;
+}
+	
+
 unsigned char  RIGHTmotorOneClock(unsigned char step, char dir)
 {    
     step = step & 0xf0;
@@ -140,7 +170,7 @@ unsigned char  RIGHTmotorOneClock(unsigned char step, char dir)
             case 0x80: step=0x90; break;
             default: step=0xc0; break;
         }
-    }else{
+    }else{  
         switch(step){//전진
             case 0x90: step=0x80; break;//1001
             case 0x10: step=0x90; break;//0001
@@ -198,17 +228,28 @@ void initInterrupt(){
 
 void initTimerInterrupt()
 {
-    TCCR0 = 0x0e; //0d00001110//CTC mode and 256 prescaling
+    TCCR0 = 0x0d; //0d00001110//CTC mode and 64 prescaling
     TCNT0 = 0x00; //clear count value register. TCNT0 increase count from 0, clear on 63
     TIMSK = 0x02; //enable Timer/Counter0 compare match interrupt, disable overflow interrupt
     TIFR = 0xff;  //write logic 1 on flag for clear register
-    OCR0 = 0x64;  //compare 100
+    OCR0 = 0x6d;  //compare 110
 }
 
 //모터 구동
 void motor(char direction){
-
+/*
     switch(direction){
+	    case STRAIGHT :
+	    stepRight = RIGHTmotorOneClock1Sang(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
+	    case RIGHT :
+	    stepLeft = LEFTmotorOneClock1Sang(stepLeft, 0);
+	    break;
+	    case LEFT  :
+	    stepRight = RIGHTmotorOneClock1Sang(stepRight, 1);
+	    break;
+    }
+	*/
+	switch(direction){
         case STRAIGHT : 
             stepRight = RIGHTmotorOneClock(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
         case RIGHT : 
@@ -218,6 +259,7 @@ void motor(char direction){
             stepRight = RIGHTmotorOneClock(stepRight, 1);
             break;
     }
+	
     MOTOR_PORT = stepLeft|stepRight;
 }
 
@@ -227,17 +269,24 @@ ISR(INT5_vect){
 }
 
 //속도조절
+
 ISR(INT4_vect){
     //when interrupt 4 excu, increase num
-    timeNum = OCR0;
+    
     timeNum -= 5;
-    if (timeNum<30){
-        timeNum = 100;
+    if (timeNum < 50){
+        OCR0 = timeNum = 160;
     }
-    OCR0 = timeNum;
+	if(timeNum < 110){
+		OCR0 = 110;
+	}else if(timeNum >=110){
+		OCR0 = timeNum;
+	}
+		
 }
 
-
+char rightSmoth = 0;
+char leftSmoth = 0;
 
 void sensorScan(int sensor){
     switch(sensor){
@@ -262,24 +311,42 @@ void sensorScan(int sensor){
             break;
         }
         case 0x0b:{                      //1011 -- 하나걸림 좌회전
-            motor(LEFT);
+            if(leftSmoth == 1){
+	            motor(STRAIGHT);
+	            leftSmoth=0;
+	        }else{
+	            leftSmoth++;
+				motor(LEFT);
+            }
+			
             break;
         }
         case 0x0d:{                      //1101 -- 하나걸림 -우회전
-            motor(RIGHT);
+            if(rightSmoth == 1){
+	            motor(STRAIGHT);
+	            rightSmoth=0;
+	         }else{
+	            rightSmoth++;
+				motor(RIGHT);
+            }
+			
             break;
         }
+		case 0x05:
         case 0x07:{                      //0111 -- 교차로 좌회전 신호
             forceLeftSign = 1;
             motor(STRAIGHT);
             break;
         }
+		case 0x0a:
         case 0x0e:{                      //1110 -- 교차로 우회전 신호
             
             forceRightSign = 1;
             motor(STRAIGHT);
-            break;
+            break;		
         }
+		case 0x02://0010
+		case 0x04://0100
         case 0x06:{                      //0110 -- 정지 신호
             
             stopSign=1;                    //flag 설정
@@ -309,7 +376,7 @@ void sensorScan(int sensor){
             break;
         }
         case 0x00:{                      //0000 - 교차로
-            forceLeftSign = forceRightSign = stopSign = 0;                //교차로에 많이 치우쳐 들어온경우(0111이 인식된뒤 들어온)교차로 를 나간뒤 STATE_FORCE로 들어가지 않게 초기화 해줘야 합니다.
+            forceLeftSign = forceRightSign = stopSign= countStopSign = 0;                //교차로에 많이 치우쳐 들어온경우(0111이 인식된뒤 들어온)교차로 를 나간뒤 STATE_FORCE로 들어가지 않게 초기화 해줘야 합니다.
             motor(STRAIGHT);
             break;
         }
@@ -319,35 +386,116 @@ void sensorScan(int sensor){
         }
     }
 }
-
+char smothStart=0;
+char stateForceSmoth = 0;
+short forceStraight = 0;
 ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의 펄스 간격(속도)가 ocr0에 따라 가변
 {
     int sensor = SENSOR_PORT & 0x0F; //센서값 읽기
-
+	
+	
+	
     if(state == STATE_FORCE_RIGHT){                                 //-강제회전
+		if(100 != OCR0&&(smothStart==10)){
+			OCR0++;
+			smothStart=0;
+			
+			}else{
+			smothStart++;
+		}
         if(!forceRightSign){
-            motor(RIGHT);                                           //교차로에 들어간 뒤엔 회전만 합니다
-            if(sensor == 0x0d){
-                state = STATE_RUNNING;                              //강제 회전하다 라인이 잡히면 트랙 타기
+            if(stateForceSmoth==3){
+				motor(STRAIGHT); 
+				stateForceSmoth=0;
+			}else{
+				stateForceSmoth++;
+				motor(RIGHT); 
+			}
+			forceStraight++;                                          //교차로에 들어간 뒤엔 회전만 합니다
+            if((forceStraight>320)&&(sensor == 0x0d)){
+                state = STATE_RUNNING;   
+				forceStraight=0;                           //강제 회전하다 라인이 잡히면 트랙 타기
             }
         }else{
-            if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){    
-                forceRightSign = 0;                                 //교차로 나타나면 플래그 초기화 하고 강제로 돌림
-            }
-            motor(STRAIGHT);                                        //교차로 들어가기 전까지는 무조껀 직진
+            if(timeNum<100&&(forceStraight<300)){
+	            motor(STRAIGHT);
+	            forceStraight++;
+				if(forceStraight==240){
+					forceRightSign = 0;
+					forceStraight++;
+				}
+            }else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){    
+                forceRightSign = 0;  
+				motor(RIGHT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+            }else{
+				switch(sensor){
+					case 0x0f: 
+						motor(STRAIGHT);
+						break;
+					case 0x0b:{                      //1011 -- 하나걸림 좌회전
+						motor(LEFT);
+						break;
+					}
+					case 0x0d:{                      //1101 -- 하나걸림 -우회전
+						motor(RIGHT);
+						break;
+					}
+					default:
+						motor(STRAIGHT);
+				}
+			}                                      //교차로 들어가기 전까지는 무조껀 직진
         }
     }else if(state == STATE_FORCE_LEFT){                            //-강제회전
+		
+		if(100 != OCR0&&(smothStart==10)){
+			OCR0++;
+			smothStart=0;
+			
+			}else{
+			smothStart++;
+		}
         if(!forceLeftSign){
-            motor(LEFT);                                            //교차로에 들어간 뒤엔 회전만 합니다
-            if(sensor == 0x0b){                                        //강제 회전하다 라인 잡히면 트랙 타기
+            if(stateForceSmoth==3){
+	            motor(STRAIGHT);
+	            stateForceSmoth=0;
+	            }else{
+	            stateForceSmoth++;
+				motor(LEFT);   
+            }
+			 forceStraight++;                                           //교차로에 들어간 뒤엔 회전만 합니다
+            if((forceStraight>320)&&(sensor == 0x0b)){                                        //강제 회전하다 라인 잡히면 트랙 타기
                 state = STATE_RUNNING;
+				forceStraight=0;
             }
-        }else{                                                        
-            if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
-                forceLeftSign = 0;                                  //교차로 나타나면 플래그 초기화 하고 강제로 돌림
-            }
-            motor(STRAIGHT);                                        //교차로 들어가기 전까지는 무조껀 직진
-            
+        }else{         
+			if(timeNum<100&&(forceStraight<300)){
+				motor(STRAIGHT);
+				forceStraight++;
+				if(forceStraight==240){
+					forceLeftSign = 0;
+					forceStraight++;
+					
+				}
+			}else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
+                forceLeftSign = 0;   
+				motor(LEFT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+            }else{
+				switch(sensor){
+					case 0x0f:
+					motor(STRAIGHT);
+					break;
+					case 0x0b:{                      //1011 -- 하나걸림 좌회전
+						motor(LEFT);
+						break;
+					}
+					case 0x0d:{                      //1101 -- 하나걸림 -우회전
+						motor(RIGHT);
+						break;
+					}
+					default:
+						motor(STRAIGHT);
+				}                                        //교차로 들어가기 전까지는 무조껀 직진
+			}
         }
     }else if(state == STATE_CALIB_RIGHT){                           //-교차로를 틀어져서 왼쪽으로 들어갈때 칼리브레이션
         if(sensor == 0x0b||sensor == 0x0d){                         //레일 위로 돌아가면 종료
@@ -366,6 +514,14 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
             motor(STRAIGHT);
         }
     }else if(state == STATE_RUNNING){
+		if(timeNum != OCR0&&(smothStart==10)){
+			OCR0--;
+			smothStart=0;
+			
+			}else{
+			smothStart++;
+		}
+		
         sensorScan(sensor);                    //일반적인 라인 팔로잉 상태
     }
 }
@@ -388,10 +544,9 @@ int main(void){
     //print 7segment by global variable timeNum
     //timeNum variable is state and OCR0
     while (1){
-        timeNum = state*1000 + (int)OCR0;
         //segment print
         for(int i = 0; i < 4; i++){
-            printSeg((timeNum/exp10[i])%10,3-i); //OCR0를 세그먼트에 출력합니다.
+            printSeg(((state*1000 + timeNum)/exp10[i])%10,3-i); //OCR0를 세그먼트에 출력합니다.
         }
         //출력할 수가 9999를 넘으면 초기화
     }
