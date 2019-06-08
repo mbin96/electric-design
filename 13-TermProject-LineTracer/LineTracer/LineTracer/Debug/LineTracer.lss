@@ -3,31 +3,31 @@ LineTracer.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000001a  00800100  00000906  0000099a  2**0
+  0 .data         0000001c  00800100  0000098c  00000a20  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000906  00000000  00000000  00000094  2**1
+  1 .text         0000098c  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000010  0080011a  0080011a  000009b4  2**0
+  2 .bss          0000000e  0080011c  0080011c  00000a3c  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000009b4  2**0
+  3 .comment      00000030  00000000  00000000  00000a3c  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000009e4  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000a6c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000a0  00000000  00000000  00000a24  2**0
+  5 .debug_aranges 000000c0  00000000  00000000  00000aac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000f50  00000000  00000000  00000ac4  2**0
+  6 .debug_info   000011a2  00000000  00000000  00000b6c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008ed  00000000  00000000  00001a14  2**0
+  7 .debug_abbrev 00000907  00000000  00000000  00001d0e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000a31  00000000  00000000  00002301  2**0
+  8 .debug_line   00000a8d  00000000  00000000  00002615  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000019c  00000000  00000000  00002d34  2**2
+  9 .debug_frame  00000218  00000000  00000000  000030a4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000005e6  00000000  00000000  00002ed0  2**0
+ 10 .debug_str    00000653  00000000  00000000  000032bc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000652  00000000  00000000  000034b6  2**0
+ 11 .debug_loc    00000b60  00000000  00000000  0000390f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000a8  00000000  00000000  00003b08  2**0
+ 12 .debug_ranges 000000c8  00000000  00000000  0000446f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -43,9 +43,9 @@ Disassembly of section .text:
    e:	00 00       	nop
   10:	82 c0       	rjmp	.+260    	; 0x116 <__bad_interrupt>
   12:	00 00       	nop
-  14:	ab c1       	rjmp	.+854    	; 0x36c <__vector_5>
+  14:	d5 c1       	rjmp	.+938    	; 0x3c0 <__vector_5>
   16:	00 00       	nop
-  18:	95 c1       	rjmp	.+810    	; 0x344 <__vector_6>
+  18:	bf c1       	rjmp	.+894    	; 0x398 <__vector_6>
   1a:	00 00       	nop
   1c:	7c c0       	rjmp	.+248    	; 0x116 <__bad_interrupt>
   1e:	00 00       	nop
@@ -63,7 +63,7 @@ Disassembly of section .text:
   36:	00 00       	nop
   38:	6e c0       	rjmp	.+220    	; 0x116 <__bad_interrupt>
   3a:	00 00       	nop
-  3c:	64 c2       	rjmp	.+1224   	; 0x506 <__vector_15>
+  3c:	a4 c3       	rjmp	.+1864   	; 0x786 <__vector_15>
   3e:	00 00       	nop
   40:	6a c0       	rjmp	.+212    	; 0x116 <__bad_interrupt>
   42:	00 00       	nop
@@ -127,22 +127,22 @@ Disassembly of section .text:
   b6:	f6 00       	.word	0x00f6	; ????
   b8:	f6 00       	.word	0x00f6	; ????
   ba:	f2 00       	.word	0x00f2	; ????
-  bc:	75 02       	muls	r23, r21
-  be:	4f 02       	muls	r20, r31
-  c0:	49 02       	muls	r20, r25
-  c2:	80 02       	muls	r24, r16
-  c4:	49 02       	muls	r20, r25
-  c6:	3d 02       	muls	r19, r29
-  c8:	49 02       	muls	r20, r25
-  ca:	3d 02       	muls	r19, r29
-  cc:	62 02       	muls	r22, r18
-  ce:	80 02       	muls	r24, r16
-  d0:	43 02       	muls	r20, r19
-  d2:	1f 02       	muls	r17, r31
-  d4:	80 02       	muls	r24, r16
-  d6:	2e 02       	muls	r18, r30
-  d8:	43 02       	muls	r20, r19
-  da:	f0 01       	movw	r30, r0
+  bc:	a0 02       	muls	r26, r16
+  be:	78 02       	muls	r23, r24
+  c0:	71 02       	muls	r23, r17
+  c2:	ac 02       	muls	r26, r28
+  c4:	71 02       	muls	r23, r17
+  c6:	63 02       	muls	r22, r19
+  c8:	71 02       	muls	r23, r17
+  ca:	63 02       	muls	r22, r19
+  cc:	8c 02       	muls	r24, r28
+  ce:	ac 02       	muls	r26, r28
+  d0:	6a 02       	muls	r22, r26
+  d2:	5b 02       	muls	r21, r27
+  d4:	ac 02       	muls	r26, r28
+  d6:	5f 02       	muls	r21, r31
+  d8:	6a 02       	muls	r22, r26
+  da:	27 02       	muls	r18, r23
 
 000000dc <__ctors_end>:
   dc:	11 24       	eor	r1, r1
@@ -156,20 +156,20 @@ Disassembly of section .text:
   e8:	11 e0       	ldi	r17, 0x01	; 1
   ea:	a0 e0       	ldi	r26, 0x00	; 0
   ec:	b1 e0       	ldi	r27, 0x01	; 1
-  ee:	e6 e0       	ldi	r30, 0x06	; 6
+  ee:	ec e8       	ldi	r30, 0x8C	; 140
   f0:	f9 e0       	ldi	r31, 0x09	; 9
   f2:	00 e0       	ldi	r16, 0x00	; 0
   f4:	0b bf       	out	0x3b, r16	; 59
   f6:	02 c0       	rjmp	.+4      	; 0xfc <__do_copy_data+0x14>
   f8:	07 90       	elpm	r0, Z+
   fa:	0d 92       	st	X+, r0
-  fc:	aa 31       	cpi	r26, 0x1A	; 26
+  fc:	ac 31       	cpi	r26, 0x1C	; 28
   fe:	b1 07       	cpc	r27, r17
  100:	d9 f7       	brne	.-10     	; 0xf8 <__do_copy_data+0x10>
 
 00000102 <__do_clear_bss>:
  102:	21 e0       	ldi	r18, 0x01	; 1
- 104:	aa e1       	ldi	r26, 0x1A	; 26
+ 104:	ac e1       	ldi	r26, 0x1C	; 28
  106:	b1 e0       	ldi	r27, 0x01	; 1
  108:	01 c0       	rjmp	.+2      	; 0x10c <.do_clear_bss_start>
 
@@ -180,15 +180,15 @@ Disassembly of section .text:
  10c:	aa 32       	cpi	r26, 0x2A	; 42
  10e:	b2 07       	cpc	r27, r18
  110:	e1 f7       	brne	.-8      	; 0x10a <.do_clear_bss_loop>
- 112:	84 d3       	rcall	.+1800   	; 0x81c <main>
- 114:	f6 c3       	rjmp	.+2028   	; 0x902 <_exit>
+ 112:	c7 d3       	rcall	.+1934   	; 0x8a2 <main>
+ 114:	39 c4       	rjmp	.+2162   	; 0x988 <_exit>
 
 00000116 <__bad_interrupt>:
  116:	74 cf       	rjmp	.-280    	; 0x0 <__vectors>
 
 00000118 <initFlag>:
-			case 0x80: step=0x10; break;
-			default: step=0x80; break;
+			case 0xc0: step=0x90; break;
+			default: step=0xc0; break;
 		}
 	}
 	return step;
@@ -250,7 +250,7 @@ Disassembly of section .text:
  196:	88 f4       	brcc	.+34     	; 0x1ba <LEFTmotorOneClock+0x34>
  198:	ea 5b       	subi	r30, 0xBA	; 186
  19a:	ff 4f       	sbci	r31, 0xFF	; 255
- 19c:	9a c3       	rjmp	.+1844   	; 0x8d2 <__tablejump2__>
+ 19c:	dd c3       	rjmp	.+1978   	; 0x958 <__tablejump2__>
  19e:	83 e0       	ldi	r24, 0x03	; 3
  1a0:	08 95       	ret
  1a2:	82 e0       	ldi	r24, 0x02	; 2
@@ -275,7 +275,7 @@ Disassembly of section .text:
  1c8:	88 f4       	brcc	.+34     	; 0x1ec <LEFTmotorOneClock+0x66>
  1ca:	ee 5a       	subi	r30, 0xAE	; 174
  1cc:	ff 4f       	sbci	r31, 0xFF	; 255
- 1ce:	81 c3       	rjmp	.+1794   	; 0x8d2 <__tablejump2__>
+ 1ce:	c4 c3       	rjmp	.+1928   	; 0x958 <__tablejump2__>
  1d0:	89 e0       	ldi	r24, 0x09	; 9
  1d2:	08 95       	ret
  1d4:	81 e0       	ldi	r24, 0x01	; 1
@@ -434,7 +434,7 @@ void printSeg(int segNum, int segDigit){
     //set segment digit to print
     PORTA = FND_SEGPOS[segDigit];
  29a:	fb 01       	movw	r30, r22
- 29c:	e6 5f       	subi	r30, 0xF6	; 246
+ 29c:	e4 5f       	subi	r30, 0xF4	; 244
  29e:	fe 4f       	sbci	r31, 0xFE	; 254
  2a0:	20 81       	ld	r18, Z
  2a2:	2b bb       	out	0x1b, r18	; 27
@@ -445,7 +445,7 @@ void printSeg(int segNum, int segDigit){
 
     //print num at segment
     PORTA = FND_SEGNP[segNum]; //print with out decimal point
- 2a8:	82 5f       	subi	r24, 0xF2	; 242
+ 2a8:	80 5f       	subi	r24, 0xF0	; 240
  2aa:	9e 4f       	sbci	r25, 0xFE	; 254
  2ac:	fc 01       	movw	r30, r24
  2ae:	80 81       	ld	r24, Z
@@ -534,989 +534,1102 @@ void initTimerInterrupt()
  302:	08 95       	ret
 
 00000304 <motor>:
-	    case LEFT  :
-	    stepRight = RIGHTmotorOneClock1Sang(stepRight, 1);
-	    break;
-    }
-	*/
+}
+
+char smothMoterCounter = 0;
+//모터 구동
+void motor(char direction, char smoth){
+ 304:	cf 93       	push	r28
+ 306:	c6 2f       	mov	r28, r22
 	switch(direction){
- 304:	81 30       	cpi	r24, 0x01	; 1
- 306:	51 f0       	breq	.+20     	; 0x31c <motor+0x18>
- 308:	18 f0       	brcs	.+6      	; 0x310 <motor+0xc>
- 30a:	82 30       	cpi	r24, 0x02	; 2
- 30c:	71 f0       	breq	.+28     	; 0x32a <motor+0x26>
- 30e:	13 c0       	rjmp	.+38     	; 0x336 <motor+0x32>
+ 308:	81 30       	cpi	r24, 0x01	; 1
+ 30a:	89 f0       	breq	.+34     	; 0x32e <motor+0x2a>
+ 30c:	18 f0       	brcs	.+6      	; 0x314 <motor+0x10>
+ 30e:	82 30       	cpi	r24, 0x02	; 2
+ 310:	29 f1       	breq	.+74     	; 0x35c <motor+0x58>
+ 312:	3a c0       	rjmp	.+116    	; 0x388 <motor+0x84>
         case STRAIGHT : 
             stepRight = RIGHTmotorOneClock(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
- 310:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__data_start>
- 314:	61 e0       	ldi	r22, 0x01	; 1
- 316:	70 df       	rcall	.-288    	; 0x1f8 <RIGHTmotorOneClock>
- 318:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+ 314:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <stepRight>
+ 318:	61 e0       	ldi	r22, 0x01	; 1
+ 31a:	6e df       	rcall	.-292    	; 0x1f8 <RIGHTmotorOneClock>
+ 31c:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <stepRight>
+            stepLeft = LEFTmotorOneClock(stepLeft, 0);
+ 320:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <stepLeft>
+ 324:	60 e0       	ldi	r22, 0x00	; 0
+ 326:	2f df       	rcall	.-418    	; 0x186 <LEFTmotorOneClock>
+ 328:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <stepLeft>
+            break;
+ 32c:	2d c0       	rjmp	.+90     	; 0x388 <motor+0x84>
         case RIGHT : 
             stepLeft = LEFTmotorOneClock(stepLeft, 0);
- 31c:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <stepLeft>
- 320:	60 e0       	ldi	r22, 0x00	; 0
- 322:	31 df       	rcall	.-414    	; 0x186 <LEFTmotorOneClock>
- 324:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <stepLeft>
+ 32e:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <stepLeft>
+ 332:	60 e0       	ldi	r22, 0x00	; 0
+ 334:	28 df       	rcall	.-432    	; 0x186 <LEFTmotorOneClock>
+ 336:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <stepLeft>
+            smothMoterCounter++;
+ 33a:	80 91 1f 01 	lds	r24, 0x011F	; 0x80011f <smothMoterCounter>
+ 33e:	8f 5f       	subi	r24, 0xFF	; 255
+            if(smothMoterCounter > smoth){
+ 340:	c8 17       	cp	r28, r24
+ 342:	18 f0       	brcs	.+6      	; 0x34a <motor+0x46>
+            stepRight = RIGHTmotorOneClock(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
+            stepLeft = LEFTmotorOneClock(stepLeft, 0);
             break;
- 328:	06 c0       	rjmp	.+12     	; 0x336 <motor+0x32>
+        case RIGHT : 
+            stepLeft = LEFTmotorOneClock(stepLeft, 0);
+            smothMoterCounter++;
+ 344:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <smothMoterCounter>
+ 348:	1f c0       	rjmp	.+62     	; 0x388 <motor+0x84>
+            if(smothMoterCounter > smoth){
+                smothMoterCounter = 0;
+ 34a:	10 92 1f 01 	sts	0x011F, r1	; 0x80011f <smothMoterCounter>
+                stepRight = RIGHTmotorOneClock(stepRight, 1);
+ 34e:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <stepRight>
+ 352:	61 e0       	ldi	r22, 0x01	; 1
+ 354:	51 df       	rcall	.-350    	; 0x1f8 <RIGHTmotorOneClock>
+ 356:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <stepRight>
+ 35a:	16 c0       	rjmp	.+44     	; 0x388 <motor+0x84>
+            }
+            break;
         case LEFT  : 
             stepRight = RIGHTmotorOneClock(stepRight, 1);
- 32a:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__data_start>
- 32e:	61 e0       	ldi	r22, 0x01	; 1
- 330:	63 df       	rcall	.-314    	; 0x1f8 <RIGHTmotorOneClock>
- 332:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+ 35c:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <stepRight>
+ 360:	61 e0       	ldi	r22, 0x01	; 1
+ 362:	4a df       	rcall	.-364    	; 0x1f8 <RIGHTmotorOneClock>
+ 364:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <stepRight>
+ 368:	80 91 1f 01 	lds	r24, 0x011F	; 0x80011f <smothMoterCounter>
+            smothMoterCounter++;
+ 36c:	8f 5f       	subi	r24, 0xFF	; 255
+ 36e:	c8 17       	cp	r28, r24
+            if(smothMoterCounter > smoth){
+ 370:	18 f0       	brcs	.+6      	; 0x378 <motor+0x74>
+ 372:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <smothMoterCounter>
+                stepRight = RIGHTmotorOneClock(stepRight, 1);
+            }
+            break;
+        case LEFT  : 
+            stepRight = RIGHTmotorOneClock(stepRight, 1);
+            smothMoterCounter++;
+ 376:	08 c0       	rjmp	.+16     	; 0x388 <motor+0x84>
+ 378:	10 92 1f 01 	sts	0x011F, r1	; 0x80011f <smothMoterCounter>
+            if(smothMoterCounter > smoth){
+                smothMoterCounter = 0;
+                stepLeft = LEFTmotorOneClock(stepLeft, 0);
+ 37c:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <stepLeft>
+ 380:	60 e0       	ldi	r22, 0x00	; 0
+ 382:	01 df       	rcall	.-510    	; 0x186 <LEFTmotorOneClock>
+ 384:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <stepLeft>
+ 388:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <stepLeft>
+            }
             break;
     }
-	
     MOTOR_PORT = stepLeft|stepRight;
- 336:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <stepLeft>
- 33a:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__data_start>
- 33e:	89 2b       	or	r24, r25
- 340:	82 bb       	out	0x12, r24	; 18
- 342:	08 95       	ret
-
-00000344 <__vector_6>:
+ 38c:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <stepRight>
+ 390:	89 2b       	or	r24, r25
+ 392:	82 bb       	out	0x12, r24	; 18
+ 394:	cf 91       	pop	r28
 }
+ 396:	08 95       	ret
+
+00000398 <__vector_6>:
+ 398:	1f 92       	push	r1
 
 //출발
 ISR(INT5_vect){
- 344:	1f 92       	push	r1
- 346:	0f 92       	push	r0
- 348:	0f b6       	in	r0, 0x3f	; 63
- 34a:	0f 92       	push	r0
- 34c:	11 24       	eor	r1, r1
- 34e:	8f 93       	push	r24
- 350:	9f 93       	push	r25
+ 39a:	0f 92       	push	r0
+ 39c:	0f b6       	in	r0, 0x3f	; 63
+ 39e:	0f 92       	push	r0
+ 3a0:	11 24       	eor	r1, r1
+ 3a2:	8f 93       	push	r24
+ 3a4:	9f 93       	push	r25
     state = STATE_RUNNING;
- 352:	81 e0       	ldi	r24, 0x01	; 1
- 354:	90 e0       	ldi	r25, 0x00	; 0
- 356:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 35a:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 3a6:	81 e0       	ldi	r24, 0x01	; 1
+ 3a8:	90 e0       	ldi	r25, 0x00	; 0
+ 3aa:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 3ae:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
 }
- 35e:	9f 91       	pop	r25
- 360:	8f 91       	pop	r24
- 362:	0f 90       	pop	r0
- 364:	0f be       	out	0x3f, r0	; 63
- 366:	0f 90       	pop	r0
- 368:	1f 90       	pop	r1
- 36a:	18 95       	reti
+ 3b2:	9f 91       	pop	r25
+ 3b4:	8f 91       	pop	r24
+ 3b6:	0f 90       	pop	r0
+ 3b8:	0f be       	out	0x3f, r0	; 63
+ 3ba:	0f 90       	pop	r0
+ 3bc:	1f 90       	pop	r1
+ 3be:	18 95       	reti
 
-0000036c <__vector_5>:
+000003c0 <__vector_5>:
 
 //속도조절
 
 ISR(INT4_vect){
- 36c:	1f 92       	push	r1
- 36e:	0f 92       	push	r0
- 370:	0f b6       	in	r0, 0x3f	; 63
- 372:	0f 92       	push	r0
- 374:	11 24       	eor	r1, r1
- 376:	8f 93       	push	r24
- 378:	9f 93       	push	r25
+ 3c0:	1f 92       	push	r1
+ 3c2:	0f 92       	push	r0
+ 3c4:	0f b6       	in	r0, 0x3f	; 63
+ 3c6:	0f 92       	push	r0
+ 3c8:	11 24       	eor	r1, r1
+ 3ca:	8f 93       	push	r24
+ 3cc:	9f 93       	push	r25
     //when interrupt 4 excu, increase num
     
-    timeNum -= 5;
- 37a:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <timeNum>
- 37e:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <timeNum+0x1>
- 382:	05 97       	sbiw	r24, 0x05	; 5
- 384:	90 93 19 01 	sts	0x0119, r25	; 0x800119 <timeNum+0x1>
- 388:	80 93 18 01 	sts	0x0118, r24	; 0x800118 <timeNum>
-    if (timeNum < 50){
- 38c:	82 33       	cpi	r24, 0x32	; 50
- 38e:	91 05       	cpc	r25, r1
- 390:	a0 f4       	brcc	.+40     	; 0x3ba <__vector_5+0x4e>
-        OCR0 = timeNum = 160;
- 392:	80 ea       	ldi	r24, 0xA0	; 160
- 394:	90 e0       	ldi	r25, 0x00	; 0
- 396:	90 93 19 01 	sts	0x0119, r25	; 0x800119 <timeNum+0x1>
- 39a:	80 93 18 01 	sts	0x0118, r24	; 0x800118 <timeNum>
- 39e:	80 ea       	ldi	r24, 0xA0	; 160
- 3a0:	81 bf       	out	0x31, r24	; 49
+    if(timeNum > 70){
+ 3ce:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
+ 3d2:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
+ 3d6:	87 34       	cpi	r24, 0x47	; 71
+ 3d8:	91 05       	cpc	r25, r1
+ 3da:	30 f0       	brcs	.+12     	; 0x3e8 <__vector_5+0x28>
+        timeNum -= 5;
+ 3dc:	05 97       	sbiw	r24, 0x05	; 5
+ 3de:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <timeNum+0x1>
+ 3e2:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <timeNum>
+ 3e6:	05 c0       	rjmp	.+10     	; 0x3f2 <__vector_5+0x32>
+    }else{
+        timeNum -= 2;
+ 3e8:	02 97       	sbiw	r24, 0x02	; 2
+ 3ea:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <timeNum+0x1>
+ 3ee:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <timeNum>
     }
-	if(timeNum < 110){
- 3a2:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <timeNum>
- 3a6:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <timeNum+0x1>
- 3aa:	8e 36       	cpi	r24, 0x6E	; 110
- 3ac:	91 05       	cpc	r25, r1
- 3ae:	18 f4       	brcc	.+6      	; 0x3b6 <__vector_5+0x4a>
-		OCR0 = 110;
- 3b0:	8e e6       	ldi	r24, 0x6E	; 110
- 3b2:	81 bf       	out	0x31, r24	; 49
- 3b4:	06 c0       	rjmp	.+12     	; 0x3c2 <__vector_5+0x56>
-	}else if(timeNum >=110){
+    if (timeNum < 40){
+ 3f2:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
+ 3f6:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
+ 3fa:	88 32       	cpi	r24, 0x28	; 40
+ 3fc:	91 05       	cpc	r25, r1
+ 3fe:	98 f4       	brcc	.+38     	; 0x426 <__LOCK_REGION_LENGTH__+0x26>
+        OCR0 = timeNum = 110;
+ 400:	8e e6       	ldi	r24, 0x6E	; 110
+ 402:	90 e0       	ldi	r25, 0x00	; 0
+ 404:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <timeNum+0x1>
+ 408:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <timeNum>
+ 40c:	81 bf       	out	0x31, r24	; 49
+    }
+	if(timeNum < 100){
+ 40e:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
+ 412:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
+ 416:	84 36       	cpi	r24, 0x64	; 100
+ 418:	91 05       	cpc	r25, r1
+ 41a:	18 f4       	brcc	.+6      	; 0x422 <__LOCK_REGION_LENGTH__+0x22>
+		OCR0 = 100;
+ 41c:	84 e6       	ldi	r24, 0x64	; 100
+ 41e:	81 bf       	out	0x31, r24	; 49
+ 420:	06 c0       	rjmp	.+12     	; 0x42e <__LOCK_REGION_LENGTH__+0x2e>
+	}else if(timeNum >=100){
 		OCR0 = timeNum;
- 3b6:	81 bf       	out	0x31, r24	; 49
+ 422:	81 bf       	out	0x31, r24	; 49
 	}
 		
 }
- 3b8:	04 c0       	rjmp	.+8      	; 0x3c2 <__vector_5+0x56>
-    
-    timeNum -= 5;
-    if (timeNum < 50){
-        OCR0 = timeNum = 160;
+ 424:	04 c0       	rjmp	.+8      	; 0x42e <__LOCK_REGION_LENGTH__+0x2e>
+        timeNum -= 2;
     }
-	if(timeNum < 110){
- 3ba:	8e 36       	cpi	r24, 0x6E	; 110
- 3bc:	91 05       	cpc	r25, r1
- 3be:	d8 f7       	brcc	.-10     	; 0x3b6 <__vector_5+0x4a>
- 3c0:	f7 cf       	rjmp	.-18     	; 0x3b0 <__vector_5+0x44>
-		OCR0 = 110;
-	}else if(timeNum >=110){
+    if (timeNum < 40){
+        OCR0 = timeNum = 110;
+    }
+	if(timeNum < 100){
+ 426:	84 36       	cpi	r24, 0x64	; 100
+ 428:	91 05       	cpc	r25, r1
+ 42a:	d8 f7       	brcc	.-10     	; 0x422 <__LOCK_REGION_LENGTH__+0x22>
+ 42c:	f7 cf       	rjmp	.-18     	; 0x41c <__LOCK_REGION_LENGTH__+0x1c>
+		OCR0 = 100;
+	}else if(timeNum >=100){
 		OCR0 = timeNum;
 	}
 		
 }
- 3c2:	9f 91       	pop	r25
- 3c4:	8f 91       	pop	r24
- 3c6:	0f 90       	pop	r0
- 3c8:	0f be       	out	0x3f, r0	; 63
- 3ca:	0f 90       	pop	r0
- 3cc:	1f 90       	pop	r1
- 3ce:	18 95       	reti
+ 42e:	9f 91       	pop	r25
+ 430:	8f 91       	pop	r24
+ 432:	0f 90       	pop	r0
+ 434:	0f be       	out	0x3f, r0	; 63
+ 436:	0f 90       	pop	r0
+ 438:	1f 90       	pop	r1
+ 43a:	18 95       	reti
 
-000003d0 <sensorScan>:
-
+0000043c <sensorScan>:
 char rightSmoth = 0;
 char leftSmoth = 0;
+short countTimeStop = 1000;
 
-void sensorScan(int sensor){
+void sensorScan(char sensor){
     switch(sensor){
- 3d0:	80 31       	cpi	r24, 0x10	; 16
- 3d2:	91 05       	cpc	r25, r1
- 3d4:	08 f0       	brcs	.+2      	; 0x3d8 <sensorScan+0x8>
- 3d6:	94 c0       	rjmp	.+296    	; 0x500 <__LOCK_REGION_LENGTH__+0x100>
- 3d8:	fc 01       	movw	r30, r24
- 3da:	e2 5a       	subi	r30, 0xA2	; 162
- 3dc:	ff 4f       	sbci	r31, 0xFF	; 255
- 3de:	79 c2       	rjmp	.+1266   	; 0x8d2 <__tablejump2__>
+ 43c:	90 e0       	ldi	r25, 0x00	; 0
+ 43e:	80 31       	cpi	r24, 0x10	; 16
+ 440:	91 05       	cpc	r25, r1
+ 442:	08 f0       	brcs	.+2      	; 0x446 <sensorScan+0xa>
+ 444:	89 c0       	rjmp	.+274    	; 0x558 <sensorScan+0x11c>
+ 446:	fc 01       	movw	r30, r24
+ 448:	e2 5a       	subi	r30, 0xA2	; 162
+ 44a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 44c:	85 c2       	rjmp	.+1290   	; 0x958 <__tablejump2__>
         case 0x0f:{                      //1111 - 걸리는거없음 직진
             //정지신호 있을때
             if(stopSign==1){            // stop sign(0110)이 있은뒤 사라지면 카운트
- 3e0:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <stopSign>
- 3e4:	81 30       	cpi	r24, 0x01	; 1
- 3e6:	99 f4       	brne	.+38     	; 0x40e <__LOCK_REGION_LENGTH__+0xe>
+ 44e:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <stopSign>
+ 452:	81 30       	cpi	r24, 0x01	; 1
+ 454:	b9 f4       	brne	.+46     	; 0x484 <sensorScan+0x48>
                 forceRightSign = forceLeftSign = 0; //정지신호가 양쪽 조금씩 다르게 들어간경우 예외처리
- 3e8:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
- 3ec:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
+ 456:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
+ 45a:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
                 stopSign=0;
- 3f0:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <stopSign>
+ 45e:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <stopSign>
                 countStopSign++;
- 3f4:	80 91 25 01 	lds	r24, 0x0125	; 0x800125 <countStopSign>
- 3f8:	8f 5f       	subi	r24, 0xFF	; 255
- 3fa:	80 93 25 01 	sts	0x0125, r24	; 0x800125 <countStopSign>
+ 462:	80 91 25 01 	lds	r24, 0x0125	; 0x800125 <countStopSign>
+ 466:	8f 5f       	subi	r24, 0xFF	; 255
+ 468:	80 93 25 01 	sts	0x0125, r24	; 0x800125 <countStopSign>
+				countTimeStop = 0;
+ 46c:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <__data_start+0x1>
+ 470:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__data_start>
 
-                if(countStopSign >2){    //stopsign 3번 나오면 종료
- 3fe:	83 30       	cpi	r24, 0x03	; 3
- 400:	d8 f0       	brcs	.+54     	; 0x438 <__LOCK_REGION_LENGTH__+0x38>
+                if((countTimeStop < 1000)&&(countStopSign > 2)){    //stopsign 3번 나오면 종료
+ 474:	83 30       	cpi	r24, 0x03	; 3
+ 476:	d8 f0       	brcs	.+54     	; 0x4ae <sensorScan+0x72>
                     state = STATE_INIT;
- 402:	10 92 29 01 	sts	0x0129, r1	; 0x800129 <state+0x1>
- 406:	10 92 28 01 	sts	0x0128, r1	; 0x800128 <state>
+ 478:	10 92 29 01 	sts	0x0129, r1	; 0x800129 <state+0x1>
+ 47c:	10 92 28 01 	sts	0x0128, r1	; 0x800128 <state>
                     initFlag();
- 40a:	86 ce       	rjmp	.-756    	; 0x118 <initFlag>
+ 480:	4b ce       	rjmp	.-874    	; 0x118 <initFlag>
                     return;
- 40c:	08 95       	ret
+ 482:	08 95       	ret
                 }
             }else if(forceRightSign){
- 40e:	80 91 23 01 	lds	r24, 0x0123	; 0x800123 <forceRightSign>
- 412:	88 23       	and	r24, r24
- 414:	39 f0       	breq	.+14     	; 0x424 <__LOCK_REGION_LENGTH__+0x24>
+ 484:	80 91 23 01 	lds	r24, 0x0123	; 0x800123 <forceRightSign>
+ 488:	88 23       	and	r24, r24
+ 48a:	39 f0       	breq	.+14     	; 0x49a <sensorScan+0x5e>
                 state=STATE_FORCE_RIGHT;
- 416:	82 e0       	ldi	r24, 0x02	; 2
- 418:	90 e0       	ldi	r25, 0x00	; 0
- 41a:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 41e:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
- 422:	0a c0       	rjmp	.+20     	; 0x438 <__LOCK_REGION_LENGTH__+0x38>
+ 48c:	82 e0       	ldi	r24, 0x02	; 2
+ 48e:	90 e0       	ldi	r25, 0x00	; 0
+ 490:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 494:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 498:	0a c0       	rjmp	.+20     	; 0x4ae <sensorScan+0x72>
             }else if(forceLeftSign){
- 424:	80 91 22 01 	lds	r24, 0x0122	; 0x800122 <forceLeftSign>
- 428:	88 23       	and	r24, r24
- 42a:	31 f0       	breq	.+12     	; 0x438 <__LOCK_REGION_LENGTH__+0x38>
+ 49a:	80 91 22 01 	lds	r24, 0x0122	; 0x800122 <forceLeftSign>
+ 49e:	88 23       	and	r24, r24
+ 4a0:	31 f0       	breq	.+12     	; 0x4ae <sensorScan+0x72>
                 state=STATE_FORCE_LEFT;
- 42c:	83 e0       	ldi	r24, 0x03	; 3
- 42e:	90 e0       	ldi	r25, 0x00	; 0
- 430:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 434:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 4a2:	83 e0       	ldi	r24, 0x03	; 3
+ 4a4:	90 e0       	ldi	r25, 0x00	; 0
+ 4a6:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 4aa:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
             }
-            motor(STRAIGHT);   //직진!
- 438:	80 e0       	ldi	r24, 0x00	; 0
- 43a:	64 cf       	rjmp	.-312    	; 0x304 <motor>
+            motor(STRAIGHT,0);   //직진!
+ 4ae:	60 e0       	ldi	r22, 0x00	; 0
+ 4b0:	80 e0       	ldi	r24, 0x00	; 0
+ 4b2:	28 cf       	rjmp	.-432    	; 0x304 <motor>
             break;
- 43c:	08 95       	ret
         }
         case 0x0b:{                      //1011 -- 하나걸림 좌회전
-            if(leftSmoth == 1){
- 43e:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <leftSmoth>
- 442:	81 30       	cpi	r24, 0x01	; 1
-	            motor(STRAIGHT);
- 444:	29 f4       	brne	.+10     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
- 446:	80 e0       	ldi	r24, 0x00	; 0
- 448:	5d df       	rcall	.-326    	; 0x304 <motor>
-	            leftSmoth=0;
- 44a:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <leftSmoth>
- 44e:	08 95       	ret
-	        }else{
-	            leftSmoth++;
- 450:	8f 5f       	subi	r24, 0xFF	; 255
- 452:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <leftSmoth>
-				motor(LEFT);
- 456:	82 e0       	ldi	r24, 0x02	; 2
- 458:	55 cf       	rjmp	.-342    	; 0x304 <motor>
- 45a:	08 95       	ret
-            }
+			motor(LEFT,1);
+ 4b4:	08 95       	ret
+ 4b6:	61 e0       	ldi	r22, 0x01	; 1
+ 4b8:	82 e0       	ldi	r24, 0x02	; 2
+            
 			
             break;
+ 4ba:	24 cf       	rjmp	.-440    	; 0x304 <motor>
         }
         case 0x0d:{                      //1101 -- 하나걸림 -우회전
-            if(rightSmoth == 1){
- 45c:	80 91 1f 01 	lds	r24, 0x011F	; 0x80011f <rightSmoth>
- 460:	81 30       	cpi	r24, 0x01	; 1
-	            motor(STRAIGHT);
- 462:	29 f4       	brne	.+10     	; 0x46e <__LOCK_REGION_LENGTH__+0x6e>
- 464:	80 e0       	ldi	r24, 0x00	; 0
- 466:	4e df       	rcall	.-356    	; 0x304 <motor>
-	            rightSmoth=0;
- 468:	10 92 1f 01 	sts	0x011F, r1	; 0x80011f <rightSmoth>
-	         }else{
-	            rightSmoth++;
- 46c:	08 95       	ret
- 46e:	8f 5f       	subi	r24, 0xFF	; 255
- 470:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <rightSmoth>
-				motor(RIGHT);
- 474:	81 e0       	ldi	r24, 0x01	; 1
- 476:	46 cf       	rjmp	.-372    	; 0x304 <motor>
+            motor(RIGHT,1);
+ 4bc:	08 95       	ret
+ 4be:	61 e0       	ldi	r22, 0x01	; 1
+ 4c0:	81 e0       	ldi	r24, 0x01	; 1
+ 4c2:	20 cf       	rjmp	.-448    	; 0x304 <motor>
 			
             break;
+ 4c4:	08 95       	ret
         }
-		case 0x05:
+		case 0x05://0101
         case 0x07:{                      //0111 -- 교차로 좌회전 신호
             forceLeftSign = 1;
- 478:	08 95       	ret
- 47a:	81 e0       	ldi	r24, 0x01	; 1
- 47c:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <forceLeftSign>
-            motor(STRAIGHT);
- 480:	80 e0       	ldi	r24, 0x00	; 0
+ 4c6:	81 e0       	ldi	r24, 0x01	; 1
+ 4c8:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <forceLeftSign>
+            motor(STRAIGHT,0);
+ 4cc:	60 e0       	ldi	r22, 0x00	; 0
+ 4ce:	80 e0       	ldi	r24, 0x00	; 0
+ 4d0:	19 cf       	rjmp	.-462    	; 0x304 <motor>
             break;
- 482:	40 cf       	rjmp	.-384    	; 0x304 <motor>
         }
-		case 0x0a:
+		case 0x0a://1010
         case 0x0e:{                      //1110 -- 교차로 우회전 신호
-            
             forceRightSign = 1;
- 484:	08 95       	ret
- 486:	81 e0       	ldi	r24, 0x01	; 1
-            motor(STRAIGHT);
- 488:	80 93 23 01 	sts	0x0123, r24	; 0x800123 <forceRightSign>
- 48c:	80 e0       	ldi	r24, 0x00	; 0
+ 4d2:	08 95       	ret
+ 4d4:	81 e0       	ldi	r24, 0x01	; 1
+ 4d6:	80 93 23 01 	sts	0x0123, r24	; 0x800123 <forceRightSign>
+            motor(STRAIGHT,0);
+ 4da:	60 e0       	ldi	r22, 0x00	; 0
+ 4dc:	80 e0       	ldi	r24, 0x00	; 0
             break;		
- 48e:	3a cf       	rjmp	.-396    	; 0x304 <motor>
+ 4de:	12 cf       	rjmp	.-476    	; 0x304 <motor>
         }
 		case 0x02://0010
 		case 0x04://0100
         case 0x06:{                      //0110 -- 정지 신호
-            
             stopSign=1;                    //flag 설정
- 490:	08 95       	ret
- 492:	81 e0       	ldi	r24, 0x01	; 1
- 494:	80 93 24 01 	sts	0x0124, r24	; 0x800124 <stopSign>
-            motor(STRAIGHT);
- 498:	80 e0       	ldi	r24, 0x00	; 0
- 49a:	34 cf       	rjmp	.-408    	; 0x304 <motor>
+ 4e0:	08 95       	ret
+ 4e2:	81 e0       	ldi	r24, 0x01	; 1
+ 4e4:	80 93 24 01 	sts	0x0124, r24	; 0x800124 <stopSign>
+            motor(STRAIGHT,0);
+ 4e8:	60 e0       	ldi	r22, 0x00	; 0
+ 4ea:	80 e0       	ldi	r24, 0x00	; 0
+ 4ec:	0b cf       	rjmp	.-490    	; 0x304 <motor>
             break;
- 49c:	08 95       	ret
+ 4ee:	08 95       	ret
         }
         case 0x01:{                        //0001 - 교차로로 치우쳐 들어감
             if(calibRight == 1){                //교차로 1000으로 들어와서 0001로 나온경우엔 오른쪽으로칼리브레이션을 해줘야 합니다.
- 49e:	80 91 20 01 	lds	r24, 0x0120	; 0x800120 <calibRight>
- 4a2:	81 30       	cpi	r24, 0x01	; 1
- 4a4:	49 f4       	brne	.+18     	; 0x4b8 <__LOCK_REGION_LENGTH__+0xb8>
+ 4f0:	80 91 20 01 	lds	r24, 0x0120	; 0x800120 <calibRight>
+ 4f4:	81 30       	cpi	r24, 0x01	; 1
+ 4f6:	49 f4       	brne	.+18     	; 0x50a <sensorScan+0xce>
                 state = STATE_CALIB_RIGHT;
- 4a6:	84 e0       	ldi	r24, 0x04	; 4
- 4a8:	90 e0       	ldi	r25, 0x00	; 0
- 4aa:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 4ae:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 4f8:	84 e0       	ldi	r24, 0x04	; 4
+ 4fa:	90 e0       	ldi	r25, 0x00	; 0
+ 4fc:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 500:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
                 calibRight = 0;//스테이트 바꿨으면 초기화하기
- 4b2:	10 92 20 01 	sts	0x0120, r1	; 0x800120 <calibRight>
+ 504:	10 92 20 01 	sts	0x0120, r1	; 0x800120 <calibRight>
                 return;
             }else{
                 calibLeft = 1;
- 4b6:	08 95       	ret
- 4b8:	81 e0       	ldi	r24, 0x01	; 1
- 4ba:	80 93 21 01 	sts	0x0121, r24	; 0x800121 <calibLeft>
+ 508:	08 95       	ret
+ 50a:	81 e0       	ldi	r24, 0x01	; 1
+ 50c:	80 93 21 01 	sts	0x0121, r24	; 0x800121 <calibLeft>
             }
-            motor(STRAIGHT);
- 4be:	80 e0       	ldi	r24, 0x00	; 0
- 4c0:	21 cf       	rjmp	.-446    	; 0x304 <motor>
+            motor(STRAIGHT,0);
+ 510:	60 e0       	ldi	r22, 0x00	; 0
+ 512:	80 e0       	ldi	r24, 0x00	; 0
+ 514:	f7 ce       	rjmp	.-530    	; 0x304 <motor>
             break;
- 4c2:	08 95       	ret
+ 516:	08 95       	ret
         }
         case 0x08:{                        //1000    - 교차로로 치우쳐 들어감
             if(calibLeft == 1){                //교차로 0001으로 들어와서 1000로 나온경우 왼쪽으로칼리브레이션을 해줘야 합니다.
- 4c4:	80 91 21 01 	lds	r24, 0x0121	; 0x800121 <calibLeft>
- 4c8:	81 30       	cpi	r24, 0x01	; 1
- 4ca:	49 f4       	brne	.+18     	; 0x4de <__LOCK_REGION_LENGTH__+0xde>
+ 518:	80 91 21 01 	lds	r24, 0x0121	; 0x800121 <calibLeft>
+ 51c:	81 30       	cpi	r24, 0x01	; 1
+ 51e:	49 f4       	brne	.+18     	; 0x532 <sensorScan+0xf6>
                 state = STATE_CALIB_LEFT;
- 4cc:	85 e0       	ldi	r24, 0x05	; 5
- 4ce:	90 e0       	ldi	r25, 0x00	; 0
- 4d0:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 4d4:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 520:	85 e0       	ldi	r24, 0x05	; 5
+ 522:	90 e0       	ldi	r25, 0x00	; 0
+ 524:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 528:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
                 calibLeft = 0;//스테이트 바꿨으면 초기화하기
- 4d8:	10 92 21 01 	sts	0x0121, r1	; 0x800121 <calibLeft>
+ 52c:	10 92 21 01 	sts	0x0121, r1	; 0x800121 <calibLeft>
                 return;
             }else{
                 calibRight = 1;
- 4dc:	08 95       	ret
- 4de:	81 e0       	ldi	r24, 0x01	; 1
- 4e0:	80 93 20 01 	sts	0x0120, r24	; 0x800120 <calibRight>
+ 530:	08 95       	ret
+ 532:	81 e0       	ldi	r24, 0x01	; 1
+ 534:	80 93 20 01 	sts	0x0120, r24	; 0x800120 <calibRight>
             }
-            motor(STRAIGHT);
- 4e4:	80 e0       	ldi	r24, 0x00	; 0
+            motor(STRAIGHT,0);
+ 538:	60 e0       	ldi	r22, 0x00	; 0
+ 53a:	80 e0       	ldi	r24, 0x00	; 0
+ 53c:	e3 ce       	rjmp	.-570    	; 0x304 <motor>
             break;
- 4e6:	0e cf       	rjmp	.-484    	; 0x304 <motor>
+ 53e:	08 95       	ret
         }
         case 0x00:{                      //0000 - 교차로
             forceLeftSign = forceRightSign = stopSign= countStopSign = 0;                //교차로에 많이 치우쳐 들어온경우(0111이 인식된뒤 들어온)교차로 를 나간뒤 STATE_FORCE로 들어가지 않게 초기화 해줘야 합니다.
- 4e8:	08 95       	ret
- 4ea:	10 92 25 01 	sts	0x0125, r1	; 0x800125 <countStopSign>
- 4ee:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <stopSign>
- 4f2:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
-            motor(STRAIGHT);
- 4f6:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
- 4fa:	80 e0       	ldi	r24, 0x00	; 0
+ 540:	10 92 25 01 	sts	0x0125, r1	; 0x800125 <countStopSign>
+ 544:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <stopSign>
+ 548:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
+            motor(STRAIGHT,0);
+ 54c:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
+ 550:	60 e0       	ldi	r22, 0x00	; 0
+ 552:	80 e0       	ldi	r24, 0x00	; 0
             break;
- 4fc:	03 cf       	rjmp	.-506    	; 0x304 <motor>
+ 554:	d7 ce       	rjmp	.-594    	; 0x304 <motor>
         }
         default: {   
-            motor(STRAIGHT);
- 4fe:	08 95       	ret
- 500:	80 e0       	ldi	r24, 0x00	; 0
- 502:	00 cf       	rjmp	.-512    	; 0x304 <motor>
- 504:	08 95       	ret
+            motor(STRAIGHT,0);
+ 556:	08 95       	ret
+ 558:	60 e0       	ldi	r22, 0x00	; 0
+ 55a:	80 e0       	ldi	r24, 0x00	; 0
+ 55c:	d3 ce       	rjmp	.-602    	; 0x304 <motor>
+ 55e:	08 95       	ret
 
-00000506 <__vector_15>:
+00000560 <speedUp>:
 }
+
 char smothStart=0;
-char stateForceSmoth = 0;
-short forceStraight = 0;
+
+void speedUp(int accel){//모터를 구동할때 일정 속도 이상으로 구동할경우, 낮은속도에서부터 천천히 올려주어야 함
+    if((timeNum < OCR0)&&(smothStart==accel)){//설정해둔 timeNum과 같은속도가 될때까지 서서히 가속
+ 560:	21 b7       	in	r18, 0x31	; 49
+ 562:	30 e0       	ldi	r19, 0x00	; 0
+ 564:	40 91 1a 01 	lds	r20, 0x011A	; 0x80011a <timeNum>
+ 568:	50 91 1b 01 	lds	r21, 0x011B	; 0x80011b <timeNum+0x1>
+ 56c:	42 17       	cp	r20, r18
+ 56e:	53 07       	cpc	r21, r19
+ 570:	60 f4       	brcc	.+24     	; 0x58a <speedUp+0x2a>
+ 572:	20 91 1e 01 	lds	r18, 0x011E	; 0x80011e <smothStart>
+ 576:	30 e0       	ldi	r19, 0x00	; 0
+ 578:	28 17       	cp	r18, r24
+ 57a:	39 07       	cpc	r19, r25
+ 57c:	31 f4       	brne	.+12     	; 0x58a <speedUp+0x2a>
+		OCR0--;
+ 57e:	81 b7       	in	r24, 0x31	; 49
+ 580:	81 50       	subi	r24, 0x01	; 1
+ 582:	81 bf       	out	0x31, r24	; 49
+		smothStart=0;
+ 584:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <smothStart>
+ 588:	08 95       	ret
+	}else{
+		smothStart++;
+ 58a:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <smothStart>
+ 58e:	8f 5f       	subi	r24, 0xFF	; 255
+ 590:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <smothStart>
+ 594:	08 95       	ret
+
+00000596 <speedDown>:
+	}
+}
+
+void speedDown(int accel){//코너를 돌때 더 안정적인 코너를 돌기위해 속도를 줄여줌
+ 596:	ac 01       	movw	r20, r24
+    if((90 > OCR0)&&(smothStart==accel)){//속도를 90으로 줄여서 코너링
+ 598:	91 b7       	in	r25, 0x31	; 49
+ 59a:	9a 35       	cpi	r25, 0x5A	; 90
+ 59c:	60 f4       	brcc	.+24     	; 0x5b6 <speedDown+0x20>
+ 59e:	20 91 1e 01 	lds	r18, 0x011E	; 0x80011e <smothStart>
+ 5a2:	30 e0       	ldi	r19, 0x00	; 0
+ 5a4:	24 17       	cp	r18, r20
+ 5a6:	35 07       	cpc	r19, r21
+ 5a8:	31 f4       	brne	.+12     	; 0x5b6 <speedDown+0x20>
+		OCR0++;
+ 5aa:	81 b7       	in	r24, 0x31	; 49
+ 5ac:	8f 5f       	subi	r24, 0xFF	; 255
+ 5ae:	81 bf       	out	0x31, r24	; 49
+		smothStart=0;
+ 5b0:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <smothStart>
+ 5b4:	08 95       	ret
+		
+	}else{
+		smothStart++;
+ 5b6:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <smothStart>
+ 5ba:	8f 5f       	subi	r24, 0xFF	; 255
+ 5bc:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <smothStart>
+ 5c0:	08 95       	ret
+
+000005c2 <forceR>:
+
+
+char smothStateForce = 0;
+short forceCount = 0;
+
+void forceR(short straightLength,short turnLength, char turnAngle, char sensor){
+ 5c2:	ef 92       	push	r14
+ 5c4:	ff 92       	push	r15
+ 5c6:	0f 93       	push	r16
+ 5c8:	1f 93       	push	r17
+ 5ca:	cf 93       	push	r28
+ 5cc:	7c 01       	movw	r14, r24
+ 5ce:	8b 01       	movw	r16, r22
+ 5d0:	c2 2f       	mov	r28, r18
+    
+    
+	
+	
+
+    if(!forceRightSign){   
+ 5d2:	80 91 23 01 	lds	r24, 0x0123	; 0x800123 <forceRightSign>
+ 5d6:	81 11       	cpse	r24, r1
+ 5d8:	1e c0       	rjmp	.+60     	; 0x616 <forceR+0x54>
+        motor(RIGHT,turnAngle);                                      //교차로에 들어간 뒤엔 회전만 합니다
+ 5da:	64 2f       	mov	r22, r20
+ 5dc:	81 e0       	ldi	r24, 0x01	; 1
+ 5de:	92 de       	rcall	.-732    	; 0x304 <motor>
+        forceCount++;
+ 5e0:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <__data_end>
+ 5e4:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <__data_end+0x1>
+ 5e8:	01 96       	adiw	r24, 0x01	; 1
+ 5ea:	90 93 1d 01 	sts	0x011D, r25	; 0x80011d <__data_end+0x1>
+ 5ee:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <__data_end>
+        if((forceCount > turnLength)&&(sensor == 0x0d)){//1101-Right턴 일때, 1011 - left 턴
+ 5f2:	08 17       	cp	r16, r24
+ 5f4:	19 07       	cpc	r17, r25
+ 5f6:	0c f0       	brlt	.+2      	; 0x5fa <forceR+0x38>
+ 5f8:	4f c0       	rjmp	.+158    	; 0x698 <forceR+0xd6>
+ 5fa:	cd 30       	cpi	r28, 0x0D	; 13
+ 5fc:	09 f0       	breq	.+2      	; 0x600 <forceR+0x3e>
+ 5fe:	4c c0       	rjmp	.+152    	; 0x698 <forceR+0xd6>
+            state = STATE_RUNNING;   
+ 600:	81 e0       	ldi	r24, 0x01	; 1
+ 602:	90 e0       	ldi	r25, 0x00	; 0
+ 604:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 608:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+            forceCount=0;                           //강제 회전하다 라인이 잡히면 트랙 타기
+ 60c:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <__data_end+0x1>
+ 610:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <__data_end>
+ 614:	41 c0       	rjmp	.+130    	; 0x698 <forceR+0xd6>
+        }
+    }else{
+        if(timeNum<80){
+ 616:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
+ 61a:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
+ 61e:	80 35       	cpi	r24, 0x50	; 80
+ 620:	91 05       	cpc	r25, r1
+ 622:	c0 f4       	brcc	.+48     	; 0x654 <forceR+0x92>
+            motor(STRAIGHT,0);
+ 624:	60 e0       	ldi	r22, 0x00	; 0
+ 626:	80 e0       	ldi	r24, 0x00	; 0
+ 628:	6d de       	rcall	.-806    	; 0x304 <motor>
+            forceCount++;
+ 62a:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <__data_end>
+ 62e:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <__data_end+0x1>
+ 632:	01 96       	adiw	r24, 0x01	; 1
+ 634:	90 93 1d 01 	sts	0x011D, r25	; 0x80011d <__data_end+0x1>
+ 638:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <__data_end>
+            if(forceCount > straightLength){
+ 63c:	e8 16       	cp	r14, r24
+ 63e:	f9 06       	cpc	r15, r25
+ 640:	5c f5       	brge	.+86     	; 0x698 <forceR+0xd6>
+                forceRightSign = 0;
+ 642:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
+                forceLeftSign = 0;
+ 646:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
+                forceCount = 0;
+ 64a:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <__data_end+0x1>
+ 64e:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <__data_end>
+ 652:	22 c0       	rjmp	.+68     	; 0x698 <forceR+0xd6>
+            }
+        }else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){    
+ 654:	22 30       	cpi	r18, 0x02	; 2
+ 656:	10 f0       	brcs	.+4      	; 0x65c <forceR+0x9a>
+ 658:	28 30       	cpi	r18, 0x08	; 8
+ 65a:	41 f4       	brne	.+16     	; 0x66c <forceR+0xaa>
+            forceRightSign = 0;  
+ 65c:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
+            forceLeftSign = 0;
+ 660:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
+            motor(RIGHT,255);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+ 664:	6f ef       	ldi	r22, 0xFF	; 255
+ 666:	81 e0       	ldi	r24, 0x01	; 1
+ 668:	4d de       	rcall	.-870    	; 0x304 <motor>
+ 66a:	16 c0       	rjmp	.+44     	; 0x698 <forceR+0xd6>
+        }else{
+            switch(sensor){
+ 66c:	2d 30       	cpi	r18, 0x0D	; 13
+ 66e:	69 f0       	breq	.+26     	; 0x68a <forceR+0xc8>
+ 670:	2f 30       	cpi	r18, 0x0F	; 15
+ 672:	19 f0       	breq	.+6      	; 0x67a <forceR+0xb8>
+ 674:	2b 30       	cpi	r18, 0x0B	; 11
+ 676:	69 f4       	brne	.+26     	; 0x692 <forceR+0xd0>
+                case 0x0f: 
+                    motor(STRAIGHT,0);
+ 678:	04 c0       	rjmp	.+8      	; 0x682 <forceR+0xc0>
+ 67a:	60 e0       	ldi	r22, 0x00	; 0
+ 67c:	80 e0       	ldi	r24, 0x00	; 0
+                    break;
+ 67e:	42 de       	rcall	.-892    	; 0x304 <motor>
+                case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                    motor(LEFT,1);
+ 680:	0b c0       	rjmp	.+22     	; 0x698 <forceR+0xd6>
+ 682:	61 e0       	ldi	r22, 0x01	; 1
+ 684:	82 e0       	ldi	r24, 0x02	; 2
+                    break;
+ 686:	3e de       	rcall	.-900    	; 0x304 <motor>
+                }
+                case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                    motor(RIGHT,1);
+ 688:	07 c0       	rjmp	.+14     	; 0x698 <forceR+0xd6>
+ 68a:	61 e0       	ldi	r22, 0x01	; 1
+ 68c:	81 e0       	ldi	r24, 0x01	; 1
+                    break;
+ 68e:	3a de       	rcall	.-908    	; 0x304 <motor>
+                }
+                default:
+                    motor(STRAIGHT,0);
+ 690:	03 c0       	rjmp	.+6      	; 0x698 <forceR+0xd6>
+ 692:	60 e0       	ldi	r22, 0x00	; 0
+ 694:	80 e0       	ldi	r24, 0x00	; 0
+ 696:	36 de       	rcall	.-916    	; 0x304 <motor>
+            }
+        }                                      //교차로 들어가기 전까지는 무조껀 직진
+    }
+}
+ 698:	cf 91       	pop	r28
+ 69a:	1f 91       	pop	r17
+ 69c:	0f 91       	pop	r16
+ 69e:	ff 90       	pop	r15
+ 6a0:	ef 90       	pop	r14
+ 6a2:	08 95       	ret
+
+000006a4 <forceL>:
+
+void forceL(short straightLength,short turnLength, char turnAngle, char sensor){
+ 6a4:	ef 92       	push	r14
+ 6a6:	ff 92       	push	r15
+ 6a8:	0f 93       	push	r16
+ 6aa:	1f 93       	push	r17
+ 6ac:	cf 93       	push	r28
+ 6ae:	7c 01       	movw	r14, r24
+ 6b0:	8b 01       	movw	r16, r22
+ 6b2:	c2 2f       	mov	r28, r18
+
+	
+	
+	
+
+	if(!forceLeftSign){
+ 6b4:	80 91 22 01 	lds	r24, 0x0122	; 0x800122 <forceLeftSign>
+ 6b8:	81 11       	cpse	r24, r1
+ 6ba:	1e c0       	rjmp	.+60     	; 0x6f8 <forceL+0x54>
+		motor(LEFT,turnAngle);                                      //교차로에 들어간 뒤엔 회전만 합니다
+ 6bc:	64 2f       	mov	r22, r20
+ 6be:	82 e0       	ldi	r24, 0x02	; 2
+ 6c0:	21 de       	rcall	.-958    	; 0x304 <motor>
+		forceCount++;
+ 6c2:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <__data_end>
+ 6c6:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <__data_end+0x1>
+ 6ca:	01 96       	adiw	r24, 0x01	; 1
+ 6cc:	90 93 1d 01 	sts	0x011D, r25	; 0x80011d <__data_end+0x1>
+ 6d0:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <__data_end>
+		if((forceCount > turnLength)&&(sensor == 0x0b)){//1101-Right턴 일때, 1011 - left 턴
+ 6d4:	08 17       	cp	r16, r24
+ 6d6:	19 07       	cpc	r17, r25
+ 6d8:	0c f0       	brlt	.+2      	; 0x6dc <forceL+0x38>
+ 6da:	4f c0       	rjmp	.+158    	; 0x77a <forceL+0xd6>
+ 6dc:	cb 30       	cpi	r28, 0x0B	; 11
+ 6de:	09 f0       	breq	.+2      	; 0x6e2 <forceL+0x3e>
+ 6e0:	4c c0       	rjmp	.+152    	; 0x77a <forceL+0xd6>
+			state = STATE_RUNNING;
+ 6e2:	81 e0       	ldi	r24, 0x01	; 1
+ 6e4:	90 e0       	ldi	r25, 0x00	; 0
+ 6e6:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 6ea:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+			forceCount=0;                           //강제 회전하다 라인이 잡히면 트랙 타기
+ 6ee:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <__data_end+0x1>
+ 6f2:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <__data_end>
+ 6f6:	41 c0       	rjmp	.+130    	; 0x77a <forceL+0xd6>
+		}
+		}else{
+		if(timeNum<80){
+ 6f8:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
+ 6fc:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
+ 700:	80 35       	cpi	r24, 0x50	; 80
+ 702:	91 05       	cpc	r25, r1
+ 704:	c0 f4       	brcc	.+48     	; 0x736 <forceL+0x92>
+			motor(STRAIGHT,0);
+ 706:	60 e0       	ldi	r22, 0x00	; 0
+ 708:	80 e0       	ldi	r24, 0x00	; 0
+ 70a:	fc dd       	rcall	.-1032   	; 0x304 <motor>
+			forceCount++;
+ 70c:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <__data_end>
+ 710:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <__data_end+0x1>
+ 714:	01 96       	adiw	r24, 0x01	; 1
+ 716:	90 93 1d 01 	sts	0x011D, r25	; 0x80011d <__data_end+0x1>
+ 71a:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <__data_end>
+			if(forceCount > straightLength){
+ 71e:	e8 16       	cp	r14, r24
+ 720:	f9 06       	cpc	r15, r25
+ 722:	5c f5       	brge	.+86     	; 0x77a <forceL+0xd6>
+				forceRightSign = 0;
+ 724:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
+				forceLeftSign = 0;
+ 728:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
+				forceCount = 0;
+ 72c:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <__data_end+0x1>
+ 730:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <__data_end>
+ 734:	22 c0       	rjmp	.+68     	; 0x77a <forceL+0xd6>
+			}
+			}else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
+ 736:	22 30       	cpi	r18, 0x02	; 2
+ 738:	10 f0       	brcs	.+4      	; 0x73e <forceL+0x9a>
+ 73a:	28 30       	cpi	r18, 0x08	; 8
+ 73c:	41 f4       	brne	.+16     	; 0x74e <forceL+0xaa>
+			forceRightSign = 0;
+ 73e:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
+			forceLeftSign = 0;
+ 742:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
+			motor(LEFT,255);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+ 746:	6f ef       	ldi	r22, 0xFF	; 255
+ 748:	82 e0       	ldi	r24, 0x02	; 2
+ 74a:	dc dd       	rcall	.-1096   	; 0x304 <motor>
+ 74c:	16 c0       	rjmp	.+44     	; 0x77a <forceL+0xd6>
+			}else{
+			switch(sensor){
+ 74e:	2d 30       	cpi	r18, 0x0D	; 13
+ 750:	69 f0       	breq	.+26     	; 0x76c <forceL+0xc8>
+ 752:	2f 30       	cpi	r18, 0x0F	; 15
+ 754:	19 f0       	breq	.+6      	; 0x75c <forceL+0xb8>
+ 756:	2b 30       	cpi	r18, 0x0B	; 11
+ 758:	69 f4       	brne	.+26     	; 0x774 <forceL+0xd0>
+				case 0x0f:
+				motor(STRAIGHT,0);
+ 75a:	04 c0       	rjmp	.+8      	; 0x764 <forceL+0xc0>
+ 75c:	60 e0       	ldi	r22, 0x00	; 0
+ 75e:	80 e0       	ldi	r24, 0x00	; 0
+				break;
+ 760:	d1 dd       	rcall	.-1118   	; 0x304 <motor>
+				case 0x0b:{                      //1011 -- 하나걸림 좌회전
+					motor(LEFT,1);
+ 762:	0b c0       	rjmp	.+22     	; 0x77a <forceL+0xd6>
+ 764:	61 e0       	ldi	r22, 0x01	; 1
+ 766:	82 e0       	ldi	r24, 0x02	; 2
+					break;
+ 768:	cd dd       	rcall	.-1126   	; 0x304 <motor>
+				}
+				case 0x0d:{                      //1101 -- 하나걸림 -우회전
+					motor(RIGHT,1);
+ 76a:	07 c0       	rjmp	.+14     	; 0x77a <forceL+0xd6>
+ 76c:	61 e0       	ldi	r22, 0x01	; 1
+ 76e:	81 e0       	ldi	r24, 0x01	; 1
+					break;
+ 770:	c9 dd       	rcall	.-1134   	; 0x304 <motor>
+				}
+				default:
+				motor(STRAIGHT,0);
+ 772:	03 c0       	rjmp	.+6      	; 0x77a <forceL+0xd6>
+ 774:	60 e0       	ldi	r22, 0x00	; 0
+ 776:	80 e0       	ldi	r24, 0x00	; 0
+ 778:	c5 dd       	rcall	.-1142   	; 0x304 <motor>
+			}
+		}                                      //교차로 들어가기 전까지는 무조껀 직진
+	}
+}
+ 77a:	cf 91       	pop	r28
+ 77c:	1f 91       	pop	r17
+ 77e:	0f 91       	pop	r16
+ 780:	ff 90       	pop	r15
+ 782:	ef 90       	pop	r14
+ 784:	08 95       	ret
+
+00000786 <__vector_15>:
+
+
 ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의 펄스 간격(속도)가 ocr0에 따라 가변
 {
- 506:	1f 92       	push	r1
- 508:	0f 92       	push	r0
- 50a:	0f b6       	in	r0, 0x3f	; 63
- 50c:	0f 92       	push	r0
- 50e:	11 24       	eor	r1, r1
- 510:	0b b6       	in	r0, 0x3b	; 59
- 512:	0f 92       	push	r0
- 514:	2f 93       	push	r18
- 516:	3f 93       	push	r19
- 518:	4f 93       	push	r20
- 51a:	5f 93       	push	r21
- 51c:	6f 93       	push	r22
- 51e:	7f 93       	push	r23
- 520:	8f 93       	push	r24
- 522:	9f 93       	push	r25
- 524:	af 93       	push	r26
- 526:	bf 93       	push	r27
- 528:	cf 93       	push	r28
- 52a:	df 93       	push	r29
- 52c:	ef 93       	push	r30
- 52e:	ff 93       	push	r31
-    int sensor = SENSOR_PORT & 0x0F; //센서값 읽기
- 530:	83 b3       	in	r24, 0x13	; 19
- 532:	8f 70       	andi	r24, 0x0F	; 15
- 534:	c8 2f       	mov	r28, r24
- 536:	d0 e0       	ldi	r29, 0x00	; 0
-	
-	
+ 786:	1f 92       	push	r1
+ 788:	0f 92       	push	r0
+ 78a:	0f b6       	in	r0, 0x3f	; 63
+ 78c:	0f 92       	push	r0
+ 78e:	11 24       	eor	r1, r1
+ 790:	0b b6       	in	r0, 0x3b	; 59
+ 792:	0f 92       	push	r0
+ 794:	2f 93       	push	r18
+ 796:	3f 93       	push	r19
+ 798:	4f 93       	push	r20
+ 79a:	5f 93       	push	r21
+ 79c:	6f 93       	push	r22
+ 79e:	7f 93       	push	r23
+ 7a0:	8f 93       	push	r24
+ 7a2:	9f 93       	push	r25
+ 7a4:	af 93       	push	r26
+ 7a6:	bf 93       	push	r27
+ 7a8:	cf 93       	push	r28
+ 7aa:	ef 93       	push	r30
+ 7ac:	ff 93       	push	r31
+	if(countTimeStop < 1000){
+ 7ae:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__data_start>
+ 7b2:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <__data_start+0x1>
+ 7b6:	88 3e       	cpi	r24, 0xE8	; 232
+ 7b8:	23 e0       	ldi	r18, 0x03	; 3
+ 7ba:	92 07       	cpc	r25, r18
+ 7bc:	2c f4       	brge	.+10     	; 0x7c8 <__vector_15+0x42>
+		countTimeStop++;
+ 7be:	01 96       	adiw	r24, 0x01	; 1
+ 7c0:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <__data_start+0x1>
+ 7c4:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+	}
+    char sensor = SENSOR_PORT & 0x0F; //센서값 읽기
+ 7c8:	c3 b3       	in	r28, 0x13	; 19
+ 7ca:	cf 70       	andi	r28, 0x0F	; 15
 	
     if(state == STATE_FORCE_RIGHT){                                 //-강제회전
- 538:	20 91 28 01 	lds	r18, 0x0128	; 0x800128 <state>
- 53c:	30 91 29 01 	lds	r19, 0x0129	; 0x800129 <state+0x1>
- 540:	22 30       	cpi	r18, 0x02	; 2
- 542:	31 05       	cpc	r19, r1
- 544:	09 f0       	breq	.+2      	; 0x548 <__vector_15+0x42>
- 546:	82 c0       	rjmp	.+260    	; 0x64c <__vector_15+0x146>
-		if(100 != OCR0&&(smothStart==10)){
- 548:	91 b7       	in	r25, 0x31	; 49
- 54a:	94 36       	cpi	r25, 0x64	; 100
- 54c:	51 f0       	breq	.+20     	; 0x562 <__vector_15+0x5c>
- 54e:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <smothStart>
- 552:	9a 30       	cpi	r25, 0x0A	; 10
- 554:	31 f4       	brne	.+12     	; 0x562 <__vector_15+0x5c>
-			OCR0++;
- 556:	91 b7       	in	r25, 0x31	; 49
- 558:	9f 5f       	subi	r25, 0xFF	; 255
- 55a:	91 bf       	out	0x31, r25	; 49
-			smothStart=0;
- 55c:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <smothStart>
- 560:	05 c0       	rjmp	.+10     	; 0x56c <__vector_15+0x66>
-			
-			}else{
-			smothStart++;
- 562:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <smothStart>
- 566:	9f 5f       	subi	r25, 0xFF	; 255
- 568:	90 93 1d 01 	sts	0x011D, r25	; 0x80011d <smothStart>
-		}
-        if(!forceRightSign){
- 56c:	90 91 23 01 	lds	r25, 0x0123	; 0x800123 <forceRightSign>
- 570:	91 11       	cpse	r25, r1
- 572:	29 c0       	rjmp	.+82     	; 0x5c6 <__vector_15+0xc0>
-            if(stateForceSmoth==3){
- 574:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <stateForceSmoth>
- 578:	83 30       	cpi	r24, 0x03	; 3
- 57a:	29 f4       	brne	.+10     	; 0x586 <__vector_15+0x80>
-				motor(STRAIGHT); 
- 57c:	80 e0       	ldi	r24, 0x00	; 0
- 57e:	c2 de       	rcall	.-636    	; 0x304 <motor>
-				stateForceSmoth=0;
- 580:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <stateForceSmoth>
- 584:	05 c0       	rjmp	.+10     	; 0x590 <__vector_15+0x8a>
-			}else{
-				stateForceSmoth++;
- 586:	8f 5f       	subi	r24, 0xFF	; 255
- 588:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <stateForceSmoth>
-				motor(RIGHT); 
- 58c:	81 e0       	ldi	r24, 0x01	; 1
- 58e:	ba de       	rcall	.-652    	; 0x304 <motor>
-			}
-			forceStraight++;                                          //교차로에 들어간 뒤엔 회전만 합니다
- 590:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <__data_end>
- 594:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <__data_end+0x1>
- 598:	01 96       	adiw	r24, 0x01	; 1
- 59a:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <__data_end+0x1>
- 59e:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <__data_end>
-            if((forceStraight>320)&&(sensor == 0x0d)){
- 5a2:	81 34       	cpi	r24, 0x41	; 65
- 5a4:	91 40       	sbci	r25, 0x01	; 1
- 5a6:	0c f4       	brge	.+2      	; 0x5aa <__vector_15+0xa4>
- 5a8:	24 c1       	rjmp	.+584    	; 0x7f2 <__vector_15+0x2ec>
- 5aa:	2d 97       	sbiw	r28, 0x0d	; 13
- 5ac:	09 f0       	breq	.+2      	; 0x5b0 <__vector_15+0xaa>
- 5ae:	21 c1       	rjmp	.+578    	; 0x7f2 <__vector_15+0x2ec>
-                state = STATE_RUNNING;   
- 5b0:	81 e0       	ldi	r24, 0x01	; 1
- 5b2:	90 e0       	ldi	r25, 0x00	; 0
- 5b4:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 5b8:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
-				forceStraight=0;                           //강제 회전하다 라인이 잡히면 트랙 타기
- 5bc:	10 92 1b 01 	sts	0x011B, r1	; 0x80011b <__data_end+0x1>
- 5c0:	10 92 1a 01 	sts	0x011A, r1	; 0x80011a <__data_end>
- 5c4:	16 c1       	rjmp	.+556    	; 0x7f2 <__vector_15+0x2ec>
-            }
-        }else{
-            if(timeNum<100&&(forceStraight<300)){
- 5c6:	20 91 18 01 	lds	r18, 0x0118	; 0x800118 <timeNum>
- 5ca:	30 91 19 01 	lds	r19, 0x0119	; 0x800119 <timeNum+0x1>
- 5ce:	24 36       	cpi	r18, 0x64	; 100
- 5d0:	31 05       	cpc	r19, r1
- 5d2:	00 f5       	brcc	.+64     	; 0x614 <__vector_15+0x10e>
- 5d4:	20 91 1a 01 	lds	r18, 0x011A	; 0x80011a <__data_end>
- 5d8:	30 91 1b 01 	lds	r19, 0x011B	; 0x80011b <__data_end+0x1>
- 5dc:	2c 32       	cpi	r18, 0x2C	; 44
- 5de:	31 40       	sbci	r19, 0x01	; 1
-	            motor(STRAIGHT);
- 5e0:	cc f4       	brge	.+50     	; 0x614 <__vector_15+0x10e>
- 5e2:	80 e0       	ldi	r24, 0x00	; 0
- 5e4:	8f de       	rcall	.-738    	; 0x304 <motor>
-	            forceStraight++;
- 5e6:	20 91 1a 01 	lds	r18, 0x011A	; 0x80011a <__data_end>
- 5ea:	30 91 1b 01 	lds	r19, 0x011B	; 0x80011b <__data_end+0x1>
- 5ee:	c9 01       	movw	r24, r18
- 5f0:	01 96       	adiw	r24, 0x01	; 1
- 5f2:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <__data_end+0x1>
- 5f6:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <__data_end>
-				if(forceStraight==240){
- 5fa:	80 3f       	cpi	r24, 0xF0	; 240
- 5fc:	91 05       	cpc	r25, r1
- 5fe:	09 f0       	breq	.+2      	; 0x602 <__vector_15+0xfc>
- 600:	f8 c0       	rjmp	.+496    	; 0x7f2 <__vector_15+0x2ec>
-					forceRightSign = 0;
- 602:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
-					forceStraight++;
- 606:	2e 5f       	subi	r18, 0xFE	; 254
- 608:	3f 4f       	sbci	r19, 0xFF	; 255
- 60a:	30 93 1b 01 	sts	0x011B, r19	; 0x80011b <__data_end+0x1>
- 60e:	20 93 1a 01 	sts	0x011A, r18	; 0x80011a <__data_end>
- 612:	ef c0       	rjmp	.+478    	; 0x7f2 <__vector_15+0x2ec>
-				}
-            }else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){    
- 614:	82 30       	cpi	r24, 0x02	; 2
- 616:	10 f0       	brcs	.+4      	; 0x61c <__vector_15+0x116>
- 618:	28 97       	sbiw	r28, 0x08	; 8
- 61a:	29 f4       	brne	.+10     	; 0x626 <__vector_15+0x120>
-                forceRightSign = 0;  
- 61c:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <forceRightSign>
-				motor(RIGHT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
- 620:	81 e0       	ldi	r24, 0x01	; 1
- 622:	70 de       	rcall	.-800    	; 0x304 <motor>
- 624:	e6 c0       	rjmp	.+460    	; 0x7f2 <__vector_15+0x2ec>
-            }else{
-				switch(sensor){
- 626:	8d 30       	cpi	r24, 0x0D	; 13
- 628:	59 f0       	breq	.+22     	; 0x640 <__vector_15+0x13a>
- 62a:	8f 30       	cpi	r24, 0x0F	; 15
- 62c:	19 f0       	breq	.+6      	; 0x634 <__vector_15+0x12e>
- 62e:	8b 30       	cpi	r24, 0x0B	; 11
- 630:	51 f4       	brne	.+20     	; 0x646 <__vector_15+0x140>
-					case 0x0f: 
-						motor(STRAIGHT);
- 632:	03 c0       	rjmp	.+6      	; 0x63a <__vector_15+0x134>
- 634:	80 e0       	ldi	r24, 0x00	; 0
-						break;
-					case 0x0b:{                      //1011 -- 하나걸림 좌회전
-						motor(LEFT);
- 636:	66 de       	rcall	.-820    	; 0x304 <motor>
- 638:	dc c0       	rjmp	.+440    	; 0x7f2 <__vector_15+0x2ec>
-						break;
- 63a:	82 e0       	ldi	r24, 0x02	; 2
-					}
-					case 0x0d:{                      //1101 -- 하나걸림 -우회전
-						motor(RIGHT);
- 63c:	63 de       	rcall	.-826    	; 0x304 <motor>
- 63e:	d9 c0       	rjmp	.+434    	; 0x7f2 <__vector_15+0x2ec>
- 640:	81 e0       	ldi	r24, 0x01	; 1
-						break;
- 642:	60 de       	rcall	.-832    	; 0x304 <motor>
-					}
-					default:
-						motor(STRAIGHT);
- 644:	d6 c0       	rjmp	.+428    	; 0x7f2 <__vector_15+0x2ec>
- 646:	80 e0       	ldi	r24, 0x00	; 0
- 648:	5d de       	rcall	.-838    	; 0x304 <motor>
- 64a:	d3 c0       	rjmp	.+422    	; 0x7f2 <__vector_15+0x2ec>
+ 7cc:	80 91 28 01 	lds	r24, 0x0128	; 0x800128 <state>
+ 7d0:	90 91 29 01 	lds	r25, 0x0129	; 0x800129 <state+0x1>
+ 7d4:	82 30       	cpi	r24, 0x02	; 2
+ 7d6:	91 05       	cpc	r25, r1
+ 7d8:	59 f4       	brne	.+22     	; 0x7f0 <__vector_15+0x6a>
+		speedDown(3);
+ 7da:	83 e0       	ldi	r24, 0x03	; 3
+ 7dc:	90 e0       	ldi	r25, 0x00	; 0
+ 7de:	db de       	rcall	.-586    	; 0x596 <speedDown>
+        
+        forceR(240,80,3,sensor);  //default
+ 7e0:	2c 2f       	mov	r18, r28
+ 7e2:	43 e0       	ldi	r20, 0x03	; 3
+ 7e4:	60 e5       	ldi	r22, 0x50	; 80
+ 7e6:	70 e0       	ldi	r23, 0x00	; 0
+ 7e8:	80 ef       	ldi	r24, 0xF0	; 240
+ 7ea:	90 e0       	ldi	r25, 0x00	; 0
+ 7ec:	ea de       	rcall	.-556    	; 0x5c2 <forceR>
+ 7ee:	45 c0       	rjmp	.+138    	; 0x87a <__vector_15+0xf4>
+						motor(STRAIGHT,0);
 				}
 			}                                      //교차로 들어가기 전까지는 무조껀 직진
         }
+        */
     }else if(state == STATE_FORCE_LEFT){                            //-강제회전
- 64c:	23 30       	cpi	r18, 0x03	; 3
- 64e:	31 05       	cpc	r19, r1
- 650:	09 f0       	breq	.+2      	; 0x654 <__vector_15+0x14e>
- 652:	82 c0       	rjmp	.+260    	; 0x758 <__vector_15+0x252>
-		
-		if(100 != OCR0&&(smothStart==10)){
- 654:	91 b7       	in	r25, 0x31	; 49
- 656:	94 36       	cpi	r25, 0x64	; 100
- 658:	51 f0       	breq	.+20     	; 0x66e <__vector_15+0x168>
- 65a:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <smothStart>
- 65e:	9a 30       	cpi	r25, 0x0A	; 10
- 660:	31 f4       	brne	.+12     	; 0x66e <__vector_15+0x168>
-			OCR0++;
- 662:	91 b7       	in	r25, 0x31	; 49
- 664:	9f 5f       	subi	r25, 0xFF	; 255
- 666:	91 bf       	out	0x31, r25	; 49
-			smothStart=0;
- 668:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <smothStart>
- 66c:	05 c0       	rjmp	.+10     	; 0x678 <__vector_15+0x172>
-			
-			}else{
-			smothStart++;
- 66e:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <smothStart>
- 672:	9f 5f       	subi	r25, 0xFF	; 255
- 674:	90 93 1d 01 	sts	0x011D, r25	; 0x80011d <smothStart>
-		}
-        if(!forceLeftSign){
- 678:	90 91 22 01 	lds	r25, 0x0122	; 0x800122 <forceLeftSign>
- 67c:	91 11       	cpse	r25, r1
-            if(stateForceSmoth==3){
- 67e:	29 c0       	rjmp	.+82     	; 0x6d2 <__vector_15+0x1cc>
- 680:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <stateForceSmoth>
- 684:	83 30       	cpi	r24, 0x03	; 3
-	            motor(STRAIGHT);
- 686:	29 f4       	brne	.+10     	; 0x692 <__vector_15+0x18c>
- 688:	80 e0       	ldi	r24, 0x00	; 0
-	            stateForceSmoth=0;
- 68a:	3c de       	rcall	.-904    	; 0x304 <motor>
- 68c:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <stateForceSmoth>
-	            }else{
-	            stateForceSmoth++;
- 690:	05 c0       	rjmp	.+10     	; 0x69c <__vector_15+0x196>
- 692:	8f 5f       	subi	r24, 0xFF	; 255
- 694:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <stateForceSmoth>
-				motor(LEFT);   
- 698:	82 e0       	ldi	r24, 0x02	; 2
- 69a:	34 de       	rcall	.-920    	; 0x304 <motor>
-            }
-			 forceStraight++;                                           //교차로에 들어간 뒤엔 회전만 합니다
- 69c:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <__data_end>
- 6a0:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <__data_end+0x1>
- 6a4:	01 96       	adiw	r24, 0x01	; 1
- 6a6:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <__data_end+0x1>
- 6aa:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <__data_end>
-            if((forceStraight>320)&&(sensor == 0x0b)){                                        //강제 회전하다 라인 잡히면 트랙 타기
- 6ae:	81 34       	cpi	r24, 0x41	; 65
- 6b0:	91 40       	sbci	r25, 0x01	; 1
- 6b2:	0c f4       	brge	.+2      	; 0x6b6 <__vector_15+0x1b0>
- 6b4:	9e c0       	rjmp	.+316    	; 0x7f2 <__vector_15+0x2ec>
- 6b6:	2b 97       	sbiw	r28, 0x0b	; 11
- 6b8:	09 f0       	breq	.+2      	; 0x6bc <__vector_15+0x1b6>
- 6ba:	9b c0       	rjmp	.+310    	; 0x7f2 <__vector_15+0x2ec>
-                state = STATE_RUNNING;
- 6bc:	81 e0       	ldi	r24, 0x01	; 1
- 6be:	90 e0       	ldi	r25, 0x00	; 0
- 6c0:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 6c4:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
-				forceStraight=0;
- 6c8:	10 92 1b 01 	sts	0x011B, r1	; 0x80011b <__data_end+0x1>
- 6cc:	10 92 1a 01 	sts	0x011A, r1	; 0x80011a <__data_end>
- 6d0:	90 c0       	rjmp	.+288    	; 0x7f2 <__vector_15+0x2ec>
-            }
-        }else{         
-			if(timeNum<100&&(forceStraight<300)){
- 6d2:	20 91 18 01 	lds	r18, 0x0118	; 0x800118 <timeNum>
- 6d6:	30 91 19 01 	lds	r19, 0x0119	; 0x800119 <timeNum+0x1>
- 6da:	24 36       	cpi	r18, 0x64	; 100
- 6dc:	31 05       	cpc	r19, r1
- 6de:	00 f5       	brcc	.+64     	; 0x720 <__vector_15+0x21a>
- 6e0:	20 91 1a 01 	lds	r18, 0x011A	; 0x80011a <__data_end>
- 6e4:	30 91 1b 01 	lds	r19, 0x011B	; 0x80011b <__data_end+0x1>
- 6e8:	2c 32       	cpi	r18, 0x2C	; 44
- 6ea:	31 40       	sbci	r19, 0x01	; 1
-				motor(STRAIGHT);
- 6ec:	cc f4       	brge	.+50     	; 0x720 <__vector_15+0x21a>
- 6ee:	80 e0       	ldi	r24, 0x00	; 0
- 6f0:	09 de       	rcall	.-1006   	; 0x304 <motor>
-				forceStraight++;
- 6f2:	20 91 1a 01 	lds	r18, 0x011A	; 0x80011a <__data_end>
- 6f6:	30 91 1b 01 	lds	r19, 0x011B	; 0x80011b <__data_end+0x1>
- 6fa:	c9 01       	movw	r24, r18
- 6fc:	01 96       	adiw	r24, 0x01	; 1
- 6fe:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <__data_end+0x1>
- 702:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <__data_end>
-				if(forceStraight==240){
- 706:	80 3f       	cpi	r24, 0xF0	; 240
- 708:	91 05       	cpc	r25, r1
- 70a:	09 f0       	breq	.+2      	; 0x70e <__vector_15+0x208>
- 70c:	72 c0       	rjmp	.+228    	; 0x7f2 <__vector_15+0x2ec>
-					forceLeftSign = 0;
- 70e:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
-					forceStraight++;
- 712:	2e 5f       	subi	r18, 0xFE	; 254
- 714:	3f 4f       	sbci	r19, 0xFF	; 255
- 716:	30 93 1b 01 	sts	0x011B, r19	; 0x80011b <__data_end+0x1>
- 71a:	20 93 1a 01 	sts	0x011A, r18	; 0x80011a <__data_end>
-					
-				}
-			}else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
- 71e:	69 c0       	rjmp	.+210    	; 0x7f2 <__vector_15+0x2ec>
- 720:	82 30       	cpi	r24, 0x02	; 2
- 722:	10 f0       	brcs	.+4      	; 0x728 <__vector_15+0x222>
- 724:	28 97       	sbiw	r28, 0x08	; 8
-                forceLeftSign = 0;   
- 726:	29 f4       	brne	.+10     	; 0x732 <__vector_15+0x22c>
- 728:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <forceLeftSign>
-				motor(LEFT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
- 72c:	82 e0       	ldi	r24, 0x02	; 2
- 72e:	ea dd       	rcall	.-1068   	; 0x304 <motor>
-            }else{
-				switch(sensor){
- 730:	60 c0       	rjmp	.+192    	; 0x7f2 <__vector_15+0x2ec>
- 732:	8d 30       	cpi	r24, 0x0D	; 13
- 734:	59 f0       	breq	.+22     	; 0x74c <__vector_15+0x246>
- 736:	8f 30       	cpi	r24, 0x0F	; 15
- 738:	19 f0       	breq	.+6      	; 0x740 <__vector_15+0x23a>
-					case 0x0f:
-					motor(STRAIGHT);
- 73a:	8b 30       	cpi	r24, 0x0B	; 11
- 73c:	51 f4       	brne	.+20     	; 0x752 <__vector_15+0x24c>
- 73e:	03 c0       	rjmp	.+6      	; 0x746 <__vector_15+0x240>
-					break;
- 740:	80 e0       	ldi	r24, 0x00	; 0
-					case 0x0b:{                      //1011 -- 하나걸림 좌회전
-						motor(LEFT);
- 742:	e0 dd       	rcall	.-1088   	; 0x304 <motor>
- 744:	56 c0       	rjmp	.+172    	; 0x7f2 <__vector_15+0x2ec>
- 746:	82 e0       	ldi	r24, 0x02	; 2
-						break;
- 748:	dd dd       	rcall	.-1094   	; 0x304 <motor>
-					}
-					case 0x0d:{                      //1101 -- 하나걸림 -우회전
-						motor(RIGHT);
- 74a:	53 c0       	rjmp	.+166    	; 0x7f2 <__vector_15+0x2ec>
- 74c:	81 e0       	ldi	r24, 0x01	; 1
- 74e:	da dd       	rcall	.-1100   	; 0x304 <motor>
-						break;
- 750:	50 c0       	rjmp	.+160    	; 0x7f2 <__vector_15+0x2ec>
-					}
-					default:
-						motor(STRAIGHT);
- 752:	80 e0       	ldi	r24, 0x00	; 0
- 754:	d7 dd       	rcall	.-1106   	; 0x304 <motor>
- 756:	4d c0       	rjmp	.+154    	; 0x7f2 <__vector_15+0x2ec>
- 758:	24 30       	cpi	r18, 0x04	; 4
+ 7f0:	83 30       	cpi	r24, 0x03	; 3
+ 7f2:	91 05       	cpc	r25, r1
+ 7f4:	59 f4       	brne	.+22     	; 0x80c <__vector_15+0x86>
+		speedDown(3);
+ 7f6:	83 e0       	ldi	r24, 0x03	; 3
+ 7f8:	90 e0       	ldi	r25, 0x00	; 0
+ 7fa:	cd de       	rcall	.-614    	; 0x596 <speedDown>
+        //forceLeftSign이 초기화되면
+        
+        forceL(240,80,3,sensor);  //default
+ 7fc:	2c 2f       	mov	r18, r28
+ 7fe:	43 e0       	ldi	r20, 0x03	; 3
+ 800:	60 e5       	ldi	r22, 0x50	; 80
+ 802:	70 e0       	ldi	r23, 0x00	; 0
+ 804:	80 ef       	ldi	r24, 0xF0	; 240
+ 806:	90 e0       	ldi	r25, 0x00	; 0
+ 808:	4d df       	rcall	.-358    	; 0x6a4 <forceL>
+ 80a:	37 c0       	rjmp	.+110    	; 0x87a <__vector_15+0xf4>
+						motor(STRAIGHT,0);
 				}                                        //교차로 들어가기 전까지는 무조껀 직진
 			}
         }
+        */
     }else if(state == STATE_CALIB_RIGHT){                           //-교차로를 틀어져서 왼쪽으로 들어갈때 칼리브레이션
- 75a:	31 05       	cpc	r19, r1
- 75c:	a9 f4       	brne	.+42     	; 0x788 <__vector_15+0x282>
- 75e:	cb 30       	cpi	r28, 0x0B	; 11
+ 80c:	84 30       	cpi	r24, 0x04	; 4
+ 80e:	91 05       	cpc	r25, r1
+ 810:	a9 f4       	brne	.+42     	; 0x83c <__vector_15+0xb6>
         if(sensor == 0x0b||sensor == 0x0d){                         //레일 위로 돌아가면 종료
- 760:	d1 05       	cpc	r29, r1
- 762:	19 f0       	breq	.+6      	; 0x76a <__vector_15+0x264>
- 764:	cd 30       	cpi	r28, 0x0D	; 13
- 766:	d1 05       	cpc	r29, r1
+ 812:	cb 30       	cpi	r28, 0x0B	; 11
+ 814:	11 f0       	breq	.+4      	; 0x81a <__vector_15+0x94>
+ 816:	cd 30       	cpi	r28, 0x0D	; 13
+ 818:	39 f4       	brne	.+14     	; 0x828 <__vector_15+0xa2>
             state = STATE_RUNNING;
- 768:	39 f4       	brne	.+14     	; 0x778 <__vector_15+0x272>
- 76a:	81 e0       	ldi	r24, 0x01	; 1
- 76c:	90 e0       	ldi	r25, 0x00	; 0
- 76e:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 772:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 81a:	81 e0       	ldi	r24, 0x01	; 1
+ 81c:	90 e0       	ldi	r25, 0x00	; 0
+ 81e:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 822:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 826:	29 c0       	rjmp	.+82     	; 0x87a <__vector_15+0xf4>
         }else if(sensor == 0x0f){                                   //하나도 안걸릴때 일딴 오른쪽으로 돌림
- 776:	3d c0       	rjmp	.+122    	; 0x7f2 <__vector_15+0x2ec>
- 778:	2f 97       	sbiw	r28, 0x0f	; 15
-            motor(RIGHT);
- 77a:	19 f4       	brne	.+6      	; 0x782 <__vector_15+0x27c>
- 77c:	81 e0       	ldi	r24, 0x01	; 1
- 77e:	c2 dd       	rcall	.-1148   	; 0x304 <motor>
- 780:	38 c0       	rjmp	.+112    	; 0x7f2 <__vector_15+0x2ec>
+ 828:	cf 30       	cpi	r28, 0x0F	; 15
+            motor(RIGHT,3);
+ 82a:	21 f4       	brne	.+8      	; 0x834 <__vector_15+0xae>
+ 82c:	63 e0       	ldi	r22, 0x03	; 3
+ 82e:	81 e0       	ldi	r24, 0x01	; 1
+ 830:	69 dd       	rcall	.-1326   	; 0x304 <motor>
         }else{                                                      //교차로를 나오기 전까지는 무조껀 직진
-            motor(STRAIGHT);
- 782:	80 e0       	ldi	r24, 0x00	; 0
- 784:	bf dd       	rcall	.-1154   	; 0x304 <motor>
- 786:	35 c0       	rjmp	.+106    	; 0x7f2 <__vector_15+0x2ec>
- 788:	25 30       	cpi	r18, 0x05	; 5
+            motor(STRAIGHT,0);
+ 832:	23 c0       	rjmp	.+70     	; 0x87a <__vector_15+0xf4>
+ 834:	60 e0       	ldi	r22, 0x00	; 0
+ 836:	80 e0       	ldi	r24, 0x00	; 0
+ 838:	65 dd       	rcall	.-1334   	; 0x304 <motor>
+ 83a:	1f c0       	rjmp	.+62     	; 0x87a <__vector_15+0xf4>
         }
     }else if(state == STATE_CALIB_LEFT){                            //-교차로를 틀어져서 오른쪽으로 들어갈때 칼리브레이션
- 78a:	31 05       	cpc	r19, r1
- 78c:	a9 f4       	brne	.+42     	; 0x7b8 <__vector_15+0x2b2>
+ 83c:	85 30       	cpi	r24, 0x05	; 5
+ 83e:	91 05       	cpc	r25, r1
+ 840:	a9 f4       	brne	.+42     	; 0x86c <__vector_15+0xe6>
         if(sensor == 0x0b||sensor == 0x0d){                         //레일 위로 돌아가면 종료
- 78e:	cb 30       	cpi	r28, 0x0B	; 11
- 790:	d1 05       	cpc	r29, r1
- 792:	19 f0       	breq	.+6      	; 0x79a <__vector_15+0x294>
- 794:	cd 30       	cpi	r28, 0x0D	; 13
- 796:	d1 05       	cpc	r29, r1
+ 842:	cb 30       	cpi	r28, 0x0B	; 11
+ 844:	11 f0       	breq	.+4      	; 0x84a <__vector_15+0xc4>
+ 846:	cd 30       	cpi	r28, 0x0D	; 13
+ 848:	39 f4       	brne	.+14     	; 0x858 <__vector_15+0xd2>
             state = STATE_RUNNING;
- 798:	39 f4       	brne	.+14     	; 0x7a8 <__vector_15+0x2a2>
- 79a:	81 e0       	ldi	r24, 0x01	; 1
- 79c:	90 e0       	ldi	r25, 0x00	; 0
- 79e:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
- 7a2:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
+ 84a:	81 e0       	ldi	r24, 0x01	; 1
+ 84c:	90 e0       	ldi	r25, 0x00	; 0
+ 84e:	90 93 29 01 	sts	0x0129, r25	; 0x800129 <state+0x1>
+ 852:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <state>
         }else if(sensor == 0x0f){                                   //하나도 안걸릴때 일딴 오른쪽으로 돌림
- 7a6:	25 c0       	rjmp	.+74     	; 0x7f2 <__vector_15+0x2ec>
- 7a8:	2f 97       	sbiw	r28, 0x0f	; 15
-            motor(LEFT);
- 7aa:	19 f4       	brne	.+6      	; 0x7b2 <__vector_15+0x2ac>
- 7ac:	82 e0       	ldi	r24, 0x02	; 2
- 7ae:	aa dd       	rcall	.-1196   	; 0x304 <motor>
- 7b0:	20 c0       	rjmp	.+64     	; 0x7f2 <__vector_15+0x2ec>
+ 856:	11 c0       	rjmp	.+34     	; 0x87a <__vector_15+0xf4>
+ 858:	cf 30       	cpi	r28, 0x0F	; 15
+            motor(LEFT,3);
+ 85a:	21 f4       	brne	.+8      	; 0x864 <__vector_15+0xde>
+ 85c:	63 e0       	ldi	r22, 0x03	; 3
+ 85e:	82 e0       	ldi	r24, 0x02	; 2
+ 860:	51 dd       	rcall	.-1374   	; 0x304 <motor>
         }else{                                                      //교차로를 나오기 전까지는 무조껀 직진
-            motor(STRAIGHT);
- 7b2:	80 e0       	ldi	r24, 0x00	; 0
- 7b4:	a7 dd       	rcall	.-1202   	; 0x304 <motor>
- 7b6:	1d c0       	rjmp	.+58     	; 0x7f2 <__vector_15+0x2ec>
- 7b8:	21 30       	cpi	r18, 0x01	; 1
+            motor(STRAIGHT,0);
+ 862:	0b c0       	rjmp	.+22     	; 0x87a <__vector_15+0xf4>
+ 864:	60 e0       	ldi	r22, 0x00	; 0
+ 866:	80 e0       	ldi	r24, 0x00	; 0
         }
     }else if(state == STATE_RUNNING){
- 7ba:	31 05       	cpc	r19, r1
- 7bc:	d1 f4       	brne	.+52     	; 0x7f2 <__vector_15+0x2ec>
- 7be:	81 b7       	in	r24, 0x31	; 49
-		if(timeNum != OCR0&&(smothStart==10)){
- 7c0:	90 e0       	ldi	r25, 0x00	; 0
- 7c2:	20 91 18 01 	lds	r18, 0x0118	; 0x800118 <timeNum>
- 7c6:	30 91 19 01 	lds	r19, 0x0119	; 0x800119 <timeNum+0x1>
- 7ca:	82 17       	cp	r24, r18
- 7cc:	93 07       	cpc	r25, r19
- 7ce:	51 f0       	breq	.+20     	; 0x7e4 <__vector_15+0x2de>
- 7d0:	80 91 1d 01 	lds	r24, 0x011D	; 0x80011d <smothStart>
- 7d4:	8a 30       	cpi	r24, 0x0A	; 10
- 7d6:	31 f4       	brne	.+12     	; 0x7e4 <__vector_15+0x2de>
-			OCR0--;
- 7d8:	81 b7       	in	r24, 0x31	; 49
- 7da:	81 50       	subi	r24, 0x01	; 1
- 7dc:	81 bf       	out	0x31, r24	; 49
-			smothStart=0;
- 7de:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <smothStart>
- 7e2:	05 c0       	rjmp	.+10     	; 0x7ee <__vector_15+0x2e8>
-			
-			}else{
-			smothStart++;
- 7e4:	80 91 1d 01 	lds	r24, 0x011D	; 0x80011d <smothStart>
- 7e8:	8f 5f       	subi	r24, 0xFF	; 255
- 7ea:	80 93 1d 01 	sts	0x011D, r24	; 0x80011d <smothStart>
-		}
-		
+ 868:	4d dd       	rcall	.-1382   	; 0x304 <motor>
+ 86a:	07 c0       	rjmp	.+14     	; 0x87a <__vector_15+0xf4>
+        speedUp(7);//숫자가 낮으면 더 빠르게 가속
+ 86c:	01 97       	sbiw	r24, 0x01	; 1
+ 86e:	29 f4       	brne	.+10     	; 0x87a <__vector_15+0xf4>
+ 870:	87 e0       	ldi	r24, 0x07	; 7
+ 872:	90 e0       	ldi	r25, 0x00	; 0
         sensorScan(sensor);                    //일반적인 라인 팔로잉 상태
- 7ee:	ce 01       	movw	r24, r28
- 7f0:	ef dd       	rcall	.-1058   	; 0x3d0 <sensorScan>
- 7f2:	ff 91       	pop	r31
+ 874:	75 de       	rcall	.-790    	; 0x560 <speedUp>
+ 876:	8c 2f       	mov	r24, r28
+ 878:	e1 dd       	rcall	.-1086   	; 0x43c <sensorScan>
     }
 }
- 7f4:	ef 91       	pop	r30
- 7f6:	df 91       	pop	r29
- 7f8:	cf 91       	pop	r28
- 7fa:	bf 91       	pop	r27
- 7fc:	af 91       	pop	r26
- 7fe:	9f 91       	pop	r25
- 800:	8f 91       	pop	r24
- 802:	7f 91       	pop	r23
- 804:	6f 91       	pop	r22
- 806:	5f 91       	pop	r21
- 808:	4f 91       	pop	r20
- 80a:	3f 91       	pop	r19
- 80c:	2f 91       	pop	r18
- 80e:	0f 90       	pop	r0
- 810:	0b be       	out	0x3b, r0	; 59
- 812:	0f 90       	pop	r0
- 814:	0f be       	out	0x3f, r0	; 63
- 816:	0f 90       	pop	r0
- 818:	1f 90       	pop	r1
- 81a:	18 95       	reti
+ 87a:	ff 91       	pop	r31
+ 87c:	ef 91       	pop	r30
+ 87e:	cf 91       	pop	r28
+ 880:	bf 91       	pop	r27
+ 882:	af 91       	pop	r26
+ 884:	9f 91       	pop	r25
+ 886:	8f 91       	pop	r24
+ 888:	7f 91       	pop	r23
+ 88a:	6f 91       	pop	r22
+ 88c:	5f 91       	pop	r21
+ 88e:	4f 91       	pop	r20
+ 890:	3f 91       	pop	r19
+ 892:	2f 91       	pop	r18
+ 894:	0f 90       	pop	r0
+ 896:	0b be       	out	0x3b, r0	; 59
+ 898:	0f 90       	pop	r0
+ 89a:	0f be       	out	0x3f, r0	; 63
+ 89c:	0f 90       	pop	r0
+ 89e:	1f 90       	pop	r1
+ 8a0:	18 95       	reti
 
-0000081c <main>:
- 81c:	a5 dc       	rcall	.-1718   	; 0x168 <initDevices>
+000008a2 <main>:
+///////////////////interrupt service routine end////////////////////////
 
 int main(void){
 
     //initialize port and interrupt
     initDevices();
+ 8a2:	62 dc       	rcall	.-1852   	; 0x168 <initDevices>
     initSegment();
- 81e:	4c dd       	rcall	.-1384   	; 0x2b8 <initSegment>
+ 8a4:	09 dd       	rcall	.-1518   	; 0x2b8 <initSegment>
     initInterrupt();
- 820:	54 dd       	rcall	.-1368   	; 0x2ca <initInterrupt>
+ 8a6:	11 dd       	rcall	.-1502   	; 0x2ca <initInterrupt>
     initTimerInterrupt();
- 822:	66 dd       	rcall	.-1332   	; 0x2f0 <initTimerInterrupt>
- 824:	79 dc       	rcall	.-1806   	; 0x118 <initFlag>
+ 8a8:	23 dd       	rcall	.-1466   	; 0x2f0 <initTimerInterrupt>
+ 8aa:	36 dc       	rcall	.-1940   	; 0x118 <initFlag>
     initFlag();
- 826:	8f ef       	ldi	r24, 0xFF	; 255
- 828:	81 bb       	out	0x11, r24	; 17
+ 8ac:	8f ef       	ldi	r24, 0xFF	; 255
+ 8ae:	81 bb       	out	0x11, r24	; 17
     
     MOTOR_PORT_DDR = 0xff;
- 82a:	78 94       	sei
- 82c:	0f 2e       	mov	r0, r31
+ 8b0:	78 94       	sei
+ 8b2:	0f 2e       	mov	r0, r31
     //Global Interrupt Enable
     sei();
- 82e:	f8 ee       	ldi	r31, 0xE8	; 232
+ 8b4:	f8 ee       	ldi	r31, 0xE8	; 232
     //print 7segment by global variable timeNum
     //timeNum variable is state and OCR0
     while (1){
         //segment print
         for(int i = 0; i < 4; i++){
             printSeg(((state*1000 + timeNum)/exp10[i])%10,3-i); //OCR0를 세그먼트에 출력합니다.
- 830:	ef 2e       	mov	r14, r31
- 832:	f3 e0       	ldi	r31, 0x03	; 3
- 834:	ff 2e       	mov	r15, r31
- 836:	f0 2d       	mov	r31, r0
- 838:	02 e0       	ldi	r16, 0x02	; 2
- 83a:	11 e0       	ldi	r17, 0x01	; 1
- 83c:	c3 e0       	ldi	r28, 0x03	; 3
- 83e:	d0 e0       	ldi	r29, 0x00	; 0
+ 8b6:	ef 2e       	mov	r14, r31
+ 8b8:	f3 e0       	ldi	r31, 0x03	; 3
+ 8ba:	ff 2e       	mov	r15, r31
+ 8bc:	f0 2d       	mov	r31, r0
+ 8be:	04 e0       	ldi	r16, 0x04	; 4
+ 8c0:	11 e0       	ldi	r17, 0x01	; 1
+ 8c2:	c3 e0       	ldi	r28, 0x03	; 3
+ 8c4:	d0 e0       	ldi	r29, 0x00	; 0
         sensorScan(sensor);                    //일반적인 라인 팔로잉 상태
     }
 }
 ///////////////////interrupt service routine end////////////////////////
 
 int main(void){
- 840:	f8 01       	movw	r30, r16
- 842:	61 91       	ld	r22, Z+
+ 8c6:	f8 01       	movw	r30, r16
+ 8c8:	61 91       	ld	r22, Z+
     //print 7segment by global variable timeNum
     //timeNum variable is state and OCR0
     while (1){
         //segment print
         for(int i = 0; i < 4; i++){
             printSeg(((state*1000 + timeNum)/exp10[i])%10,3-i); //OCR0를 세그먼트에 출력합니다.
- 844:	71 91       	ld	r23, Z+
- 846:	8f 01       	movw	r16, r30
- 848:	80 91 28 01 	lds	r24, 0x0128	; 0x800128 <state>
- 84c:	90 91 29 01 	lds	r25, 0x0129	; 0x800129 <state+0x1>
- 850:	8e 9d       	mul	r24, r14
- 852:	90 01       	movw	r18, r0
- 854:	8f 9d       	mul	r24, r15
- 856:	30 0d       	add	r19, r0
- 858:	9e 9d       	mul	r25, r14
- 85a:	30 0d       	add	r19, r0
- 85c:	11 24       	eor	r1, r1
- 85e:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <timeNum>
- 862:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <timeNum+0x1>
- 866:	82 0f       	add	r24, r18
- 868:	93 1f       	adc	r25, r19
- 86a:	1f d0       	rcall	.+62     	; 0x8aa <__udivmodhi4>
- 86c:	ab 01       	movw	r20, r22
- 86e:	9b 01       	movw	r18, r22
- 870:	ad ec       	ldi	r26, 0xCD	; 205
- 872:	bc ec       	ldi	r27, 0xCC	; 204
- 874:	37 d0       	rcall	.+110    	; 0x8e4 <__umulhisi3>
- 876:	96 95       	lsr	r25
- 878:	87 95       	ror	r24
- 87a:	96 95       	lsr	r25
- 87c:	87 95       	ror	r24
- 87e:	96 95       	lsr	r25
- 880:	87 95       	ror	r24
- 882:	9c 01       	movw	r18, r24
- 884:	22 0f       	add	r18, r18
- 886:	33 1f       	adc	r19, r19
- 888:	88 0f       	add	r24, r24
- 88a:	99 1f       	adc	r25, r25
- 88c:	88 0f       	add	r24, r24
- 88e:	99 1f       	adc	r25, r25
- 890:	88 0f       	add	r24, r24
- 892:	99 1f       	adc	r25, r25
- 894:	82 0f       	add	r24, r18
- 896:	93 1f       	adc	r25, r19
- 898:	be 01       	movw	r22, r28
- 89a:	9a 01       	movw	r18, r20
- 89c:	28 1b       	sub	r18, r24
- 89e:	39 0b       	sbc	r19, r25
- 8a0:	c9 01       	movw	r24, r18
- 8a2:	fb dc       	rcall	.-1546   	; 0x29a <printSeg>
- 8a4:	21 97       	sbiw	r28, 0x01	; 1
- 8a6:	60 f6       	brcc	.-104    	; 0x840 <main+0x24>
- 8a8:	c7 cf       	rjmp	.-114    	; 0x838 <main+0x1c>
+ 8ca:	71 91       	ld	r23, Z+
+ 8cc:	8f 01       	movw	r16, r30
+ 8ce:	80 91 28 01 	lds	r24, 0x0128	; 0x800128 <state>
+ 8d2:	90 91 29 01 	lds	r25, 0x0129	; 0x800129 <state+0x1>
+ 8d6:	8e 9d       	mul	r24, r14
+ 8d8:	90 01       	movw	r18, r0
+ 8da:	8f 9d       	mul	r24, r15
+ 8dc:	30 0d       	add	r19, r0
+ 8de:	9e 9d       	mul	r25, r14
+ 8e0:	30 0d       	add	r19, r0
+ 8e2:	11 24       	eor	r1, r1
+ 8e4:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <timeNum>
+ 8e8:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <timeNum+0x1>
+ 8ec:	82 0f       	add	r24, r18
+ 8ee:	93 1f       	adc	r25, r19
+ 8f0:	1f d0       	rcall	.+62     	; 0x930 <__udivmodhi4>
+ 8f2:	ab 01       	movw	r20, r22
+ 8f4:	9b 01       	movw	r18, r22
+ 8f6:	ad ec       	ldi	r26, 0xCD	; 205
+ 8f8:	bc ec       	ldi	r27, 0xCC	; 204
+ 8fa:	37 d0       	rcall	.+110    	; 0x96a <__umulhisi3>
+ 8fc:	96 95       	lsr	r25
+ 8fe:	87 95       	ror	r24
+ 900:	96 95       	lsr	r25
+ 902:	87 95       	ror	r24
+ 904:	96 95       	lsr	r25
+ 906:	87 95       	ror	r24
+ 908:	9c 01       	movw	r18, r24
+ 90a:	22 0f       	add	r18, r18
+ 90c:	33 1f       	adc	r19, r19
+ 90e:	88 0f       	add	r24, r24
+ 910:	99 1f       	adc	r25, r25
+ 912:	88 0f       	add	r24, r24
+ 914:	99 1f       	adc	r25, r25
+ 916:	88 0f       	add	r24, r24
+ 918:	99 1f       	adc	r25, r25
+ 91a:	82 0f       	add	r24, r18
+ 91c:	93 1f       	adc	r25, r19
+ 91e:	be 01       	movw	r22, r28
+ 920:	9a 01       	movw	r18, r20
+ 922:	28 1b       	sub	r18, r24
+ 924:	39 0b       	sbc	r19, r25
+ 926:	c9 01       	movw	r24, r18
+ 928:	b8 dc       	rcall	.-1680   	; 0x29a <printSeg>
+ 92a:	21 97       	sbiw	r28, 0x01	; 1
+ 92c:	60 f6       	brcc	.-104    	; 0x8c6 <main+0x24>
+ 92e:	c7 cf       	rjmp	.-114    	; 0x8be <main+0x1c>
 
-000008aa <__udivmodhi4>:
- 8aa:	aa 1b       	sub	r26, r26
- 8ac:	bb 1b       	sub	r27, r27
- 8ae:	51 e1       	ldi	r21, 0x11	; 17
- 8b0:	07 c0       	rjmp	.+14     	; 0x8c0 <__udivmodhi4_ep>
+00000930 <__udivmodhi4>:
+ 930:	aa 1b       	sub	r26, r26
+ 932:	bb 1b       	sub	r27, r27
+ 934:	51 e1       	ldi	r21, 0x11	; 17
+ 936:	07 c0       	rjmp	.+14     	; 0x946 <__udivmodhi4_ep>
 
-000008b2 <__udivmodhi4_loop>:
- 8b2:	aa 1f       	adc	r26, r26
- 8b4:	bb 1f       	adc	r27, r27
- 8b6:	a6 17       	cp	r26, r22
- 8b8:	b7 07       	cpc	r27, r23
- 8ba:	10 f0       	brcs	.+4      	; 0x8c0 <__udivmodhi4_ep>
- 8bc:	a6 1b       	sub	r26, r22
- 8be:	b7 0b       	sbc	r27, r23
+00000938 <__udivmodhi4_loop>:
+ 938:	aa 1f       	adc	r26, r26
+ 93a:	bb 1f       	adc	r27, r27
+ 93c:	a6 17       	cp	r26, r22
+ 93e:	b7 07       	cpc	r27, r23
+ 940:	10 f0       	brcs	.+4      	; 0x946 <__udivmodhi4_ep>
+ 942:	a6 1b       	sub	r26, r22
+ 944:	b7 0b       	sbc	r27, r23
 
-000008c0 <__udivmodhi4_ep>:
- 8c0:	88 1f       	adc	r24, r24
- 8c2:	99 1f       	adc	r25, r25
- 8c4:	5a 95       	dec	r21
- 8c6:	a9 f7       	brne	.-22     	; 0x8b2 <__udivmodhi4_loop>
- 8c8:	80 95       	com	r24
- 8ca:	90 95       	com	r25
- 8cc:	bc 01       	movw	r22, r24
- 8ce:	cd 01       	movw	r24, r26
- 8d0:	08 95       	ret
+00000946 <__udivmodhi4_ep>:
+ 946:	88 1f       	adc	r24, r24
+ 948:	99 1f       	adc	r25, r25
+ 94a:	5a 95       	dec	r21
+ 94c:	a9 f7       	brne	.-22     	; 0x938 <__udivmodhi4_loop>
+ 94e:	80 95       	com	r24
+ 950:	90 95       	com	r25
+ 952:	bc 01       	movw	r22, r24
+ 954:	cd 01       	movw	r24, r26
+ 956:	08 95       	ret
 
-000008d2 <__tablejump2__>:
- 8d2:	ee 0f       	add	r30, r30
- 8d4:	ff 1f       	adc	r31, r31
- 8d6:	00 24       	eor	r0, r0
- 8d8:	00 1c       	adc	r0, r0
- 8da:	0b be       	out	0x3b, r0	; 59
- 8dc:	07 90       	elpm	r0, Z+
- 8de:	f6 91       	elpm	r31, Z
- 8e0:	e0 2d       	mov	r30, r0
- 8e2:	09 94       	ijmp
+00000958 <__tablejump2__>:
+ 958:	ee 0f       	add	r30, r30
+ 95a:	ff 1f       	adc	r31, r31
+ 95c:	00 24       	eor	r0, r0
+ 95e:	00 1c       	adc	r0, r0
+ 960:	0b be       	out	0x3b, r0	; 59
+ 962:	07 90       	elpm	r0, Z+
+ 964:	f6 91       	elpm	r31, Z
+ 966:	e0 2d       	mov	r30, r0
+ 968:	09 94       	ijmp
 
-000008e4 <__umulhisi3>:
- 8e4:	a2 9f       	mul	r26, r18
- 8e6:	b0 01       	movw	r22, r0
- 8e8:	b3 9f       	mul	r27, r19
- 8ea:	c0 01       	movw	r24, r0
- 8ec:	a3 9f       	mul	r26, r19
- 8ee:	70 0d       	add	r23, r0
- 8f0:	81 1d       	adc	r24, r1
- 8f2:	11 24       	eor	r1, r1
- 8f4:	91 1d       	adc	r25, r1
- 8f6:	b2 9f       	mul	r27, r18
- 8f8:	70 0d       	add	r23, r0
- 8fa:	81 1d       	adc	r24, r1
- 8fc:	11 24       	eor	r1, r1
- 8fe:	91 1d       	adc	r25, r1
- 900:	08 95       	ret
+0000096a <__umulhisi3>:
+ 96a:	a2 9f       	mul	r26, r18
+ 96c:	b0 01       	movw	r22, r0
+ 96e:	b3 9f       	mul	r27, r19
+ 970:	c0 01       	movw	r24, r0
+ 972:	a3 9f       	mul	r26, r19
+ 974:	70 0d       	add	r23, r0
+ 976:	81 1d       	adc	r24, r1
+ 978:	11 24       	eor	r1, r1
+ 97a:	91 1d       	adc	r25, r1
+ 97c:	b2 9f       	mul	r27, r18
+ 97e:	70 0d       	add	r23, r0
+ 980:	81 1d       	adc	r24, r1
+ 982:	11 24       	eor	r1, r1
+ 984:	91 1d       	adc	r25, r1
+ 986:	08 95       	ret
 
-00000902 <_exit>:
- 902:	f8 94       	cli
+00000988 <_exit>:
+ 988:	f8 94       	cli
 
-00000904 <__stop_program>:
- 904:	ff cf       	rjmp	.-2      	; 0x904 <__stop_program>
+0000098a <__stop_program>:
+ 98a:	ff cf       	rjmp	.-2      	; 0x98a <__stop_program>
