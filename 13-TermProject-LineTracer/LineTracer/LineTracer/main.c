@@ -54,7 +54,7 @@ void initFlag(){
     forceLeftSign = 0;
     calibLeft = 0;
     calibRight = 0;
-	OCR0 = 100;
+    OCR0 = 100;
 }
 
 void initPort(void)
@@ -127,34 +127,7 @@ unsigned char  LEFTmotorOneClock(unsigned char step, char dir)
 
 }
 
-unsigned char LEFTmotorOneClock1Sang(unsigned char step, char dir){
-	step = step & 0x0f;
-	if(dir==0){
-		switch(step){
-			case 0x01: step=0x08; break;
-			case 0x02: step=0x01; break;
-			case 0x04: step=0x02; break;
-			case 0x08: step=0x04; break;
-			default: step=0x08; break;
-		}
-	}
-	return step;
-}
-
-unsigned char RIGHTmotorOneClock1Sang(unsigned char step, char dir){
-	step = step & 0xf0;
-	if(dir){
-		switch(step){
-			case 0x10: step=0x20; break;
-			case 0x20: step=0x40; break;
-			case 0x40: step=0x80; break;
-			case 0x80: step=0x10; break;
-			default: step=0x80; break;
-		}
-	}
-	return step;
-}
-	
+    
 
 unsigned char  RIGHTmotorOneClock(unsigned char step, char dir)
 {    
@@ -238,19 +211,8 @@ void initTimerInterrupt()
 
 //모터 구동
 void motor(char direction){
-/*
+
     switch(direction){
-	    case STRAIGHT :
-	    stepRight = RIGHTmotorOneClock1Sang(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
-	    case RIGHT :
-	    stepLeft = LEFTmotorOneClock1Sang(stepLeft, 0);
-	    break;
-	    case LEFT  :
-	    stepRight = RIGHTmotorOneClock1Sang(stepRight, 1);
-	    break;
-    }
-	*/
-	switch(direction){
         case STRAIGHT : 
             stepRight = RIGHTmotorOneClock(stepRight, 1);  //break 없으니까 밑에꺼도 실행됨
         case RIGHT : 
@@ -260,7 +222,7 @@ void motor(char direction){
             stepRight = RIGHTmotorOneClock(stepRight, 1);
             break;
     }
-	
+    
     MOTOR_PORT = stepLeft|stepRight;
 }
 
@@ -287,7 +249,7 @@ ISR(INT4_vect){
     }else if(timeNum >=100){
         OCR0 = timeNum;
     }
-		
+        
 }
 
 char rightSmoth = 0;
@@ -301,16 +263,16 @@ void sensorScan(int sensor){
                 forceRightSign = forceLeftSign = 0; //정지신호가 양쪽 조금씩 다르게 들어간경우 예외처리
                 stopSign=0;
                 countStopSign++;
-				countTimeStop = 0;
-				if (countTimeStop == 300){
-					countStopSign = 0;
-				}
+                countTimeStop = 0;
+                if (countTimeStop == 300){
+                    countStopSign = 0;
+                }
 
-				if((countTimeStop < 300)&&(countStopSign > 2)){    //stopsign 3번 나오면 종료
-					state = STATE_INIT;
-					initFlag();
-					return;
-				}
+                if((countTimeStop < 300)&&(countStopSign > 2)){    //stopsign 3번 나오면 종료
+                    state = STATE_INIT;
+                    initFlag();
+                    return;
+                }
             }else if(forceRightSign){
                 state=STATE_FORCE_RIGHT;
             }else if(forceLeftSign){
@@ -321,41 +283,53 @@ void sensorScan(int sensor){
         }
         case 0x0b:{                      //1011 -- 하나걸림 좌회전
             if(leftSmoth == 1){
-	            motor(STRAIGHT);
-	            leftSmoth=0;
-	        }else{
-	            leftSmoth++;
-				motor(LEFT);
+                motor(STRAIGHT);
+                leftSmoth=0;
+            }else{
+                leftSmoth++;
+                motor(LEFT);
             }
-			
+            if(forceRightSign){
+                state=STATE_FORCE_RIGHT;
+            }else if(forceLeftSign){
+                state=STATE_FORCE_LEFT;
+            }
             break;
         }
         case 0x0d:{                      //1101 -- 하나걸림 -우회전
             if(rightSmoth == 1){
-	            motor(STRAIGHT);
-	            rightSmoth=0;
-	         }else{
-	            rightSmoth++;
-				motor(RIGHT);
+                motor(STRAIGHT);
+                rightSmoth=0;
+             }else{
+                rightSmoth++;
+                motor(RIGHT);
             }
-			
+            if(forceRightSign){
+                state=STATE_FORCE_RIGHT;
+            }else if(forceLeftSign){
+                state=STATE_FORCE_LEFT;
+            }
+            
             break;
         }
-		case 0x05:
+        
+        case 0x03:        //0011
+        case 0x05:        //0101
         case 0x07:{                      //0111 -- 교차로 좌회전 신호
             forceLeftSign = 1;
             motor(STRAIGHT);
             break;
         }
-		case 0x0a:
+        case 0x0c:            //1100
+        case 0x0a:
         case 0x0e:{                      //1110 -- 교차로 우회전 신호
             
             forceRightSign = 1;
             motor(STRAIGHT);
-            break;		
+            break;        
         }
-		case 0x02://0010
-		case 0x04://0100
+        case 0x02://0010
+        case 0x04://0100
         case 0x06:{                      //0110 -- 정지 신호
             
             stopSign=1;                    //flag 설정
@@ -401,113 +375,188 @@ short forceStraight = 0;
 ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의 펄스 간격(속도)가 ocr0에 따라 가변
 {
     int sensor = SENSOR_PORT & 0x0F; //센서값 읽기
-	
-	if(countTimeStop < 1000){
-		countTimeStop++;
-	}
-	
-	
+    
+    if(countTimeStop < 1000){
+        countTimeStop++;
+    }
+    
+    
     if(state == STATE_FORCE_RIGHT){                                 //-강제회전
-		if(80 != OCR0&&(smothStart==10)){
-			OCR0++;
-			smothStart=0;
-			
-			}else{
-			smothStart++;
-		}
+        if(80 > OCR0&&(smothStart==10)){
+            OCR0++;
+            smothStart=0;
+            }else{
+            smothStart++;
+        }
         if(!forceRightSign){
             if(stateForceSmoth==3){
-				motor(STRAIGHT); 
-				stateForceSmoth=0;
-			}else{
-				stateForceSmoth++;
-				motor(RIGHT); 
-			}
-			forceStraight++;                                          //교차로에 들어간 뒤엔 회전만 합니다
-            if((forceStraight>320)&&(sensor == 0x0d)){
+                motor(STRAIGHT); 
+                stateForceSmoth=0;
+            }else{
+                stateForceSmoth++;
+                motor(RIGHT); 
+            }
+            forceStraight++;                                          //교차로에 들어간 뒤엔 회전만 합니다
+            if((forceStraight>80)&&(sensor == 0x0d)){
                 state = STATE_RUNNING;   
-				forceStraight=0;                           //강제 회전하다 라인이 잡히면 트랙 타기
+                forceStraight=0;                           //강제 회전하다 라인이 잡히면 트랙 타기
             }
         }else{
-            if(timeNum<100&&(forceStraight<300)){
-	            motor(STRAIGHT);
-	            forceStraight++;
-				if(forceStraight==240){
-					forceRightSign = 0;
-					forceStraight++;
-				}
+            if(timeNum<100){
+                switch(sensor){
+                    case 0x0f:
+                    motor(STRAIGHT);
+                    break;
+                    case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                            }else{
+                            stateForceSmoth++;
+                            motor(LEFT);
+                        }
+                        break;
+                    }
+                    case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                            }else{
+                            stateForceSmoth++;
+                            motor(RIGHT);
+                        }
+                        break;
+                    }
+                    default:
+                    motor(STRAIGHT);
+                }
+                forceStraight++;
+                if(forceStraight==240){
+                    forceRightSign = 0;
+                    forceStraight=0;  
+                }
             }else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){    
                 forceRightSign = 0;  
-				motor(RIGHT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+                motor(RIGHT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
             }else{
-				switch(sensor){
-					case 0x0f: 
-						motor(STRAIGHT);
-						break;
-					case 0x0b:{                      //1011 -- 하나걸림 좌회전
-						motor(LEFT);
-						break;
-					}
-					case 0x0d:{                      //1101 -- 하나걸림 -우회전
-						motor(RIGHT);
-						break;
-					}
-					default:
-						motor(STRAIGHT);
-				}
-			}                                      //교차로 들어가기 전까지는 무조껀 직진
+                switch(sensor){
+                    case 0x0f: 
+                        motor(STRAIGHT);
+                        break;
+                    case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                        }else{
+                            stateForceSmoth++;
+                            motor(LEFT);
+                        }
+                        break;
+                    }
+                    case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                        }else{
+                            stateForceSmoth++;
+                            motor(RIGHT);
+                        }
+                        break;
+                    }
+                    default:
+                        motor(STRAIGHT);
+                }
+            }                                      //교차로 들어가기 전까지는 무조껀 직진
         }
     }else if(state == STATE_FORCE_LEFT){                            //-강제회전
-		
-		if(80 != OCR0&&(smothStart==10)){
-			OCR0++;
-			smothStart=0;
-			
-			}else{
-			smothStart++;
-		}
+        
+        if(80 > OCR0&&(smothStart==10)){
+            OCR0++;
+            smothStart=0;
+            
+            }else{
+            smothStart++;
+        }
         if(!forceLeftSign){
             if(stateForceSmoth==3){
-	            motor(STRAIGHT);
-	            stateForceSmoth=0;
-	            }else{
-	            stateForceSmoth++;
-				motor(LEFT);   
+                motor(STRAIGHT);
+                stateForceSmoth=0;
+            }else{
+                stateForceSmoth++;
+                motor(LEFT);   
             }
-			 forceStraight++;                                           //교차로에 들어간 뒤엔 회전만 합니다
-            if((forceStraight>320)&&(sensor == 0x0b)){                                        //강제 회전하다 라인 잡히면 트랙 타기
+            forceStraight++;                                           //교차로에 들어간 뒤엔 회전만 합니다
+            if((forceStraight>80)&&(sensor == 0x0b)){                                        //강제 회전하다 라인 잡히면 트랙 타기
                 state = STATE_RUNNING;
-				forceStraight=0;
+                forceStraight=0;
             }
         }else{         
-			if(timeNum<100&&(forceStraight<300)){
-				motor(STRAIGHT);
-				forceStraight++;
-				if(forceStraight==240){
-					forceLeftSign = 0;
-					forceStraight++;
-					
-				}
-			}else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
+            if(timeNum<100){
+                switch(sensor){
+                    case 0x0f:
+                    motor(STRAIGHT);
+                    break;
+                    case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                            }else{
+                            stateForceSmoth++;
+                            motor(LEFT);
+                        }
+                        break;
+                    }
+                    case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                            }else{
+                            stateForceSmoth++;
+                            motor(RIGHT);
+                        }
+                        break;
+                    }
+                    default:
+                    motor(STRAIGHT);
+                }
+                forceStraight++;
+                if(forceStraight==240){
+                    forceLeftSign = 0;
+                    forceStraight=0;
+                    
+                }
+            }else if(sensor == 0x00 || sensor == 0x01 || sensor == 0x08){
                 forceLeftSign = 0;   
-				motor(LEFT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
+                motor(LEFT);                               //교차로 나타나면 플래그 초기화 하고 강제로 돌림
             }else{
-				switch(sensor){
-					case 0x0f:
-					motor(STRAIGHT);
-					break;
-					case 0x0b:{                      //1011 -- 하나걸림 좌회전
-						motor(LEFT);
-						break;
-					}
-					case 0x0d:{                      //1101 -- 하나걸림 -우회전
-						motor(RIGHT);
-						break;
-					}
-					default:
-						motor(STRAIGHT);
-				}                                        //교차로 들어가기 전까지는 무조껀 직진
-			}
+                switch(sensor){
+                    case 0x0f:
+                    motor(STRAIGHT);
+                    break;
+                    case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                            }else{
+                            stateForceSmoth++;
+                            motor(LEFT);
+                        }
+                        break;
+                    }
+                    case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                        if(stateForceSmoth==3){
+                            motor(STRAIGHT);
+                            stateForceSmoth=0;
+                        }else{
+                            stateForceSmoth++;
+                            motor(RIGHT);
+                        }
+                        break;
+                    }
+                    default:
+                        motor(STRAIGHT);
+                }                                        //교차로 들어가기 전까지는 무조껀 직진
+            }
         }
     }else if(state == STATE_CALIB_RIGHT){                           //-교차로를 틀어져서 왼쪽으로 들어갈때 칼리브레이션
         if(sensor == 0x0b||sensor == 0x0d){                         //레일 위로 돌아가면 종료
@@ -526,14 +575,13 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
             motor(STRAIGHT);
         }
     }else if(state == STATE_RUNNING){
-		if(timeNum != OCR0&&(smothStart==10)){
-			OCR0--;
-			smothStart=0;
-			
-			}else{
-			smothStart++;
-		}
-		
+        if(timeNum < OCR0&&(smothStart==10)){
+            OCR0--;
+            smothStart=0;
+        }else{
+            smothStart++;
+        }
+        
         sensorScan(sensor);                    //일반적인 라인 팔로잉 상태
     }
 }
