@@ -102,6 +102,7 @@ void ex4(){
         //falling edge detect sw input
         //이전 스위치 입력이 없다가 스위치가 입력된경우
         if(PING != 0x0f && postPING == 0x0f){
+            
             if(PING == 0x07) num++;        //when sw8 pressed
             if(PING == 0x0b) num--;        //when sw7 pressed
         }

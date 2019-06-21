@@ -382,7 +382,7 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
     
     
     if(state == STATE_FORCE_RIGHT){                                 //-강제회전
-        if(80 > OCR0&&(smothStart==10)){
+        if(80 > OCR0&&(smothStart>9)){
             OCR0++;
             smothStart=0;
             }else{
@@ -470,10 +470,9 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
         }
     }else if(state == STATE_FORCE_LEFT){                            //-강제회전
         
-        if(80 > OCR0&&(smothStart==10)){
+        if(80 > OCR0&&(smothStart>9)){
             OCR0++;
             smothStart=0;
-            
             }else{
             smothStart++;
         }
@@ -575,7 +574,7 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
             motor(STRAIGHT);
         }
     }else if(state == STATE_RUNNING){
-        if(timeNum < OCR0&&(smothStart==10)){
+        if(timeNum < OCR0&&(smothStart > 20)){
             OCR0--;
             smothStart=0;
         }else{

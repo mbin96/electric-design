@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000b58  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000a0  00000000  00000000  00000b98  2**0
+  5 .debug_aranges 00000090  00000000  00000000  00000b98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001076  00000000  00000000  00000c38  2**0
+  6 .debug_info   00000ffd  00000000  00000000  00000c28  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008ed  00000000  00000000  00001cae  2**0
+  7 .debug_abbrev 000008ed  00000000  00000000  00001c25  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000b4b  00000000  00000000  0000259b  2**0
+  8 .debug_line   00000ac3  00000000  00000000  00002512  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000019c  00000000  00000000  000030e8  2**2
+  9 .debug_frame  0000017c  00000000  00000000  00002fd8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000005f4  00000000  00000000  00003284  2**0
+ 10 .debug_str    000005c5  00000000  00000000  00003154  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000652  00000000  00000000  00003878  2**0
+ 11 .debug_loc    000005a1  00000000  00000000  00003719  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000a8  00000000  00000000  00003eca  2**0
+ 12 .debug_ranges 00000098  00000000  00000000  00003cba  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -187,61 +187,112 @@ Disassembly of section .text:
  116:	74 cf       	rjmp	.-280    	; 0x0 <__vectors>
 
 00000118 <initFlag>:
-            case 0x80: step=0x10; break;
-            default: step=0x80; break;
-        }
-    }
-    return step;
-}
+unsigned char calibLeft = 0;
+unsigned char calibRight = 0;
+short countTimeStop = 1000;
+
+void initFlag(){
+    motorForceLeftFlag = 0;
  118:	10 92 29 01 	sts	0x0129, r1	; 0x800129 <motorForceLeftFlag>
+    motorForceRightFlag = 0; 
  11c:	10 92 28 01 	sts	0x0128, r1	; 0x800128 <motorForceRightFlag>
+    countStopSign = 0;
  120:	10 92 27 01 	sts	0x0127, r1	; 0x800127 <countStopSign>
+    stopSign = 0;
  124:	10 92 26 01 	sts	0x0126, r1	; 0x800126 <stopSign>
+    forceRightSign = 0;
  128:	10 92 25 01 	sts	0x0125, r1	; 0x800125 <forceRightSign>
+    forceLeftSign = 0;
  12c:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <forceLeftSign>
+    calibLeft = 0;
  130:	10 92 23 01 	sts	0x0123, r1	; 0x800123 <calibLeft>
+    calibRight = 0;
  134:	10 92 22 01 	sts	0x0122, r1	; 0x800122 <calibRight>
+    OCR0 = 100;
  138:	84 e6       	ldi	r24, 0x64	; 100
  13a:	81 bf       	out	0x31, r24	; 49
  13c:	08 95       	ret
 
 0000013e <initPort>:
+}
+
+void initPort(void)
+{
+    PORTA = 0x00;
  13e:	1b ba       	out	0x1b, r1	; 27
+    DDRA  = 0x00;
  140:	1a ba       	out	0x1a, r1	; 26
+    PORTB = 0x00;
  142:	18 ba       	out	0x18, r1	; 24
+    DDRB  = 0x00;
  144:	17 ba       	out	0x17, r1	; 23
+    PORTC = 0x00;
  146:	15 ba       	out	0x15, r1	; 21
+    DDRC  = 0x00;
  148:	14 ba       	out	0x14, r1	; 20
+    PORTD = 0x00;
  14a:	12 ba       	out	0x12, r1	; 18
+    DDRD  = 0xFF;
  14c:	8f ef       	ldi	r24, 0xFF	; 255
  14e:	81 bb       	out	0x11, r24	; 17
+    PORTE = 0x00;
  150:	13 b8       	out	0x03, r1	; 3
+    DDRE  = 0x00;
  152:	12 b8       	out	0x02, r1	; 2
+    PORTF = 0x00;
  154:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <__TEXT_REGION_LENGTH__+0x7e0062>
+    DDRF  = 0x00;
  158:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <__TEXT_REGION_LENGTH__+0x7e0061>
+    PORTG = 0x00;
  15c:	10 92 65 00 	sts	0x0065, r1	; 0x800065 <__TEXT_REGION_LENGTH__+0x7e0065>
+    DDRG  = 0x03;
  160:	83 e0       	ldi	r24, 0x03	; 3
  162:	80 93 64 00 	sts	0x0064, r24	; 0x800064 <__TEXT_REGION_LENGTH__+0x7e0064>
  166:	08 95       	ret
 
 00000168 <initDevices>:
+}
+
+void initDevices(void)
+{
+    cli(); //disable all interrupts
  168:	f8 94       	cli
+    XDIV  = 0x00; //xtal divider
  16a:	1c be       	out	0x3c, r1	; 60
+    XMCRA = 0x00; //external memory
  16c:	10 92 6d 00 	sts	0x006D, r1	; 0x80006d <__TEXT_REGION_LENGTH__+0x7e006d>
+    initPort();
  170:	e6 df       	rcall	.-52     	; 0x13e <initPort>
+    
+
+    MCUCR = 0x00;
  172:	15 be       	out	0x35, r1	; 53
+    EICRA = 0x00; //extended ext ints
  174:	10 92 6a 00 	sts	0x006A, r1	; 0x80006a <__TEXT_REGION_LENGTH__+0x7e006a>
+    EICRB = 0x00; //extended ext ints
  178:	1a be       	out	0x3a, r1	; 58
+    EIMSK = 0x00;
  17a:	19 be       	out	0x39, r1	; 57
+    TIMSK = 0x00; //timer interrupt sources
  17c:	17 be       	out	0x37, r1	; 55
+    ETIMSK = 0x00; //extended timer interrupt sources
  17e:	10 92 7d 00 	sts	0x007D, r1	; 0x80007d <__TEXT_REGION_LENGTH__+0x7e007d>
+    sei(); //re-enable interrupts
  182:	78 94       	sei
  184:	08 95       	ret
 
 00000186 <LEFTmotorOneClock>:
+
+// Stepping Motor drive---------------------------
+//1-2상 구동
+unsigned char  LEFTmotorOneClock(unsigned char step, char dir)
+{    
+    step = step & 0x0f;
  186:	8f 70       	andi	r24, 0x0F	; 15
+    if(dir){
  188:	66 23       	and	r22, r22
  18a:	c9 f0       	breq	.+50     	; 0x1be <LEFTmotorOneClock+0x38>
+        switch(step){
  18c:	90 e0       	ldi	r25, 0x00	; 0
  18e:	fc 01       	movw	r30, r24
  190:	31 97       	sbiw	r30, 0x01	; 1
@@ -251,22 +302,34 @@ Disassembly of section .text:
  198:	ea 5b       	subi	r30, 0xBA	; 186
  19a:	ff 4f       	sbci	r31, 0xFF	; 255
  19c:	52 c4       	rjmp	.+2212   	; 0xa42 <__tablejump2__>
+            case 0x09: step=0x01; break;
+            case 0x01: step=0x03; break;
  19e:	83 e0       	ldi	r24, 0x03	; 3
  1a0:	08 95       	ret
+            case 0x03: step=0x02; break;
  1a2:	82 e0       	ldi	r24, 0x02	; 2
  1a4:	08 95       	ret
+            case 0x02: step=0x06; break;
  1a6:	86 e0       	ldi	r24, 0x06	; 6
  1a8:	08 95       	ret
+            case 0x06: step=0x04; break;
  1aa:	84 e0       	ldi	r24, 0x04	; 4
  1ac:	08 95       	ret
+            case 0x04: step=0x0c; break;
  1ae:	8c e0       	ldi	r24, 0x0C	; 12
  1b0:	08 95       	ret
+            case 0x0c: step=0x08; break;
  1b2:	88 e0       	ldi	r24, 0x08	; 8
  1b4:	08 95       	ret
+            case 0x08: step=0x09; break;
  1b6:	89 e0       	ldi	r24, 0x09	; 9
  1b8:	08 95       	ret
+            default: step=0x0c; break;
  1ba:	8c e0       	ldi	r24, 0x0C	; 12
  1bc:	08 95       	ret
+        }
+    }else{
+        switch(step){
  1be:	90 e0       	ldi	r25, 0x00	; 0
  1c0:	fc 01       	movw	r30, r24
  1c2:	31 97       	sbiw	r30, 0x01	; 1
@@ -276,28 +339,56 @@ Disassembly of section .text:
  1ca:	ee 5a       	subi	r30, 0xAE	; 174
  1cc:	ff 4f       	sbci	r31, 0xFF	; 255
  1ce:	39 c4       	rjmp	.+2162   	; 0xa42 <__tablejump2__>
+            case 0x09: step=0x08; break;
+            case 0x01: step=0x09; break;
  1d0:	89 e0       	ldi	r24, 0x09	; 9
  1d2:	08 95       	ret
+            case 0x03: step=0x01; break;
  1d4:	81 e0       	ldi	r24, 0x01	; 1
  1d6:	08 95       	ret
+            case 0x02: step=0x03; break;
  1d8:	83 e0       	ldi	r24, 0x03	; 3
  1da:	08 95       	ret
+            case 0x06: step=0x02; break;
  1dc:	82 e0       	ldi	r24, 0x02	; 2
  1de:	08 95       	ret
+            case 0x04: step=0x06; break;
  1e0:	86 e0       	ldi	r24, 0x06	; 6
  1e2:	08 95       	ret
+            case 0x0c: step=0x04; break;
  1e4:	84 e0       	ldi	r24, 0x04	; 4
  1e6:	08 95       	ret
+            case 0x08: step=0x0c; break;
  1e8:	8c e0       	ldi	r24, 0x0C	; 12
  1ea:	08 95       	ret
+            default: step=0x0c; break;
  1ec:	8c e0       	ldi	r24, 0x0C	; 12
  1ee:	08 95       	ret
+unsigned char  LEFTmotorOneClock(unsigned char step, char dir)
+{    
+    step = step & 0x0f;
+    if(dir){
+        switch(step){
+            case 0x09: step=0x01; break;
  1f0:	81 e0       	ldi	r24, 0x01	; 1
  1f2:	08 95       	ret
+            case 0x08: step=0x09; break;
+            default: step=0x0c; break;
+        }
+    }else{
+        switch(step){
+            case 0x09: step=0x08; break;
  1f4:	88 e0       	ldi	r24, 0x08	; 8
+            default: step=0x0c; break;
+        }
+    }
+    return step;
+
+}
  1f6:	08 95       	ret
 
 000001f8 <RIGHTmotorOneClock>:
+
     
 
 unsigned char  RIGHTmotorOneClock(unsigned char step, char dir)
@@ -534,11 +625,11 @@ void initTimerInterrupt()
  302:	08 95       	ret
 
 00000304 <motor>:
-        case LEFT  :
-        stepRight = RIGHTmotorOneClock1Sang(stepRight, 1);
-        break;
-    }
-    */
+}
+
+//모터 구동
+void motor(char direction){
+
     switch(direction){
  304:	81 30       	cpi	r24, 0x01	; 1
  306:	51 f0       	breq	.+20     	; 0x31c <motor+0x18>
@@ -784,18 +875,18 @@ void sensorScan(int sensor){
  47a:	80 91 25 01 	lds	r24, 0x0125	; 0x800125 <forceRightSign>
  47e:	88 23       	and	r24, r24
  480:	39 f0       	breq	.+14     	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-	            state=STATE_FORCE_RIGHT;
+                state=STATE_FORCE_RIGHT;
  482:	82 e0       	ldi	r24, 0x02	; 2
  484:	90 e0       	ldi	r25, 0x00	; 0
  486:	90 93 2b 01 	sts	0x012B, r25	; 0x80012b <state+0x1>
  48a:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <state>
  48e:	08 95       	ret
-	            }else if(forceLeftSign){
+            }else if(forceLeftSign){
  490:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <forceLeftSign>
  494:	88 23       	and	r24, r24
  496:	09 f4       	brne	.+2      	; 0x49a <__LOCK_REGION_LENGTH__+0x9a>
  498:	71 c0       	rjmp	.+226    	; 0x57c <__LOCK_REGION_LENGTH__+0x17c>
-	            state=STATE_FORCE_LEFT;
+                state=STATE_FORCE_LEFT;
  49a:	83 e0       	ldi	r24, 0x03	; 3
  49c:	90 e0       	ldi	r25, 0x00	; 0
  49e:	90 93 2b 01 	sts	0x012B, r25	; 0x80012b <state+0x1>
@@ -823,30 +914,30 @@ void sensorScan(int sensor){
  4c0:	81 e0       	ldi	r24, 0x01	; 1
  4c2:	20 df       	rcall	.-448    	; 0x304 <motor>
             }
-			if(forceRightSign){
+            if(forceRightSign){
  4c4:	80 91 25 01 	lds	r24, 0x0125	; 0x800125 <forceRightSign>
  4c8:	88 23       	and	r24, r24
  4ca:	39 f0       	breq	.+14     	; 0x4da <__LOCK_REGION_LENGTH__+0xda>
-				state=STATE_FORCE_RIGHT;
+                state=STATE_FORCE_RIGHT;
  4cc:	82 e0       	ldi	r24, 0x02	; 2
  4ce:	90 e0       	ldi	r25, 0x00	; 0
  4d0:	90 93 2b 01 	sts	0x012B, r25	; 0x80012b <state+0x1>
  4d4:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <state>
  4d8:	08 95       	ret
-				}else if(forceLeftSign){
+            }else if(forceLeftSign){
  4da:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <forceLeftSign>
  4de:	88 23       	and	r24, r24
  4e0:	09 f4       	brne	.+2      	; 0x4e4 <__LOCK_REGION_LENGTH__+0xe4>
  4e2:	4c c0       	rjmp	.+152    	; 0x57c <__LOCK_REGION_LENGTH__+0x17c>
-				state=STATE_FORCE_LEFT;
+                state=STATE_FORCE_LEFT;
  4e4:	83 e0       	ldi	r24, 0x03	; 3
  4e6:	90 e0       	ldi	r25, 0x00	; 0
  4e8:	90 93 2b 01 	sts	0x012B, r25	; 0x80012b <state+0x1>
  4ec:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <state>
         }
-		
-		case 0x03:		//0011
-        case 0x05:		//0101
+        
+        case 0x03:        //0011
+        case 0x05:        //0101
         case 0x07:{                      //0111 -- 교차로 좌회전 신호
             forceLeftSign = 1;
  4f0:	08 95       	ret
@@ -857,7 +948,7 @@ void sensorScan(int sensor){
             break;
  4fa:	04 cf       	rjmp	.-504    	; 0x304 <motor>
         }
-		case 0x0c:			//1100
+        case 0x0c:            //1100
         case 0x0a:
         case 0x0e:{                      //1110 -- 교차로 우회전 신호
             
@@ -1008,13 +1099,13 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  5d6:	31 05       	cpc	r19, r1
  5d8:	09 f0       	breq	.+2      	; 0x5dc <__vector_15+0x5e>
  5da:	b9 c0       	rjmp	.+370    	; 0x74e <__vector_15+0x1d0>
-        if(80 > OCR0&&(smothStart==10)){
+        if(80 > OCR0&&(smothStart>20)){
  5dc:	91 b7       	in	r25, 0x31	; 49
  5de:	90 35       	cpi	r25, 0x50	; 80
  5e0:	50 f4       	brcc	.+20     	; 0x5f6 <__vector_15+0x78>
  5e2:	90 91 1f 01 	lds	r25, 0x011F	; 0x80011f <smothStart>
- 5e6:	9a 30       	cpi	r25, 0x0A	; 10
- 5e8:	31 f4       	brne	.+12     	; 0x5f6 <__vector_15+0x78>
+ 5e6:	95 31       	cpi	r25, 0x15	; 21
+ 5e8:	30 f0       	brcs	.+12     	; 0x5f6 <__vector_15+0x78>
             OCR0++;
  5ea:	91 b7       	in	r25, 0x31	; 49
  5ec:	9f 5f       	subi	r25, 0xFF	; 255
@@ -1089,58 +1180,58 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  670:	19 f0       	breq	.+6      	; 0x678 <__vector_15+0xfa>
  672:	8b 30       	cpi	r24, 0x0B	; 11
  674:	11 f5       	brne	.+68     	; 0x6ba <__vector_15+0x13c>
-	                case 0x0f:
-	                motor(STRAIGHT);
+                    case 0x0f:
+                    motor(STRAIGHT);
  676:	03 c0       	rjmp	.+6      	; 0x67e <__vector_15+0x100>
  678:	80 e0       	ldi	r24, 0x00	; 0
  67a:	44 de       	rcall	.-888    	; 0x304 <motor>
-	                break;
+                    break;
  67c:	20 c0       	rjmp	.+64     	; 0x6be <__vector_15+0x140>
-	                case 0x0b:{                      //1011 -- 하나걸림 좌회전
-		                if(stateForceSmoth==3){
+                    case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                        if(stateForceSmoth==3){
  67e:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
  682:	83 30       	cpi	r24, 0x03	; 3
-			                motor(STRAIGHT);
+                            motor(STRAIGHT);
  684:	29 f4       	brne	.+10     	; 0x690 <__vector_15+0x112>
  686:	80 e0       	ldi	r24, 0x00	; 0
  688:	3d de       	rcall	.-902    	; 0x304 <motor>
-			                stateForceSmoth=0;
+                            stateForceSmoth=0;
  68a:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
  68e:	17 c0       	rjmp	.+46     	; 0x6be <__vector_15+0x140>
-			                }else{
-			                stateForceSmoth++;
+                            }else{
+                            stateForceSmoth++;
  690:	8f 5f       	subi	r24, 0xFF	; 255
  692:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
-			                motor(LEFT);
+                            motor(LEFT);
  696:	82 e0       	ldi	r24, 0x02	; 2
  698:	35 de       	rcall	.-918    	; 0x304 <motor>
  69a:	11 c0       	rjmp	.+34     	; 0x6be <__vector_15+0x140>
-		                }
-		                break;
-	                }
-	                case 0x0d:{                      //1101 -- 하나걸림 -우회전
-		                if(stateForceSmoth==3){
+                        }
+                        break;
+                    }
+                    case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                        if(stateForceSmoth==3){
  69c:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
  6a0:	83 30       	cpi	r24, 0x03	; 3
-			                motor(STRAIGHT);
+                            motor(STRAIGHT);
  6a2:	29 f4       	brne	.+10     	; 0x6ae <__vector_15+0x130>
  6a4:	80 e0       	ldi	r24, 0x00	; 0
  6a6:	2e de       	rcall	.-932    	; 0x304 <motor>
-			                stateForceSmoth=0;
+                            stateForceSmoth=0;
  6a8:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-			                }else{
-			                stateForceSmoth++;
+                            }else{
+                            stateForceSmoth++;
  6ac:	08 c0       	rjmp	.+16     	; 0x6be <__vector_15+0x140>
  6ae:	8f 5f       	subi	r24, 0xFF	; 255
-			                motor(RIGHT);
+                            motor(RIGHT);
  6b0:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
  6b4:	81 e0       	ldi	r24, 0x01	; 1
  6b6:	26 de       	rcall	.-948    	; 0x304 <motor>
-		                }
-		                break;
-	                }
-	                default:
-	                motor(STRAIGHT);
+                        }
+                        break;
+                    }
+                    default:
+                    motor(STRAIGHT);
  6b8:	02 c0       	rjmp	.+4      	; 0x6be <__vector_15+0x140>
  6ba:	80 e0       	ldi	r24, 0x00	; 0
  6bc:	23 de       	rcall	.-954    	; 0x304 <motor>
@@ -1158,7 +1249,7 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  6d6:	45 c1       	rjmp	.+650    	; 0x962 <__vector_15+0x3e4>
                     forceRightSign = 0;
  6d8:	10 92 25 01 	sts	0x0125, r1	; 0x800125 <forceRightSign>
-					forceStraight=0;  
+                    forceStraight=0;  
  6dc:	10 92 1d 01 	sts	0x011D, r1	; 0x80011d <__data_end+0x1>
  6e0:	10 92 1c 01 	sts	0x011C, r1	; 0x80011c <__data_end>
                 }
@@ -1192,18 +1283,18 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
                         if(stateForceSmoth==3){
  70a:	2b c1       	rjmp	.+598    	; 0x962 <__vector_15+0x3e4>
  70c:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
-	                        motor(STRAIGHT);
+                            motor(STRAIGHT);
  710:	83 30       	cpi	r24, 0x03	; 3
  712:	29 f4       	brne	.+10     	; 0x71e <__vector_15+0x1a0>
  714:	80 e0       	ldi	r24, 0x00	; 0
-	                        stateForceSmoth=0;
+                            stateForceSmoth=0;
  716:	f6 dd       	rcall	.-1044   	; 0x304 <motor>
  718:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-	                    }else{
-	                        stateForceSmoth++;
+                        }else{
+                            stateForceSmoth++;
  71c:	22 c1       	rjmp	.+580    	; 0x962 <__vector_15+0x3e4>
  71e:	8f 5f       	subi	r24, 0xFF	; 255
-	                        motor(LEFT);
+                            motor(LEFT);
  720:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
  724:	82 e0       	ldi	r24, 0x02	; 2
  726:	ee dd       	rcall	.-1060   	; 0x304 <motor>
@@ -1214,18 +1305,18 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
                         if(stateForceSmoth==3){
  728:	1c c1       	rjmp	.+568    	; 0x962 <__vector_15+0x3e4>
  72a:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
-	                        motor(STRAIGHT);
+                            motor(STRAIGHT);
  72e:	83 30       	cpi	r24, 0x03	; 3
  730:	29 f4       	brne	.+10     	; 0x73c <__vector_15+0x1be>
-	                        stateForceSmoth=0;
+                            stateForceSmoth=0;
  732:	80 e0       	ldi	r24, 0x00	; 0
  734:	e7 dd       	rcall	.-1074   	; 0x304 <motor>
  736:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-	                    }else{
-	                        stateForceSmoth++;
+                        }else{
+                            stateForceSmoth++;
  73a:	13 c1       	rjmp	.+550    	; 0x962 <__vector_15+0x3e4>
  73c:	8f 5f       	subi	r24, 0xFF	; 255
-	                        motor(RIGHT);
+                            motor(RIGHT);
  73e:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
  742:	81 e0       	ldi	r24, 0x01	; 1
  744:	df dd       	rcall	.-1090   	; 0x304 <motor>
@@ -1247,20 +1338,19 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  752:	09 f0       	breq	.+2      	; 0x756 <__vector_15+0x1d8>
  754:	b9 c0       	rjmp	.+370    	; 0x8c8 <__vector_15+0x34a>
         
-        if(80 > OCR0&&(smothStart==10)){
+        if(80 > OCR0&&(smothStart>20)){
  756:	91 b7       	in	r25, 0x31	; 49
  758:	90 35       	cpi	r25, 0x50	; 80
  75a:	50 f4       	brcc	.+20     	; 0x770 <__vector_15+0x1f2>
  75c:	90 91 1f 01 	lds	r25, 0x011F	; 0x80011f <smothStart>
- 760:	9a 30       	cpi	r25, 0x0A	; 10
- 762:	31 f4       	brne	.+12     	; 0x770 <__vector_15+0x1f2>
+ 760:	95 31       	cpi	r25, 0x15	; 21
+ 762:	30 f0       	brcs	.+12     	; 0x770 <__vector_15+0x1f2>
             OCR0++;
  764:	91 b7       	in	r25, 0x31	; 49
  766:	9f 5f       	subi	r25, 0xFF	; 255
  768:	91 bf       	out	0x31, r25	; 49
             smothStart=0;
  76a:	10 92 1f 01 	sts	0x011F, r1	; 0x80011f <smothStart>
-            
             }else{
             smothStart++;
  76e:	05 c0       	rjmp	.+10     	; 0x77a <__vector_15+0x1fc>
@@ -1327,60 +1417,60 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  7e6:	b9 f0       	breq	.+46     	; 0x816 <__vector_15+0x298>
  7e8:	8f 30       	cpi	r24, 0x0F	; 15
  7ea:	19 f0       	breq	.+6      	; 0x7f2 <__vector_15+0x274>
-	                case 0x0f:
-	                motor(STRAIGHT);
+                    case 0x0f:
+                    motor(STRAIGHT);
  7ec:	8b 30       	cpi	r24, 0x0B	; 11
  7ee:	11 f5       	brne	.+68     	; 0x834 <__vector_15+0x2b6>
  7f0:	03 c0       	rjmp	.+6      	; 0x7f8 <__vector_15+0x27a>
-	                break;
+                    break;
  7f2:	80 e0       	ldi	r24, 0x00	; 0
-	                case 0x0b:{                      //1011 -- 하나걸림 좌회전
-		                if(stateForceSmoth==3){
+                    case 0x0b:{                      //1011 -- 하나걸림 좌회전
+                        if(stateForceSmoth==3){
  7f4:	87 dd       	rcall	.-1266   	; 0x304 <motor>
  7f6:	20 c0       	rjmp	.+64     	; 0x838 <__vector_15+0x2ba>
  7f8:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
-			                motor(STRAIGHT);
+                            motor(STRAIGHT);
  7fc:	83 30       	cpi	r24, 0x03	; 3
  7fe:	29 f4       	brne	.+10     	; 0x80a <__vector_15+0x28c>
-			                stateForceSmoth=0;
+                            stateForceSmoth=0;
  800:	80 e0       	ldi	r24, 0x00	; 0
  802:	80 dd       	rcall	.-1280   	; 0x304 <motor>
  804:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-			                }else{
-			                stateForceSmoth++;
+                            }else{
+                            stateForceSmoth++;
  808:	17 c0       	rjmp	.+46     	; 0x838 <__vector_15+0x2ba>
-			                motor(LEFT);
+                            motor(LEFT);
  80a:	8f 5f       	subi	r24, 0xFF	; 255
  80c:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
-		                }
-		                break;
-	                }
-	                case 0x0d:{                      //1101 -- 하나걸림 -우회전
-		                if(stateForceSmoth==3){
+                        }
+                        break;
+                    }
+                    case 0x0d:{                      //1101 -- 하나걸림 -우회전
+                        if(stateForceSmoth==3){
  810:	82 e0       	ldi	r24, 0x02	; 2
  812:	78 dd       	rcall	.-1296   	; 0x304 <motor>
  814:	11 c0       	rjmp	.+34     	; 0x838 <__vector_15+0x2ba>
  816:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
-			                motor(STRAIGHT);
+                            motor(STRAIGHT);
  81a:	83 30       	cpi	r24, 0x03	; 3
  81c:	29 f4       	brne	.+10     	; 0x828 <__vector_15+0x2aa>
-			                stateForceSmoth=0;
+                            stateForceSmoth=0;
  81e:	80 e0       	ldi	r24, 0x00	; 0
  820:	71 dd       	rcall	.-1310   	; 0x304 <motor>
  822:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-			                }else{
-			                stateForceSmoth++;
+                            }else{
+                            stateForceSmoth++;
  826:	08 c0       	rjmp	.+16     	; 0x838 <__vector_15+0x2ba>
  828:	8f 5f       	subi	r24, 0xFF	; 255
-			                motor(RIGHT);
+                            motor(RIGHT);
  82a:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
  82e:	81 e0       	ldi	r24, 0x01	; 1
  830:	69 dd       	rcall	.-1326   	; 0x304 <motor>
-		                }
-		                break;
-	                }
-	                default:
-	                motor(STRAIGHT);
+                        }
+                        break;
+                    }
+                    default:
+                    motor(STRAIGHT);
  832:	02 c0       	rjmp	.+4      	; 0x838 <__vector_15+0x2ba>
  834:	80 e0       	ldi	r24, 0x00	; 0
  836:	66 dd       	rcall	.-1332   	; 0x304 <motor>
@@ -1428,48 +1518,48 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
                     break;
  87e:	03 c0       	rjmp	.+6      	; 0x886 <__vector_15+0x308>
                     case 0x0b:{                      //1011 -- 하나걸림 좌회전
-	                    if(stateForceSmoth==3){
+                        if(stateForceSmoth==3){
  880:	80 e0       	ldi	r24, 0x00	; 0
  882:	40 dd       	rcall	.-1408   	; 0x304 <motor>
  884:	6e c0       	rjmp	.+220    	; 0x962 <__vector_15+0x3e4>
-		                    motor(STRAIGHT);
+                            motor(STRAIGHT);
  886:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
-		                    stateForceSmoth=0;
+                            stateForceSmoth=0;
  88a:	83 30       	cpi	r24, 0x03	; 3
  88c:	29 f4       	brne	.+10     	; 0x898 <__vector_15+0x31a>
  88e:	80 e0       	ldi	r24, 0x00	; 0
-		                    }else{
-		                    stateForceSmoth++;
+                            }else{
+                            stateForceSmoth++;
  890:	39 dd       	rcall	.-1422   	; 0x304 <motor>
  892:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-		                    motor(LEFT);
+                            motor(LEFT);
  896:	65 c0       	rjmp	.+202    	; 0x962 <__vector_15+0x3e4>
  898:	8f 5f       	subi	r24, 0xFF	; 255
  89a:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
-	                    }
-	                    break;
+                        }
+                        break;
                     }
                     case 0x0d:{                      //1101 -- 하나걸림 -우회전
-	                    if(stateForceSmoth==3){
+                        if(stateForceSmoth==3){
  89e:	82 e0       	ldi	r24, 0x02	; 2
  8a0:	31 dd       	rcall	.-1438   	; 0x304 <motor>
  8a2:	5f c0       	rjmp	.+190    	; 0x962 <__vector_15+0x3e4>
  8a4:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <stateForceSmoth>
-		                    motor(STRAIGHT);
+                            motor(STRAIGHT);
  8a8:	83 30       	cpi	r24, 0x03	; 3
  8aa:	29 f4       	brne	.+10     	; 0x8b6 <__vector_15+0x338>
-		                    stateForceSmoth=0;
+                            stateForceSmoth=0;
  8ac:	80 e0       	ldi	r24, 0x00	; 0
  8ae:	2a dd       	rcall	.-1452   	; 0x304 <motor>
  8b0:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <stateForceSmoth>
-		                    }else{
-		                    stateForceSmoth++;
+                        }else{
+                            stateForceSmoth++;
  8b4:	56 c0       	rjmp	.+172    	; 0x962 <__vector_15+0x3e4>
-		                    motor(RIGHT);
+                            motor(RIGHT);
  8b6:	8f 5f       	subi	r24, 0xFF	; 255
  8b8:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <stateForceSmoth>
-	                    }
-	                    break;
+                        }
+                        break;
                     }
                     default:
                         motor(STRAIGHT);
@@ -1545,7 +1635,7 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  926:	1d c0       	rjmp	.+58     	; 0x962 <__vector_15+0x3e4>
  928:	21 30       	cpi	r18, 0x01	; 1
  92a:	31 05       	cpc	r19, r1
-        if(timeNum < OCR0&&(smothStart==10)){
+        if(timeNum < OCR0&&(smothStart > 20)){
  92c:	d1 f4       	brne	.+52     	; 0x962 <__vector_15+0x3e4>
  92e:	81 b7       	in	r24, 0x31	; 49
  930:	90 e0       	ldi	r25, 0x00	; 0
@@ -1555,15 +1645,15 @@ ISR(TIMER0_COMP_vect)  //OCR0와 카운터 비교해서 실행됨. 즉 모터의
  93c:	39 07       	cpc	r19, r25
  93e:	50 f4       	brcc	.+20     	; 0x954 <__vector_15+0x3d6>
  940:	80 91 1f 01 	lds	r24, 0x011F	; 0x80011f <smothStart>
- 944:	8a 30       	cpi	r24, 0x0A	; 10
+ 944:	85 31       	cpi	r24, 0x15	; 21
             OCR0--;
- 946:	31 f4       	brne	.+12     	; 0x954 <__vector_15+0x3d6>
+ 946:	30 f0       	brcs	.+12     	; 0x954 <__vector_15+0x3d6>
  948:	81 b7       	in	r24, 0x31	; 49
  94a:	81 50       	subi	r24, 0x01	; 1
             smothStart=0;
  94c:	81 bf       	out	0x31, r24	; 49
  94e:	10 92 1f 01 	sts	0x011F, r1	; 0x80011f <smothStart>
-            }else{
+        }else{
             smothStart++;
  952:	05 c0       	rjmp	.+10     	; 0x95e <__vector_15+0x3e0>
  954:	80 91 1f 01 	lds	r24, 0x011F	; 0x80011f <smothStart>

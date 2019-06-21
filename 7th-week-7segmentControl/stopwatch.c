@@ -76,10 +76,10 @@ int main(void)
             
             //이전에 눌렸던 스위치값을 이용해 타이머기능 제어
             switch (currentButton){
-            case 0x0E: j++;     break;  //이전에 sw5가 한번(홀수번) 눌린경우 시간값 계속해서 증가
-            case 0x0D: j = 0;   break;    //sw6가 눌린경우 시간값을 리셋
-            case 0x0B:break;            //다른 스위치가 눌린경우엔 무시한다
-            case 0x07:break;            //상동
+            case 0x0E: j++;     break;  //1110 sw5눌린경우
+            case 0x0D: j = 0;   break;  //1101 sw6눌린경우
+            case 0x0B:break;            //1011 sw7눌린경우
+            case 0x07:break;            //0111 sw8눌린경우
             default  :break;            //sw5가 두번째(짝수번) 눌린경우엔 시간값을 변경하지않고 그대로 유지한다.
             }
 
@@ -93,13 +93,9 @@ int main(void)
             //즉 fallingedge인 경우를 detact 하여 currentButton에 스위치 값 저장
             //스위치를 땐 뒤에도 스위치값을 변경하지 않고 유지함
             if ((PING&0x0F)!=0x0F && stateButton == 0x0F){
-                if(currentButton == 0x0E && (PING&0x0F)==0x0E ){
-                    //sw5가 두번째(짝수번째) 눌린경우에 currentButton을 초기화하여 시간값을 정지시킴
-                    currentButton = 0x0F;
-                }else{
-                    //그 외에 경우에는 스위치값을 저장함
-                    currentButton = PING&0x0F;
-                }
+                currentButton = PING&0x0F;
+            }else{
+                currentButton = PING&0x0F;
             }
             //다음 루프에서 falling edge 감지를 위한 현 루프의 스위치 값 저장
             stateButton = PING&0x0F;
